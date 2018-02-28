@@ -16,7 +16,8 @@ class App extends Component {
       src2: "",
       storageRef: firebase.storage().ref(),
       playing: false,
-      pos: 0
+      pos: 0,
+      pos2:0
     };
   }
 
@@ -26,7 +27,8 @@ class App extends Component {
         src: URL.createObjectURL(e.target.files[0]),
         file: e.target.files[0],
         playing: false,
-        pos:0
+        pos:0,
+        pos2:0
       })
 
     }
@@ -38,13 +40,18 @@ class App extends Component {
         src2: URL.createObjectURL(e.target.files[0]),
         file: e.target.files[0],
         playing: false,
-        pos:0
+        pos:0,
+        pos2:0
       })
 
     }
   }
 
   handlePosChange(e) {
+    this.setState({pos2:e.originalArgs[0], pos: e.originalArgs[0]});
+  }
+
+  handlePosChange2(e) {
     this.setState({pos: e.originalArgs[0]});
   }
 
@@ -87,7 +94,7 @@ class App extends Component {
 
         <div>song 2</div>
         <div>
-          <Wavesurfer audioFile={this.state.src2} pos={this.state.pos} onPosChange={(e) => this.handlePosChange(e)} playing={this.state.playing}/>
+          <Wavesurfer audioFile={this.state.src2} pos={this.state.pos2} playing={this.state.playing}/>
         </div>
 
         <div>
