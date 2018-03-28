@@ -17,7 +17,7 @@ class App extends Component {
       storageRef: firebase.storage().ref(),
       playing: false,
       pos: 0,
-      pos2:0
+      pos2: 0
     };
   }
 
@@ -27,8 +27,8 @@ class App extends Component {
         src: URL.createObjectURL(e.target.files[0]),
         file: e.target.files[0],
         playing: false,
-        pos:0,
-        pos2:0
+        pos: 0,
+        pos2: 0
       })
 
     }
@@ -40,15 +40,15 @@ class App extends Component {
         src2: URL.createObjectURL(e.target.files[0]),
         file: e.target.files[0],
         playing: false,
-        pos:0,
-        pos2:0
+        pos: 0,
+        pos2: 0
       })
 
     }
   }
 
   handlePosChange(e) {
-    this.setState({pos2:e.originalArgs[0], pos: e.originalArgs[0]});
+    this.setState({pos2: e.originalArgs[0], pos: e.originalArgs[0]});
   }
 
   handlePosChange2(e) {
@@ -84,8 +84,9 @@ class App extends Component {
           <input type="file" id="audio" accept=".mp3" onChange= {(e) => this.loadSong2(e)}/>
         </form>
 
-
-        <button onClick={()=>this.handleTogglePlay()}>{this.state.playing ? "pause" : "play"}</button>
+        <button onClick={() => this.handleTogglePlay()}>{this.state.playing
+            ? "pause"
+            : "play"}</button>
 
         <div>song 1</div>
         <div>
