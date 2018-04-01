@@ -6,7 +6,11 @@
     "firebase": "^4.9.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-dropzone": "^4.2.8",
+    "react-native": "^0.53.3",
+    "react-scripts": "1.1.0",
+    "react-wavesurfer": "^0.8.6",
+    "wavesurfer.js": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
