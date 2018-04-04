@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   Platform,
@@ -11,11 +5,12 @@ import {
   Text,
   View
 } from 'react-native';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import Title from './src/Components/Title';
 import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
 import Feed from './src/Screens/Feed';
+import SongDetail from './src/Screens/SongDetail'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -35,12 +30,22 @@ const instructions = Platform.select({
 //     );
 //   }
 // }
+const CollectionStack = StackNavigator({
+  Collection: { screen: Collection },
+  SongDetail: { screen: SongDetail },
+
+});
+
 export default TabNavigator({
   Feed: { screen: Feed },
-  Collection: { screen: Collection },
+  Collection: { screen: CollectionStack },
   Profile: { screen: Profile },
 },
 {
+  tabBarOptions: {
+    activeTintColor: 'black',
+    inactiveTintColor: 'white',
+  },
   tabBarPosition: 'bottom',
 });
 

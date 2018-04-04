@@ -8,7 +8,7 @@ export default class Feed extends Component {
       // Try setting `justifyContent` to `flex-end`.
       // Try setting `flexDirection` to `row`.
       <View >
-          <Text>screen 2</Text>
+          <Text>Feed</Text>
       </View>
     );
   }

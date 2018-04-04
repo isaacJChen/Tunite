@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { AppRegistry, View } from 'react-native';
 import Title from '../Components/Title'
+import Song from '../Screens/Song'
 
 export default class Collection extends Component {
   render() {
     return (
       <View >
-        <Title />
+        <Song navigation={this.props.navigation} />
       </View>
     );
   }
