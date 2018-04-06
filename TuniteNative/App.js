@@ -39,7 +39,7 @@ const CollectionStack = StackNavigator({
 export default TabNavigator({
   Feed: { screen: Feed },
   Collection: { screen: CollectionStack },
-  Profile: { screen: Profile },
+  Profile: { screen: Profile }
 },
 {
   tabBarOptions: {
