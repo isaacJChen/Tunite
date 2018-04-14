@@ -7,7 +7,10 @@ export default class Song extends Component {
       // Try setting `alignItems` to 'flex-start'
       // Try setting `justifyContent` to `flex-end`.
       // Try setting `flexDirection` to `row`.
-      <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail')}>
+      <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail', {
+        Name: this.props.songName,
+        otherParam: 'anything you want here',
+      })}>
       <View style={{height: 65, flexDirection: 'row', alignItems:'center'}}>
         <Image
             source={require('../img/play_icon.png')}

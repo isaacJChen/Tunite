@@ -32,6 +32,10 @@ export default class Collection extends Component {
     }
   }
 
+  static navigationOptions = {
+    title: 'Collection',
+  };
+
   renderSeparator = () => {
     return (
       <View 
