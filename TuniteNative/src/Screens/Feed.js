@@ -14,6 +14,10 @@ export default class Feed extends Component {
     };
   }
 
+  static navigationOptions = {
+    header: null
+  }
+
   upload() {
     var postData = {
       fromMobile: "test",

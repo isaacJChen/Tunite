@@ -65,7 +65,7 @@ export default class SongDetail extends Component {
         const { params } = navigation.state;
 
         return {
-            title: params ? params.Name : 'Song Details',
+            title: params ? params.Name : 'Song Details'
         }
     };
 

@@ -1,11 +1,6 @@
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-import { TabNavigator, StackNavigator, SwitchNavigator } from 'react-navigation';
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View} from 'react-native';
+import {TabNavigator, StackNavigator, SwitchNavigator} from 'react-navigation';
 import Title from './src/Components/Title';
 import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
@@ -14,12 +9,9 @@ import SongDetail from './src/Screens/SongDetail'
 import * as firebase from "firebase";
 import Login from './src/Screens/Login'
 
-
 const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu'
 });
 
 // type Props = {};
@@ -34,39 +26,55 @@ const instructions = Platform.select({
 //   }
 // }
 export const CollectionStack = StackNavigator({
-  Collection: { screen: Collection },
-  SongDetail: { screen: SongDetail },
-
+  Collection: {
+    screen: Collection
+  },
+  SongDetail: {
+    screen: SongDetail
+  }
 });
 
-export const SignedIn  = TabNavigator({
-  Feed: { screen: Feed },
-  Collection: { screen: CollectionStack },
-  Profile: { screen: Profile }
-},
-{
+export const FeedStack = StackNavigator({
+  Feed: {
+    screen: Feed
+  },
+  SongDetail: {
+    screen: SongDetail
+  }
+});
+
+
+export const SignedIn = TabNavigator({
+  Feed: {
+    screen: FeedStack
+  },
+  Collection: {
+    screen: CollectionStack
+  },
+  Profile: {
+    screen: Profile
+  }
+}, {
   tabBarOptions: {
     activeTintColor: 'black',
-    inactiveTintColor: 'white',
+    inactiveTintColor: 'white'
   },
-  tabBarPosition: 'bottom',
+  tabBarPosition: 'bottom'
 });
 
-
 export const createRootNavigator = (signedIn = false) => {
-  return SwitchNavigator(
-    {
-      SignedIn: {
-        screen: SignedIn
-      },
-      SignedOut: {
-        screen: Login
-      }
+  return SwitchNavigator({
+    SignedIn: {
+      screen: SignedIn
     },
-    {
-      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+    SignedOut: {
+      screen: Login
     }
-  );
+  }, {
+    initialRouteName: signedIn
+      ? "SignedIn"
+      : "SignedOut"
+  });
 };
 
 // const styles = StyleSheet.create({
