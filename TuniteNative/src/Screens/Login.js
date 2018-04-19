@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
 import {View, StyleSheet, TextInput, Text, Button} from 'react-native'
 
-export default class Login extends Component{
-  render() {
-    return (
-      // Try setting `alignItems` to 'flex-start'
-      // Try setting `justifyContent` to `flex-end`.
-      // Try setting `flexDirection` to `row`.
-      <View style = {styles.container}>
-        <View></View>
+// export default class Login extends Component{
+//   render() {
+//     return (
+//       // Try setting `alignItems` to 'flex-start'
+//       // Try setting `justifyContent` to `flex-end`.
+//       // Try setting `flexDirection` to `row`.
+//
+//     );
+//   }
+// }
+export default ({ navigation }) => (
+  <View style = {styles.container}>
+    <View></View>
 
-        <View>
-          <Text>
-            Login
-          </Text>
-        </View>
+    <View>
+      <Text>
+        Login
+      </Text>
+    </View>
 
-        <View style={styles.inputForm}>
-          <View><TextInput placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-          <View><TextInput placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-          <Button title="Login" onPress={() => {}}/>
-        </View>
-
-
-      </View>
-    );
-  }
-}
+    <View style={styles.inputForm}>
+      <View><TextInput placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+      <View><TextInput placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+      <Button title="Login" onPress={() => navigation.navigate("SignedIn")}/>
+    </View>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
