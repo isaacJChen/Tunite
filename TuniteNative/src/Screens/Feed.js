@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, ScrollView, StatusBar } from 'react-native';
+import { AppRegistry, View, Button, Text, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import Card from '../Components/Card';
 import TopBar from '../Components/TopBar'
 import SearchBar from '../Components/SearchBar'
@@ -34,8 +34,16 @@ export default class Feed extends Component {
       // Try setting `flexDirection` to `row`.
       <View style={{flex: 1}}>
         {/* <Button title = "Button" onPress={() => this.upload()}/> */}
-        <TopBar title="Feed" />
+        {/* <TopBar title="Feed" /> */}
         <SearchBar />
+        <View style={{flexDirection: 'row', backgroundColor: '#BF1515', padding: 10}}>
+          <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Promoted</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{flex:1,  justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Popular</Text>
+          </TouchableOpacity>
+        </View>
         <ScrollView style={{
           flex: 1
         }}>

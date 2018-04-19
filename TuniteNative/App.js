@@ -5,24 +5,15 @@ import {
   Text,
   View
 } from 'react-native';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator, SwitchNavigator } from 'react-navigation';
 import Title from './src/Components/Title';
 import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
 import Feed from './src/Screens/Feed';
 import SongDetail from './src/Screens/SongDetail'
 import * as firebase from "firebase";
+import Login from './src/Screens/Login'
 
-
-var config = {
-  apiKey: "AIzaSyBntJVZJU-Qvnmk6KTiRISRojGeqj3DuX4",
-  authDomain: "tunite-3a985.firebaseapp.com",
-  databaseURL: "https://tunite-3a985.firebaseio.com",
-  projectId: "tunite-3a985",
-  storageBucket: "tunite-3a985.appspot.com",
-  messagingSenderId: "208605072574"
-};
-firebase.initializeApp(config);
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -42,13 +33,13 @@ const instructions = Platform.select({
 //     );
 //   }
 // }
-const CollectionStack = StackNavigator({
+export const CollectionStack = StackNavigator({
   Collection: { screen: Collection },
   SongDetail: { screen: SongDetail },
 
 });
 
-export default TabNavigator({
+export const SignedIn  = TabNavigator({
   Feed: { screen: Feed },
   Collection: { screen: CollectionStack },
   Profile: { screen: Profile }
@@ -60,6 +51,23 @@ export default TabNavigator({
   },
   tabBarPosition: 'bottom',
 });
+
+
+export const createRootNavigator = (signedIn = false) => {
+  return SwitchNavigator(
+    {
+      SignedIn: {
+        screen: SignedIn
+      },
+      SignedOut: {
+        screen: Login
+      }
+    },
+    {
+      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+    }
+  );
+};
 
 // const styles = StyleSheet.create({
 //   container: {
