@@ -34,11 +34,12 @@ export default class Collection extends Component {
 
   static navigationOptions = {
     title: 'Collection',
+    swipeEnabled: false
   };
 
   renderSeparator = () => {
     return (
-      <View 
+      <View
         style={{height: 0.5, width:"100%", backgroundColor: "black"}}
       />
     )

@@ -17,6 +17,12 @@ export default class Explore extends Component {
         ]
     }
   }
+
+
+  static navigationOptions = {
+    swipeEnabled: false
+  };
+
   render() {
     return(
       <View style={{flex:1, flexDirection: 'column', justifyContent: 'space-between'}}>

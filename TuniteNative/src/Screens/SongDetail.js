@@ -66,6 +66,7 @@ export default class SongDetail extends Component {
 
         return {
             title: params ? params.Name : 'Song Details',
+            swipeEnabled: false
         }
     };
 
