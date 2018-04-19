@@ -15,7 +15,8 @@ export default class Feed extends Component {
   }
 
   static navigationOptions = {
-    header: null
+    header: null,
+    swipeEnabled: false
   }
 
   upload() {

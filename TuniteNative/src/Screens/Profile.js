@@ -50,6 +50,7 @@ export default class Profile extends Component {
 
   static navigationOptions = {
     title: 'Profile',
+    swipeEnabled: false
   };
 
 
