@@ -11,6 +11,18 @@ import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
 import Feed from './src/Screens/Feed';
 import SongDetail from './src/Screens/SongDetail'
+import * as firebase from "firebase";
+
+
+var config = {
+  apiKey: "AIzaSyBntJVZJU-Qvnmk6KTiRISRojGeqj3DuX4",
+  authDomain: "tunite-3a985.firebaseapp.com",
+  databaseURL: "https://tunite-3a985.firebaseio.com",
+  projectId: "tunite-3a985",
+  storageBucket: "tunite-3a985.appspot.com",
+  messagingSenderId: "208605072574"
+};
+firebase.initializeApp(config);
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +

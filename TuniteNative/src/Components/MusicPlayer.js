@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Button, Alert } from 'react-native';
-import TrackPlayer from 'react-native-track-player';
+//import TrackPlayer from 'react-native-track-player';
 
 AppRegistry.registerHeadlessTask('SomeTaskName', () => this.setup());
 
@@ -11,21 +11,21 @@ var track = {
     artwork: require('../img/cover_art.png')
 };
 
-TrackPlayer.setupPlayer().then(async () => {
- 
-    // Adds a track to the queue
-    await TrackPlayer.add({
-        id: 'trackId',
-        url: require('track.mp3'),
-        title: 'Track Title',
-        artist: 'Track Artist',
-        artwork: require('track.png')
-    });
- 
-    // Starts playing it
-    TrackPlayer.play();
- 
-});
+// TrackPlayer.setupPlayer().then(async () => {
+//
+//     // Adds a track to the queue
+//     await TrackPlayer.add({
+//         id: 'trackId',
+//         url: require('../mp3/m.mp3'),
+//         title: 'Track Title',
+//         artist: 'Track Artist',
+//         artwork: require('../img/cover_art.png')
+//     });
+//
+//     // Starts playing it
+//     TrackPlayer.play();
+//
+// });
 
 export default class MusicPlayer extends Component {
 
@@ -48,8 +48,8 @@ export default class MusicPlayer extends Component {
         );
     }
 
-    play() {
-        TrackPlayer.play()
-    }
+    // play() {
+    //     TrackPlayer.play()
+    // }
 
 };

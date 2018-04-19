@@ -94,7 +94,6 @@ export default class SongDetail extends Component {
             // Try setting `justifyContent` to `flex-end`.
             // Try setting `flexDirection` to `row`.
             <ScrollView >
-                <MusicPlayer />
                 <Image
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}

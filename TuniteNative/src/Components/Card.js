@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, Image, Dimensions, ImageBackground } from 'react-native';
+import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableNativeFeedback } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
 export default class Card extends Component {
@@ -8,13 +8,12 @@ export default class Card extends Component {
     let height = Dimensions.get("window").height
     let uri = '../img/custom-album-cover.jpg'
     return (
-      // Try setting `alignItems` to 'flex-start'
-      // Try setting `justifyContent` to `flex-end`.
-      // Try setting `flexDirection` to `row`.
+      <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail', {
+        Name: this.props.songName,
+        otherParam: 'anything you want here',
+      })}>
       <View style={{
-        height: height/3,
-        marginTop: 5,
-        marginBottom: 5,
+        height: width,
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between'
@@ -37,11 +36,11 @@ export default class Card extends Component {
         </View>
         <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
           <View>
-            <Image source={require('../img/headshot.jpg')} resizeMode= 'contain' style={{flex: 1, height:50, width: 50, borderRadius: 100}} resizeMode="contain"/>
+            <Image source={require('../img/headshot.jpg')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
           </View>
-          <View style={{marginLeft: 10}}>
+          <View style={{marginLeft: 10, justifyContent: 'center'}}>
             <Text style={{fontWeight: 'bold'}}>
-              {this.props.title}
+              {this.props.songName}
             </Text>
             <Text style={{}}>
               {this.props.creator}
@@ -49,6 +48,8 @@ export default class Card extends Component {
           </View>
         </View>
       </View>
+      </TouchableNativeFeedback>
+
     );
   }
 };

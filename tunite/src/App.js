@@ -15,6 +15,7 @@ class App extends Component {
       src: "",
       src2: "",
       storageRef: firebase.storage().ref(),
+      databaseRef: firebase.database().ref(),
       playing: false,
       pos: 0,
       pos2: 0
@@ -34,25 +35,8 @@ class App extends Component {
     }
   }
 
-  loadSong2(e) {
-    if (e.target.files[0]) {
-      this.setState({
-        src2: URL.createObjectURL(e.target.files[0]),
-        file: e.target.files[0],
-        playing: false,
-        pos: 0,
-        pos2: 0
-      })
-
-    }
-  }
-
   handlePosChange(e) {
     this.setState({pos2: e.originalArgs[0], pos: e.originalArgs[0]});
-  }
-
-  handlePosChange2(e) {
-    this.setState({pos: e.originalArgs[0]});
   }
 
   handleTogglePlay() {
@@ -63,8 +47,19 @@ class App extends Component {
 
   upload() {
     if (this.state.file) {
-      console.log(this.state.file);
-      var newRef = this.state.storageRef.child(this.state.file.name);
+      var postData = {
+        test: "test",
+        test2: "test2"
+      };
+
+      var newPostKey = firebase.database().ref().child('uploads').push().key;
+
+      var updates = {};
+      updates['/uploads/' + newPostKey] = postData;
+      firebase.database().ref().update(updates);
+
+
+      var newRef = this.state.storageRef.child(newPostKey);
       newRef.put(this.state.file).then(function(snapshot) {});
     }
   }
@@ -79,11 +74,6 @@ class App extends Component {
           <input type="file" id="audio" accept=".mp3" onChange= {(e) => this.loadSong(e)}/>
         </form>
 
-        <div>song 2</div>
-        <form action="">
-          <input type="file" id="audio" accept=".mp3" onChange= {(e) => this.loadSong2(e)}/>
-        </form>
-
         <button onClick={() => this.handleTogglePlay()}>{this.state.playing
             ? "pause"
             : "play"}</button>
@@ -93,14 +83,10 @@ class App extends Component {
           <Wavesurfer audioFile={this.state.src} pos={this.state.pos} onPosChange={(e) => this.handlePosChange(e)} playing={this.state.playing}/>
         </div>
 
-        <div>song 2</div>
-        <div>
-          <Wavesurfer audioFile={this.state.src2} pos={this.state.pos2} playing={this.state.playing}/>
-        </div>
-
         <div>
           <button className="" onClick={() => this.upload()}>Upload to cloud</button>
         </div>
+
       </div>
     );
   }
