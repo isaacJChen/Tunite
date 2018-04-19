@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import {TabNavigator, StackNavigator, SwitchNavigator} from 'react-navigation';
 import Title from './src/Components/Title';
+import Explore from './src/Screens/Explore';
 import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
 import Feed from './src/Screens/Feed';
@@ -31,6 +32,9 @@ export const CollectionStack = StackNavigator({
   },
   SongDetail: {
     screen: SongDetail
+  },
+  Explore: {
+    screen: Explore
   }
 });
 
@@ -40,6 +44,9 @@ export const FeedStack = StackNavigator({
   },
   SongDetail: {
     screen: SongDetail
+  },
+  Explore: {
+    screen: Explore
   }
 });
 
@@ -57,7 +64,8 @@ export const SignedIn = TabNavigator({
 }, {
   tabBarOptions: {
     activeTintColor: 'black',
-    inactiveTintColor: 'white'
+    inactiveTintColor: 'white',
+    swipeEnabled: false
   },
   tabBarPosition: 'bottom'
 });
