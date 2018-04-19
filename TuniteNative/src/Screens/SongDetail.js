@@ -18,7 +18,7 @@ const SECTIONS = [
 class Options extends Component {
     render() {
         return (
-            <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail', {
+            <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
                 Name: this.props.songName,
                 otherParam: 'anything you want here',
             })}>
@@ -65,7 +65,7 @@ export default class SongDetail extends Component {
         const { params } = navigation.state;
 
         return {
-            title: params ? params.Name : 'Song Details'
+            title: params ? params.Name : 'Song Details',
         }
     };
 
@@ -98,8 +98,8 @@ export default class SongDetail extends Component {
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
                 />
-                <Options name="Save to Collection" navigation={this.props.navigation} />
-                <Options name="Explore 10 Version" navigation={this.props.navigation} />
+                <Options name="Save to Collection" destination='SongDetail' navigation={this.props.navigation} />
+                <Options name="Explore 10 Version" destination='Explore' navigation={this.props.navigation} />
                 <Label label="Tags:" />
                 <FlatList
                     data={this.state.tags}
