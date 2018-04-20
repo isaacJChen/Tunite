@@ -20,7 +20,7 @@ class Follow extends Component {
 class Info extends Component {
   render() {
     return (
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, marginTop: 15 }}>
         <Text style={styles.Contact}>Contact Info</Text>
         <Text style={styles.ContactComponent}>{this.props.facebook}</Text>
         <Text style={styles.ContactComponent}>{this.props.twitter}</Text>
@@ -63,6 +63,7 @@ export default class Profile extends Component {
         <Image
             source={require('../img/an.jpg')}
             style={ styles.backCover }
+            blurRadius={5}
           />
         <View style={styles.cover}>
           <Image
@@ -104,7 +105,7 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
   cover: {
-    height: 300,
+    height: 275,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -139,10 +140,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 20,
     position: 'absolute',
-    top: 260,
+    top: 235,
   },
   backCover: {
     position: 'absolute',
     top: 0,
+    height: 275
   }
 });
