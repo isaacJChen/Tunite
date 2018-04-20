@@ -3,6 +3,13 @@ import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableN
 import { TabNavigator } from 'react-navigation';
 
 export default class Card extends Component {
+  constructor(){
+    super()
+    this.state = {
+      uri: '../img/custom-album-cover.jpg'
+    }
+  }
+
   render() {
     let width = Dimensions.get("window").width
     let height = Dimensions.get("window").height
@@ -13,7 +20,7 @@ export default class Card extends Component {
         otherParam: 'anything you want here',
       })}>
       <View style={{
-        height: width,
+        height: 310,
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between'
@@ -25,7 +32,7 @@ export default class Card extends Component {
           width: '100%',
           height: '100%',
         }}>
-          <Image source={require(uri)} style={{flex: 1, height:undefined, width:undefined}}/>
+          <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/>
           {/* the other image tag uses an online url which is what we will use in production */}
           {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
         </View>
