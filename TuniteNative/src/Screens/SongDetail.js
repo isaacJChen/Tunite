@@ -110,7 +110,6 @@ export default class SongDetail extends Component {
                     keyExtractor={item => item.tag}
                     horizontal
                 />
-                <Tag tag="#tag" />
                 <Label label="Owner Promoted Version" />
                 <Label label="Credits:" follow="follow" />
                 <FlatList

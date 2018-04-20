@@ -20,7 +20,7 @@ class Follow extends Component {
 class Info extends Component {
   render() {
     return (
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20, marginTop: 15 }}>
         <Text style={styles.Contact}>Contact Info</Text>
         <Text style={styles.ContactComponent}>{this.props.facebook}</Text>
         <Text style={styles.ContactComponent}>{this.props.twitter}</Text>
@@ -61,43 +61,42 @@ export default class Profile extends Component {
       // Try setting `justifyContent` to `flex-end`.
       // Try setting `flexDirection` to `row`.
       <ScrollView >
+        <Image
+            source={require('../img/an.jpg')}
+            style={ styles.backCover }
+            blurRadius={5}
+          />
+        <View style={styles.cover}>
+          <Image
+            source={require('../img/an.jpg')}
+            style={{ width: width, height: width, borderRadius: width / 2 }}
+          // blurRadius={2}
+          />
+          <Text style={styles.name}>Name</Text>
+          <Follow followers={23} following={35} />
+          <View style={styles.profileOptions}>
+            <TouchableHighlight
+              onPress={() => {
+                Alert.alert('You tapped the button!');
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>Logout</Text>
+            </TouchableHighlight>
+            <Text>             </Text>
+            <TouchableHighlight
+              onPress={() => {
+                Alert.alert('You tapped the button!');
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>Uploads</Text>
+            </TouchableHighlight>
+          </View>
 
-        <ImageBackground
-          source={require('../img/an.jpg')}
-          style={{ height: 300, }}
-        >
-          <View style={styles.cover}>
-            <Image
-              source={require('../img/an.jpg')}
-              style={{ width: width, height: width, borderRadius: width / 2 }}
-            // blurRadius={2}
-            />
-            <Text style={styles.name}>Name</Text>
-            <Follow followers={23} following={35} />
-            <View style={styles.profileOptions}>
-              <TouchableHighlight
-                onPress={() => {
-                  Alert.alert('You tapped the button!');
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Logout</Text>
-              </TouchableHighlight>
-              <Text>             </Text>
-              <TouchableHighlight
-                onPress={() => {
-                  Alert.alert('You tapped the button!');
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Uploads</Text>
-              </TouchableHighlight>
-            </View>
-
-            {/* <Text style={styles.follow}>23{"\n"}FOLLOWers</Text> */}
-            {/* <Button onPress={() => this.props.navigation.navigate('Collection')}
+          {/* <Text style={styles.follow}>23{"\n"}FOLLOWers</Text> */}
+          {/* <Button onPress={() => this.props.navigation.navigate('Collection')}
           title="Button"
         /> */}
-          </View>
-        </ImageBackground>
+        </View>
 
         <Info facebook={this.state.contact.facebook} twitter={this.state.contact.twitter} email={this.state.contact.email} bio={this.state.bio} />
       </ScrollView>
@@ -107,7 +106,7 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
   cover: {
-    height: 300,
+    height: 275,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -142,6 +141,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 20,
     position: 'absolute',
-    top: 260,
+    top: 235,
+  },
+  backCover: {
+    position: 'absolute',
+    top: 0,
+    height: 275
   }
 });
