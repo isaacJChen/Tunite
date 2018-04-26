@@ -15,6 +15,11 @@ const SECTIONS = [
     }
 ];
 
+
+// AppRegistry.registerComponent('Tunite', () => SongDetail);
+
+AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/MusicPlayer'));
+
 class Options extends Component {
     render() {
         return (
@@ -94,7 +99,9 @@ export default class SongDetail extends Component {
             // Try setting `alignItems` to 'flex-start'
             // Try setting `justifyContent` to `flex-end`.
             // Try setting `flexDirection` to `row`.
+            
             <ScrollView >
+                <MusicPlayer />
                 <Image
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
@@ -134,4 +141,4 @@ export default class SongDetail extends Component {
 
 
 // skip this line if using Create React Native App
-AppRegistry.registerComponent('Tunite', () => SongDetail);
+// AppRegistry.registerComponent('Tunite', () => SongDetail);
