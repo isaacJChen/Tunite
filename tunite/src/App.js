@@ -18,7 +18,8 @@ class App extends Component {
       databaseRef: firebase.database().ref(),
       playing: false,
       pos: 0,
-      pos2: 0
+      pos2: 0,
+      link: ""
     };
   }
 
@@ -45,6 +46,24 @@ class App extends Component {
     });
   }
 
+  download() {
+    this.state.storageRef.child('-LA5WiNFP0x4D5WUQDPU').getDownloadURL().then( (url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      console.log("url: " + url);
+      this.setState({
+        link:  url
+      })
+      // This can be downloaded directly:
+
+      // Or inserted into an <img> element:
+      // var img = document.getElementById('myimg');
+      // img.src = url;
+    }).catch(function(error) {
+      // Handle any errors
+      console.log("error: " + error);
+    });
+  }
+
   upload() {
     if (this.state.file) {
       var postData = {
@@ -57,7 +76,6 @@ class App extends Component {
       var updates = {};
       updates['/uploads/' + newPostKey] = postData;
       firebase.database().ref().update(updates);
-
 
       var newRef = this.state.storageRef.child(newPostKey);
       newRef.put(this.state.file).then(function(snapshot) {});
@@ -87,6 +105,10 @@ class App extends Component {
           <button className="" onClick={() => this.upload()}>Upload to cloud</button>
         </div>
 
+        <div>
+          <button onClick={() => this.download()}>Download from fire base</button>
+        </div>
+        <div>{this.state.link}</div>
       </div>
     );
   }

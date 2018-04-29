@@ -4,7 +4,7 @@ import {SignedIn, createRootNavigator} from './App';
 import * as firebase from "firebase";
 import Login from './src/Screens/Login'
 
-
+console.disableYellowBox = true;
 var config = {
   apiKey: "AIzaSyBntJVZJU-Qvnmk6KTiRISRojGeqj3DuX4",
   authDomain: "tunite-3a985.firebaseapp.com",

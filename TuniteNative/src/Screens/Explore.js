@@ -97,12 +97,12 @@ export default class Explore extends Component {
           <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
           </TouchableOpacity>
-          <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+          {/* <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
           </TouchableOpacity>
           <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 
