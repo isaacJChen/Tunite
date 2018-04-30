@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList } from 'react-native';
-import Accordion from 'react-native-collapsible/Accordion';
+// import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
 
@@ -102,10 +102,10 @@ export default class SongDetail extends Component {
             
             <ScrollView >
                 <MusicPlayer />
-                <Image
+                {/* <Image
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
-                />
+                /> */}
                 <Options name="Save to Collection" destination='SongDetail' navigation={this.props.navigation} />
                 <Options name="Explore 10 Version" destination='Explore' navigation={this.props.navigation} />
                 <Label label="Tags:" />
@@ -141,4 +141,4 @@ export default class SongDetail extends Component {
 
 
 // skip this line if using Create React Native App
-// AppRegistry.registerComponent('Tunite', () => SongDetail);
+AppRegistry.registerComponent('Tunite', () => SongDetail);

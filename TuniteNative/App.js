@@ -6,7 +6,7 @@ import Explore from './src/Screens/Explore';
 import Collection from './src/Screens/Collection';
 import Profile from './src/Screens/Profile';
 import Feed from './src/Screens/Feed';
-import SongDetail from './src/Screens/SongDetail'
+import SongDetail from './src/Screens/SongDetail';
 import * as firebase from "firebase";
 import Login from './src/Screens/Login'
 
