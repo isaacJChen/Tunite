@@ -41,7 +41,6 @@ export default class Feed extends Component {
       <View style={{flex: 1}}>
         {/* <Button title = "Button" onPress={() => this.upload()}/> */}
         {/* <TopBar title="Feed" /> */}
-        <Text>{this.state.user.email}</Text>
         <SearchBar />
         <View style={{flexDirection: 'row', backgroundColor: '#BF1515', padding: 10}}>
           <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>

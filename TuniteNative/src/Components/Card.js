@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableNativeFeedback, TouchableOpacity  } from 'react-native';
 import { TabNavigator } from 'react-navigation';
+import MusicPlayer from '../Components/MusicPlayer'
 
 export default class Card extends Component {
   constructor(){
@@ -33,7 +34,8 @@ export default class Card extends Component {
           width: '100%',
           height: '100%',
         }}>
-          <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/>
+          <MusicPlayer/>
+          {/* <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/> */}
           {/* the other image tag uses an online url which is what we will use in production */}
           {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
         </View>
@@ -43,9 +45,16 @@ export default class Card extends Component {
           </Text>
         </View>
 
-        <TouchableOpacity onPress={() => this.setState({playing: !this.state.playing})} style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{marginTop: 5, marginBottom: 5}}/>
-        </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => this.setState({playing: !this.state.playing})} style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{margin: 5}}/>
+        </TouchableOpacity> */}
+
+
+
+        <View style={{flexDirection: 'row'}}>
+          <Image source={require('../img/save-btn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+          <Image source={require('../img/musicNoteBtn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+        </View>
 
         <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
           <View>

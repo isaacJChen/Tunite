@@ -130,17 +130,17 @@ export default class MusicPlayer extends Component {
             // Try setting `alignItems` to 'flex-start'
             // Try setting `justifyContent` to `flex-end`.
             // Try setting `flexDirection` to `row`.
-            <View style={{ height: deviceWidth * .75, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Image
                     source={require('../img/cover_art.png')}
-                    style={{ width: deviceWidth, height: deviceWidth * .75, position: 'absolute', top: 0 }}
+                    style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',}}
                 />
                 <TouchableOpacity onPress={() => this._playPause()} style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{ marginTop: 5, marginBottom: 5 }} />
                 </TouchableOpacity>
-                <View style={{position: 'absolute', bottom: 5 }}>
+                {/* <View style={{position: 'absolute', bottom: 5 }}>
                     <ProgressBar />
-                </View>
+                </View> */}
             </View>
         );
     }
@@ -186,4 +186,3 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('Tunite', () => MusicPlayer);
 // TrackPlayer.registerEventHandler(() => require('../Logic/player-event'));
 // AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Logic/player-event'));
-
