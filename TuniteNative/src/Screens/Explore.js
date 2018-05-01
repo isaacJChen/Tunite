@@ -15,7 +15,7 @@ class Song extends Component {
   }
   render() {
     return(
-      <View style={{height:300, width:300, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{height:'100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center'}}>
         <View style={{
           position: 'absolute',
           top: 0,
@@ -69,7 +69,7 @@ export default class Explore extends Component {
           <Text style={{fontSize: 20, fontWeight: 'bold',}}>{this.state.currentSong}</Text>
         </View>
 
-        <Coverflow style={{flex:1}} onChange={(index) => {
+        <Coverflow style={{height: '35%', width:'100%'}} onChange={(index) => {
           this.setState(
             {currentSong: this.state.songs[index].name}
           )
@@ -86,15 +86,15 @@ export default class Explore extends Component {
 
 
 
-        <View style={{flexDirection: 'row', marginLeft: 30, marginRight:30, marginBottom:30}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <Tag tag={this.state.tags[0].tag}/>
           <Tag tag={this.state.tags[0].tag}/>
           <Tag tag={this.state.tags[0].tag}/>
         </View>
 
 
-        <View style={{flexDirection: 'row', marginLeft: 30, marginRight:30, marginBottom:30}}>
-          <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{marginLeft: 30, marginRight:30, marginBottom:30, justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
           </TouchableOpacity>
           {/* <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>

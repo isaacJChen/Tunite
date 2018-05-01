@@ -4,7 +4,7 @@ import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSh
 class Follow extends Component {
   render() {
     return (
-      <View>
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.follow}>{this.props.following}{"\n"}FOLLOWING</Text>
           <Text style={styles.followSep}> | </Text>
@@ -22,12 +22,31 @@ class Info extends Component {
     return (
       <View style={{ padding: 20, marginTop: 15 }}>
         <Text style={styles.Contact}>Contact Info</Text>
-        <Text style={styles.ContactComponent}>{this.props.facebook}</Text>
-        <Text style={styles.ContactComponent}>{this.props.twitter}</Text>
-        <Text style={styles.ContactComponent}>{this.props.email}</Text>
-        <Text style={styles.Contact}>Contact Info</Text>
-        <Text style={styles.ContactComponent}>{this.props.bio}</Text>
-
+        <View style={{marginLeft: 10}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={require('../img/facebook.png')}
+            // style={{ width: width, height: width, borderRadius: width / 2 }}
+            />
+            <Text style={styles.ContactComponent}>{this.props.facebook}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={require('../img/twitter.png')}
+            // style={{ width: width, height: width, borderRadius: width / 2 }}
+            />
+            <Text style={styles.ContactComponent}>{this.props.twitter}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={require('../img/soundcloud.png')}
+            // style={{ width: width, height: width, borderRadius: width / 2 }}
+            />
+            <Text style={styles.ContactComponent}>{this.props.email}</Text>
+          </View>
+        </View>
+        <Text style={styles.Contact}>Bio</Text>
+          <Text style={styles.ContactComponent}>{this.props.bio}</Text>
       </View>
     );
   }
@@ -42,7 +61,7 @@ export default class Profile extends Component {
       follow: [
         { "following": 23, "followers": 35 },
       ],
-      contact: { facebook: "facebook.com/fb", twitter: "twitter.com/tw", email: "email@email.com" },
+      contact: { facebook: "facebook.com/fb", twitter: "twitter.com/tw", email: "soundcloud.com/sc" },
 
       bio: "Text about me"
     }
@@ -51,7 +70,7 @@ export default class Profile extends Component {
   static navigationOptions = {
     title: 'Profile',
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{resizeMode: 'stretch', height: '70%', width: '70%'}} source={require('../img/tabBarIconUser.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Profile</Text></View>)
+    tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ resizeMode: 'stretch', height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
   };
 
 
@@ -63,10 +82,10 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-            source={require('../img/an.jpg')}
-            style={ styles.backCover }
-            blurRadius={5}
-          />
+          source={require('../img/an.jpg')}
+          style={styles.backCover}
+          blurRadius={5}
+        />
         <View style={styles.cover}>
           <Image
             source={require('../img/an.jpg')}
@@ -80,16 +99,29 @@ export default class Profile extends Component {
               onPress={() => {
                 Alert.alert('You tapped the button!');
               }}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
             >
-              <Text style={{ fontSize: 20 }}>Logout</Text>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Image
+                  source={require('../img/adduser.png')}
+                  style={{}}
+                />
+                <Text style={{ fontSize: 15, color: 'white' }}>Follow</Text>
+              </View>
             </TouchableHighlight>
-            <Text>             </Text>
             <TouchableHighlight
               onPress={() => {
                 Alert.alert('You tapped the button!');
               }}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
             >
-              <Text style={{ fontSize: 20 }}>Uploads</Text>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Image
+                  source={require('../img/musicIcon.png')}
+                  style={{}}
+                />
+                <Text style={{ fontSize: 15, color: 'white' }}>Uploads</Text>
+              </View>
             </TouchableHighlight>
           </View>
 
@@ -105,9 +137,11 @@ export default class Profile extends Component {
   }
 };
 
+const width = Dimensions.get('window').width * 0.7;
+
 const styles = StyleSheet.create({
   cover: {
-    height: 275,
+    height: 300,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -115,15 +149,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 8,
     marginBottom: 8,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'white'
   },
   follow: {
     textAlign: 'center',
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'white'
   },
   followSep: {
     fontSize: 30,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'white',
+    marginLeft: 30,
+    marginRight: 30
   },
   Contact: {
     fontSize: 18,
@@ -137,16 +176,22 @@ const styles = StyleSheet.create({
   },
   profileOptions: {
     flexDirection: 'row',
-    margin: 15,
-    padding: 15,
-    backgroundColor: 'red',
+    justifyContent: 'space-evenly',
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#EB5757',
     borderRadius: 20,
     position: 'absolute',
-    top: 235,
+    top: 260,
+    width: width,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   backCover: {
     position: 'absolute',
     top: 0,
-    height: 275
+    height: 300
   }
 });
