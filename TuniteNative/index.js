@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import {SignedIn, createRootNavigator} from './App';
 import * as firebase from "firebase";
-import Login from './src/Screens/Login'
+import Login from './src/Screens/Login';
+import TrackPlayer from 'react-native-track-player';
 
 console.disableYellowBox = true;
 var config = {
@@ -35,3 +36,5 @@ export default class Index extends React.Component {
 
 
 AppRegistry.registerComponent('TuniteNative', () => Index);
+TrackPlayer.registerEventHandler(() => require('./src/Logic/player-event'));
+AppRegistry.registerHeadlessTask('TrackPlayer', () => require('./src/Logic/player-event'));
