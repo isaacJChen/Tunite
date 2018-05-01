@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { AppRegistry, View, Button, Text, ScrollView, StatusBar, TouchableOpacity, Image } from 'react-native';
 import Card from '../Components/Card';
 import TopBar from '../Components/TopBar'
 import SearchBar from '../Components/SearchBar'
@@ -17,7 +17,8 @@ export default class Feed extends Component {
 
   static navigationOptions = {
     header: null,
-    swipeEnabled: false
+    swipeEnabled: false,
+    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIconHome.png')} /><Text>Home</Text></View>)
   }
 
   upload() {

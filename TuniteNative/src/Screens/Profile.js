@@ -50,7 +50,8 @@ export default class Profile extends Component {
 
   static navigationOptions = {
     title: 'Profile',
-    swipeEnabled: false
+    swipeEnabled: false,
+    tabBarIcon: () => (<View style={{height: '100%', width: '100%'}}><Image style={{resizeMode: 'stretch', height: '100%', width: '100%'}} source={require('../img/tabBarIconUser.png')} /></View>)
   };
 
 
