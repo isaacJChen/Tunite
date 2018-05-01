@@ -39,22 +39,31 @@ export default class Card extends Component {
           {/* the other image tag uses an online url which is what we will use in production */}
           {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
         </View>
+
+        <View style={{flexDirection: 'row', position:'absolute', right:5, bottom:25, zIndex: 1}}>
+          <TouchableOpacity >
+            <Image source={require('../img/save-btn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+          </TouchableOpacity>
+          <TouchableOpacity >
+            <Image source={require('../img/musicNoteBtn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+          </TouchableOpacity>
+        </View>
+
+
+
+
         <View style={{backgroundColor: 'rgba(52, 3, 3, 0.7)'}}>
           <Text style={{color:'white'}}>
             {this.props.tags}
           </Text>
         </View>
 
+
+
+
         {/* <TouchableOpacity onPress={() => this.setState({playing: !this.state.playing})} style={{justifyContent: 'center', alignItems: 'center'}}>
           <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{margin: 5}}/>
         </TouchableOpacity> */}
-
-
-
-        <View style={{flexDirection: 'row'}}>
-          <Image source={require('../img/save-btn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
-          <Image source={require('../img/musicNoteBtn.png')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
-        </View>
 
         <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
           <View>
@@ -68,6 +77,7 @@ export default class Card extends Component {
               {this.props.creator}
             </Text>
           </View>
+
         </View>
       </View>
       </TouchableNativeFeedback>
