@@ -63,13 +63,13 @@ export default class Explore extends Component {
 
   render() {
     return(
-      <View style={{flex:1, flexDirection: 'column', justifyContent: 'space-between'}}>
+      <View style={{flex:1, flexDirection: 'column', justifyContent: 'space-evenly'}}>
 
-        <View style={{alignItems: 'center', marginTop: 20}}>
+        <View style={{alignItems: 'center'}}>
           <Text style={{fontSize: 20, fontWeight: 'bold',}}>{this.state.currentSong}</Text>
         </View>
 
-        <Coverflow style={{height: '35%', width:'100%'}} onChange={(index) => {
+        <Coverflow style={{height: '45%', width:'100%'}} onChange={(index) => {
           this.setState(
             {currentSong: this.state.songs[index].name}
           )
@@ -93,7 +93,7 @@ export default class Explore extends Component {
         </View>
 
 
-        <View style={{marginLeft: 30, marginRight:30, marginBottom:30, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{marginLeft: 30, marginRight:30, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
           </TouchableOpacity>
