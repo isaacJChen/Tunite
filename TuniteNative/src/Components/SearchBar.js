@@ -10,7 +10,7 @@ export default class TopBar extends Component {
       // Try setting `alignItems` to 'flex-start'
       // Try setting `justifyContent` to `flex-end`.
       // Try setting `flexDirection` to `row`.
-      <View style={{backgroundColor: '#C22121', padding: 20}}>
+      <View style={{backgroundColor: '#BF4949', padding: 20}}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
           <Image style={{height: 40, width: 40}} source={require('../img/searchIcon.png')} />
           <TextInput style={{flex: 1, color: '#424242'}}/>
