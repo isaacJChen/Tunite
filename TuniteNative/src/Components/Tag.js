@@ -45,6 +45,6 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     tag: {
-        flexDirection: "column", margin: 5, padding: 5, width: 100, alignItems: 'center'
+        flexDirection: "column", margin: 5, padding: 5, width: 100, alignItems: 'center',   
     }
 })
