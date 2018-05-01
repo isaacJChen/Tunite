@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import {TabNavigator, StackNavigator, SwitchNavigator} from 'react-navigation';
+import {TabNavigator, StackNavigator, SwitchNavigator, Dimensions} from 'react-navigation';
 import Title from './src/Components/Title';
 import Explore from './src/Screens/Explore';
 import Collection from './src/Screens/Collection';
@@ -50,7 +50,6 @@ export const FeedStack = StackNavigator({
   }
 });
 
-
 export const SignedIn = TabNavigator({
   Feed: {
     screen: FeedStack
@@ -65,7 +64,20 @@ export const SignedIn = TabNavigator({
   tabBarOptions: {
     activeTintColor: 'black',
     inactiveTintColor: 'white',
-    swipeEnabled: false
+    swipeEnabled: false,
+    style: {
+      backgroundColor: 'red',
+      height: 65
+    },
+    tabStyle: {
+      height: 65
+    },
+    iconStyle:{
+      height: 65,
+      width: 65
+    },
+    showIcon: true,
+    showLabel: false,
   },
   tabBarPosition: 'bottom'
 });
