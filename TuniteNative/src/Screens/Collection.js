@@ -7,27 +7,27 @@ export default class Collection extends Component {
     super();
     this.state = {
       list: [
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"},
-        {"name":"Gateway", "tag":"#john"},
-        {"name":"Monster", "tag":"#jim"},
-        {"name":"Slam", "tag":"#will"}
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" },
+        { "name": "Gateway", "tag": "#john" },
+        { "name": "Monster", "tag": "#jim" },
+        { "name": "Slam", "tag": "#will" }
       ]
     }
   }
@@ -35,13 +35,13 @@ export default class Collection extends Component {
   static navigationOptions = {
     title: 'Collection',
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIcon1.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Collection</Text></View>)
+    tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIcon1.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Collection</Text></View>)
   };
 
   renderSeparator = () => {
     return (
       <View
-        style={{height: 0.5, width:"100%", backgroundColor: "black"}}
+        style={{ height: 0.5, width: "100%", backgroundColor: "black" }}
       />
     )
   }
@@ -49,9 +49,12 @@ export default class Collection extends Component {
   render() {
     return (
       <View >
+        {/* <View Style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0, width: '100%'}}>
+          <Text Style={{color: 'white'}}>Recently Saved Songs</Text>
+        </View> */}
         <FlatList
           data={this.state.list}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <Song songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
           )}
           ItemSeparatorComponent={this.renderSeparator}
