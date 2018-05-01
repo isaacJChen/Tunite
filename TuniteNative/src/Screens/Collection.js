@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, FlatList } from 'react-native';
+import { AppRegistry, View, Text, FlatList, Image } from 'react-native';
 import Song from '../Components/Song'
 
 export default class Collection extends Component {
@@ -34,7 +34,8 @@ export default class Collection extends Component {
 
   static navigationOptions = {
     title: 'Collection',
-    swipeEnabled: false
+    swipeEnabled: false,
+    tabBarIcon: () => (<View style={{height: '100%', width: '100%'}}><Image style={{height: '100%', width: '100%'}} source={require('../img/tabBarIcon1.png')} /></View>)
   };
 
   renderSeparator = () => {
