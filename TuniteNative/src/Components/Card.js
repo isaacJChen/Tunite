@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableNativeFeedback } from 'react-native';
+import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableNativeFeedback, TouchableOpacity  } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
 export default class Card extends Component {
   constructor(){
     super()
     this.state = {
-      uri: '../img/custom-album-cover.jpg'
+      uri: '../img/custom-album-cover.jpg',
+      playing: false
     }
   }
 
@@ -41,6 +42,11 @@ export default class Card extends Component {
             {this.props.tags}
           </Text>
         </View>
+
+        <TouchableOpacity onPress={() => this.setState({playing: !this.state.playing})} style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{marginTop: 5, marginBottom: 5}}/>
+        </TouchableOpacity>
+
         <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
           <View>
             <Image source={require('../img/headshot.jpg')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
