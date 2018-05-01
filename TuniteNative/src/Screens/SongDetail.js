@@ -23,18 +23,29 @@ AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/Mus
 class Options extends Component {
     render() {
         return (
+            <View>
+            <TouchableNativeFeedback >
+                <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                    <Image
+                        source={require('../img/save-btn.png')}
+                        style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                    />
+                    <Text>Save To Collection</Text>
+                </View>
+            </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
                 Name: this.props.songName,
                 otherParam: 'anything you want here',
             })}>
                 <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                     <Image
-                        source={require('../img/cover_art.png')}
+                        source={require('../img/musicNoteBtn.png')}
                         style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
                     />
-                    <Text>{this.props.name}</Text>
+                    <Text>Explore All Versions</Text>
                 </View>
             </TouchableNativeFeedback>
+            </View>
         );
     }
 }
@@ -42,7 +53,7 @@ class Options extends Component {
 class Label extends Component {
     render() {
         return (
-            <View style={{ height: 30, backgroundColor: "red", justifyContent: 'center', paddingLeft: 5, marginBottom: 2, marginTop: 2 }}>
+            <View style={{ height: 30, backgroundColor: "#C96565", justifyContent: 'center', paddingLeft: 5, marginBottom: 2, marginTop: 2 }}>
                 <Text style={{ fontWeight: "bold", color: 'white' }}>{this.props.label}</Text>
             </View>
         );
@@ -109,8 +120,7 @@ export default class SongDetail extends Component {
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
                 /> */}
-                <Options name="Save to Collection" destination='SongDetail' navigation={this.props.navigation} />
-                <Options name="Explore 10 Version" destination='Explore' navigation={this.props.navigation} />
+                <Options name="Save to Collection" destination='Explore' navigation={this.props.navigation} />
                 <Label label="Tags:" />
                 <FlatList
                     data={this.state.tags}
