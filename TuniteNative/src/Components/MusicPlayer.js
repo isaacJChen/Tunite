@@ -132,7 +132,7 @@ export default class MusicPlayer extends Component {
             // Try setting `flexDirection` to `row`.
             <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Image
-                    source={require('../img/cover_art.png')}
+                    source={{uri: this.props.image}}
                     style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',}}
                 />
                 <TouchableOpacity onPress={() => this._playPause()} style={{ justifyContent: 'center', alignItems: 'center' }}>

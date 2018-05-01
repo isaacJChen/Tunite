@@ -15,6 +15,7 @@ const instructions = Platform.select({
   android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu'
 });
 
+
 // type Props = {};
 // export default class App extends Component<Props> {
 //   render() {
@@ -66,14 +67,14 @@ export const SignedIn = TabNavigator({
     inactiveTintColor: 'white',
     swipeEnabled: false,
     style: {
-      backgroundColor: 'red',
-      height: 65
+      backgroundColor: '#BF4949',
+      height: 60
     },
     tabStyle: {
-      height: 65
+      height: 60
     },
     iconStyle:{
-      height: 65,
+      height: 60,
       width: 65
     },
     showIcon: true,

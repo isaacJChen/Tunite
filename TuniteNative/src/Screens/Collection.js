@@ -35,7 +35,7 @@ export default class Collection extends Component {
   static navigationOptions = {
     title: 'Collection',
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{height: '100%', width: '100%'}}><Image style={{height: '100%', width: '100%'}} source={require('../img/tabBarIcon1.png')} /></View>)
+    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIcon1.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Collection</Text></View>)
   };
 
   renderSeparator = () => {
