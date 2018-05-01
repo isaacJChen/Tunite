@@ -18,7 +18,7 @@ export default class Feed extends Component {
   static navigationOptions = {
     header: null,
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIconHome.png')} /><Text>Home</Text></View>)
+    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIconHome.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Home</Text></View>)
   }
 
   upload() {
@@ -43,12 +43,12 @@ export default class Feed extends Component {
         {/* <Button title = "Button" onPress={() => this.upload()}/> */}
         {/* <TopBar title="Feed" /> */}
         <SearchBar />
-        <View style={{flexDirection: 'row', backgroundColor: '#BF1515', padding: 10}}>
+        <View style={{flexDirection: 'row', backgroundColor: '#EB5757', padding: 10}}>
           <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Promoted</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>Promoted</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{flex:1,  justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Popular</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>Popular</Text>
           </TouchableOpacity>
         </View>
         <ScrollView style={{

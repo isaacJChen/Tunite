@@ -102,7 +102,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
               <View style={{height: deviceWidth * 0.75}}>
-                <MusicPlayer />
+                <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw'/>
               </View>
 
                 {/* <Image
