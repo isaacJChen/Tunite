@@ -83,7 +83,9 @@ export default class SongDetail extends Component {
         return {
             title: params ? params.Name : 'Song Details',
             swipeEnabled: false,
-            tabBarIcon: params.iconMaker
+            tabBarIcon: params.iconMaker,
+            headerStyle: { backgroundColor: '#BF4949' },
+            headerTitleStyle: { color: 'white' },
         }
     };
 

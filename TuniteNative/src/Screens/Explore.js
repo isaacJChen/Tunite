@@ -63,7 +63,9 @@ export default class Explore extends Component {
       return {
           title: 'Explore',
           swipeEnabled: false,
-          tabBarIcon: params.iconMaker
+          tabBarIcon: params.iconMaker,
+          headerStyle: { backgroundColor: '#BF4949' },
+          headerTitleStyle: { color: 'white' },
       }
   };
 

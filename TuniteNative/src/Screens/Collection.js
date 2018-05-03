@@ -39,7 +39,9 @@ export default class Collection extends Component {
   static navigationOptions = {
     title: 'Collection',
     swipeEnabled: false,
-    tabBarIcon: iconMaker
+    tabBarIcon: iconMaker,
+    headerStyle: { backgroundColor: '#BF4949' },
+    headerTitleStyle: { color: 'white' },
   };
 
   renderSeparator = () => {
