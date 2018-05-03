@@ -5,6 +5,10 @@ import TopBar from '../Components/TopBar'
 import SearchBar from '../Components/SearchBar'
 import * as firebase from "firebase";
 
+let iconMaker = function() {
+  return (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIconHome.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Home</Text></View>)
+}
+
 
 export default class Feed extends Component {
   constructor(props) {
@@ -15,10 +19,11 @@ export default class Feed extends Component {
     };
   }
 
+
   static navigationOptions = {
     header: null,
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{height: '100%', width: '100%', alignItems:'center', justifyContent: 'center'}}><Image style={{height: '70%', width: '70%'}} source={require('../img/tabBarIconHome.png')} /><Text style={{color: 'white', fontWeight: 'bold'}}>Home</Text></View>)
+    tabBarIcon: iconMaker
   }
 
   upload() {
@@ -54,18 +59,18 @@ export default class Feed extends Component {
         <ScrollView style={{
           flex: 1
         }}>
-          <Card navigation={this.props.navigation} songName="Title1" tags={[" #first", " #second"]} creator="Jhon" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title2" tags={[" #first", " #second"]} creator="Alex" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title3" tags={[" #first", " #second"]} creator="Jenny" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title4" tags={[" #first", " #second"]} creator="Peter" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title5" tags={[" #first", " #second"]} creator="annie" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title6" tags={[" #first", " #second"]} creator="Kieth" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title7" tags={[" #first", " #second"]} creator="Jake" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title8" tags={[" #first", " #second"]} creator="Pete" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title9" tags={[" #first", " #second"]} creator="Sarah123" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title10" tags={[" #first", " #second"]} creator="Mat" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title11" tags={[" #first", " #second"]} creator="Dan" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://facebook.github.io/react/logo-og.png'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title1" tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title2" tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title3" tags={[" #first", " #second"]} creator="Jenny" cover='https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title4" tags={[" #first", " #second"]} creator="Peter" cover='https://images.pexels.com/photos/658687/pexels-photo-658687.jpeg?auto=compress&cs=tinysrgb&h=350'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title5" tags={[" #first", " #second"]} creator="annie" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfUPfdxYQ86K60b7zbZCz6pgjoobkXab0rul1lt4F_UEQIgTCvOA'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title6" tags={[" #first", " #second"]} creator="Kieth" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title7" tags={[" #first", " #second"]} creator="Jake" cover='https://facebook.github.io/react/logo-og.png'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title8" tags={[" #first", " #second"]} creator="Pete" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16GXbnlaGF7Bb2VQzMFE0E4WX1iMWkJ6ajvZtXmR3e9MZFss3KQ'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title9" tags={[" #first", " #second"]} creator="Sarah123" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title10" tags={[" #first", " #second"]} creator="Mat" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAtFNLmy1EJyy3KJdNDBmv-4vvSB59OYtCNbs2RInZJ4Opj5ktRQ'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title11" tags={[" #first", " #second"]} creator="Dan" cover='https://facebook.github.io/react/logo-og.png'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/>
         </ScrollView>
       </View>
     );

@@ -10,6 +10,7 @@ export default class Song extends Component {
       <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail', {
         Name: this.props.songName,
         otherParam: 'anything you want here',
+        iconMaker: this.props.iconMaker
       })}>
       <View style={{height: 65, flexDirection: 'row', alignItems:'center', backgroundColor: "white"}}>
         <Image

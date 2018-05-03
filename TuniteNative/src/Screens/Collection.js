@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { AppRegistry, View, Text, FlatList, Image } from 'react-native';
 import Song from '../Components/Song'
 
+let iconMaker = function() {
+  return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIcon1.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Collection</Text></View>)
+}
+
 export default class Collection extends Component {
   constructor() {
     super();
@@ -35,7 +39,7 @@ export default class Collection extends Component {
   static navigationOptions = {
     title: 'Collection',
     swipeEnabled: false,
-    tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIcon1.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Collection</Text></View>)
+    tabBarIcon: iconMaker
   };
 
   renderSeparator = () => {
@@ -55,7 +59,7 @@ export default class Collection extends Component {
         <FlatList
           data={this.state.list}
           renderItem={({ item }) => (
-            <Song songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
+            <Song iconMaker={iconMaker} songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
           )}
           ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={item => item.name}

@@ -57,8 +57,14 @@ export default class Explore extends Component {
   }
 
 
-  static navigationOptions = {
-    swipeEnabled: false
+  static navigationOptions = ({ navigation }) => {
+      const { params } = navigation.state;
+
+      return {
+          title: 'Explore',
+          swipeEnabled: false,
+          tabBarIcon: params.iconMaker
+      }
   };
 
   render() {

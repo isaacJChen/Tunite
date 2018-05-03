@@ -35,7 +35,7 @@ class Options extends Component {
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
                 Name: this.props.songName,
-                otherParam: 'anything you want here',
+                iconMaker: this.props.navigation.state.params.iconMaker,
             })}>
                 <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                     <Image
@@ -82,9 +82,12 @@ export default class SongDetail extends Component {
 
         return {
             title: params ? params.Name : 'Song Details',
-            swipeEnabled: false
+            swipeEnabled: false,
+            tabBarIcon: params.iconMaker
         }
     };
+
+    //static navigationOptions =
 
     _renderHeader(section) {
         return (

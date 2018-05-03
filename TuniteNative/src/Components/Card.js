@@ -19,7 +19,7 @@ export default class Card extends Component {
     return (
       <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('SongDetail', {
         Name: this.props.songName,
-        otherParam: 'anything you want here',
+        iconMaker: this.props.iconMaker,
       })}>
       <View style={{
         height: 310,
@@ -34,7 +34,7 @@ export default class Card extends Component {
           width: '100%',
           height: '100%',
         }}>
-          <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw'/>
+          <MusicPlayer image={this.props.cover}/>
           {/* <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/> */}
           {/* the other image tag uses an online url which is what we will use in production */}
           {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
