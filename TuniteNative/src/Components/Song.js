@@ -18,7 +18,7 @@ export default class Song extends Component {
             style={{width: 25, height: 25, borderRadius: 25, marginRight: 7, marginLeft: 7}}
           />
         <Image
-            source={require('../img/an.jpg')}
+            source={{uri: this.props.img}}
             style={{width: 50, height: 50, borderRadius: 25, marginRight: 7, marginLeft: 7}}
           />
           <View style={{marginLeft: 7}} >
