@@ -65,14 +65,14 @@ export default class SongDetail extends Component {
         super();
         this.state = {
             tags: [
-                { "image": "Gateway", "tag": "#john", "follow": true },
-                { "image": "Monster", "tag": "#jim", "follow": false },
-                { "image": "Slam", "tag": "#will", "follow": true }
+                { "image": "Gateway", "tag": "#john", "follow": true , "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'},
+                { "image": "Monster", "tag": "#jim", "follow": false, 'image': 'https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "image": "Slam", "tag": "#will", "follow": true, 'image': 'https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
             ],
             credits: [
-                { "role": "Owner", "tag": "#john", "follow": true },
-                { "role": "Feature", "tag": "#jim", "follow": false },
-                { "role": "Feature", "tag": "#will", "follow": true }
+                { "role": "Owner", "tag": "#john", "follow": true, 'image': 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "role": "Feature", "tag": "#jim", "follow": false, 'image': 'https://images.pexels.com/photos/111287/pexels-photo-111287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "role": "Feature", "tag": "#will", "follow": true, 'image': 'https://images.pexels.com/photos/813940/pexels-photo-813940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
             ]
         }
     }
@@ -118,7 +118,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
               <View style={{height: deviceWidth * 0.75}}>
-                <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw'/>
+                <MusicPlayer image='https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
               </View>
 
                 {/* <Image
@@ -130,7 +130,7 @@ export default class SongDetail extends Component {
                 <FlatList
                     data={this.state.tags}
                     renderItem={({ item }) => (
-                        <Tag tag={item.tag} navigation={this.props.navigation} />
+                        <Tag tag={item.tag} navigation={this.props.navigation} image={item.image}/>
                     )}
                     keyExtractor={item => item.tag}
                     horizontal
@@ -141,7 +141,7 @@ export default class SongDetail extends Component {
                     data={this.state.credits}
                     renderItem={({ item, index }) => (
                         // <Tag tag={item.tag} role={item.role} navigation={this.props.navigation} />
-                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} />
+                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} image={item.image}/>
                     )}
                     keyExtractor={(item, index) => item.tag}
                     horizontal

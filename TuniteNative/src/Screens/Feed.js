@@ -59,8 +59,8 @@ export default class Feed extends Component {
         <ScrollView style={{
           flex: 1
         }}>
-          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title1" tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
-          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title2" tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Life" tags={[" #John", " #Seattle"]} creator="John" cover='https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="I Love Music" tags={[" #Alex", " #Chicago"]} creator="Alex" cover='https://images.pexels.com/photos/351265/pexels-photo-351265.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
           <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title3" tags={[" #first", " #second"]} creator="Jenny" cover='https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426'/>
           <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title4" tags={[" #first", " #second"]} creator="Peter" cover='https://images.pexels.com/photos/658687/pexels-photo-658687.jpeg?auto=compress&cs=tinysrgb&h=350'/>
           <Card iconMaker={iconMaker} navigation={this.props.navigation} songName="Title5" tags={[" #first", " #second"]} creator="annie" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfUPfdxYQ86K60b7zbZCz6pgjoobkXab0rul1lt4F_UEQIgTCvOA'/>

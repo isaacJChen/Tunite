@@ -61,9 +61,9 @@ export default class Profile extends Component {
       follow: [
         { "following": 23, "followers": 35 },
       ],
-      contact: { facebook: "facebook.com/fb", twitter: "twitter.com/tw", email: "soundcloud.com/sc" },
+      contact: { facebook: "facebook.com/JessicaS", twitter: "twitter.com/JessicaSmith", email: "soundcloud.com/JSmith" },
 
-      bio: "Text about me"
+      bio: "Hi my name is Jessica. I am from the US. I like rock music and sharing my work with others."
     }
   }
 
@@ -82,17 +82,17 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-          source={require('../img/an.jpg')}
+          source={{uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'}}
           style={styles.backCover}
           blurRadius={5}
         />
         <View style={styles.cover}>
           <Image
-            source={require('../img/an.jpg')}
+            source={{uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'}}
             style={{ width: width, height: width, borderRadius: width / 2 }}
           // blurRadius={2}
           />
-          <Text style={styles.name}>Name</Text>
+          <Text style={styles.name}>Jessica Smith</Text>
           <Follow followers={23} following={35} />
           <View style={styles.profileOptions}>
             <TouchableHighlight
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
   backCover: {
     position: 'absolute',
     top: 0,
-    height: 300
+    height: 300,
+    width: '100%'
   }
 });

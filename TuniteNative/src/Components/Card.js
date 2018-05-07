@@ -67,7 +67,7 @@ export default class Card extends Component {
 
         <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
           <View>
-            <Image source={require('../img/headshot.jpg')} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+            <Image source={{uri: "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"}} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
           </View>
           <View style={{marginLeft: 10, justifyContent: 'center'}}>
             <Text style={{fontWeight: 'bold'}}>

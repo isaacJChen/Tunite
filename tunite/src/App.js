@@ -5,6 +5,7 @@ import firebase from "firebase/app";
 import 'firebase/storage'
 
 import Wavesurfer from 'react-wavesurfer';
+import Row from './components/row';
 
 class App extends Component {
   constructor(props) {
@@ -64,51 +65,105 @@ class App extends Component {
     });
   }
 
-  upload() {
-    if (this.state.file) {
-      var postData = {
-        test: "test",
-        test2: "test2"
-      };
+  // upload() {
+  //   if (this.state.file) {
+  //     var postData = {
+  //       test: "test",
+  //       test2: "test2"
+  //     };
+  //
+  //     var newPostKey = firebase.database().ref().child('uploads').push().key;
+  //
+  //     var updates = {};
+  //     updates['/uploads/' + newPostKey] = postData;
+  //     firebase.database().ref().update(updates);
+  //
+  //     var newRef = this.state.storageRef.child(newPostKey);
+  //     newRef.put(this.state.file).then(function(snapshot) {});
+  //   }
+  // }
 
-      var newPostKey = firebase.database().ref().child('uploads').push().key;
+  upload(){
+    this.refs.overlay.style.display = "block"
+  }
 
-      var updates = {};
-      updates['/uploads/' + newPostKey] = postData;
-      firebase.database().ref().update(updates);
+  hide(){
+    this.refs.overlay.style.display = "none"
+  }
 
-      var newRef = this.state.storageRef.child(newPostKey);
-      newRef.put(this.state.file).then(function(snapshot) {});
-    }
+  showImage(evt){
+    this.refs.output.src = URL.createObjectURL(evt.target.files[0])
+    this.refs.output.style.display = "block"
   }
 
   componentDidMount() {}
 
   render() {
     return (
-      <div className="px-5">
-        <div>song 1</div>
-        <form action="">
-          <input type="file" id="audio" accept=".mp3" onChange= {(e) => this.loadSong(e)}/>
-        </form>
-
-        <button onClick={() => this.handleTogglePlay()}>{this.state.playing
-            ? "pause"
-            : "play"}</button>
-
-        <div>song 1</div>
-        <div>
-          <Wavesurfer audioFile={this.state.src} pos={this.state.pos} onPosChange={(e) => this.handlePosChange(e)} playing={this.state.playing}/>
+      <div>
+        <div ref="overlay" className="overlay">
+          <div className="d-flex justify-content-end">
+            <label className="text-white mt-3 mr-5" onClick={() => this.hide()}><h3>x</h3></label>
+          </div>
+          <div className="container mt-5">
+            <form action="submit">
+              <div class="form-group">
+                <label className="text-white" for="title">Title</label>
+                <input class="form-control" id="title" type="text" required/>
+              </div>
+              <div class="form-group">
+                <label className="text-white" for="genre">Genre</label>
+                <input class="form-control" id="genre" type="text"/>
+              </div>
+              <div class="form-group">
+                <label className="text-white" for="file">Song File</label>
+                <input class="form-control" id="file" type="file" accept=".mp3" required/>
+              </div>
+              <div class="form-group">
+                <label className="text-white" for="file">Cover Photo</label>
+                <input class="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
+              </div>
+              <div className="d-flex justify-content-between">
+                <div class="form-group">
+                  <input type="submit" value="Submit"/>
+                </div>
+                <div className="d-flex flex-column">
+                  <div className="d-flex justify-content-end">
+                    <p className="text-white">Preview</p>
+                  </div>
+                  <img className="selectedImage" height="200px" ref="output" alt="your image"/>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className="jumbotron bg-danger d-flex justify-content-between">
+          <div className="display-4">
+            <strong className="text-white">
+              Tunite
+            </strong>
+          </div>
+          <button className="btn btn-secondary h-50">
+            Sign Out
+          </button>
         </div>
 
-        <div>
-          <button className="" onClick={() => this.upload()}>Upload to cloud</button>
+        <div className="container">
+          <div className="d-flex mb-5">
+            <div className="mt-2">
+              <strong>
+                3 tracks in your collection
+              </strong>
+            </div>
+            <button className="btn btn-secondary ml-5" onClick={()=> this.upload()}>
+              Upload original ⇧
+            </button>
+          </div>
+          <Row/>
+          <Row/>
+          <Row/>
+          <div>{this.state.link}</div>
         </div>
-
-        <div>
-          <button onClick={() => this.download()}>Download from fire base</button>
-        </div>
-        <div>{this.state.link}</div>
       </div>
     );
   }
