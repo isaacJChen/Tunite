@@ -12,9 +12,26 @@ export default class Row extends Component{
   constructor(props){
     super(props)
     this.state = {
-      playing: false
+      playing: false,
+      storageRef: firebase.storage().ref(),
     }
   }
+
+  download() {
+    this.state.storageRef.child('test.mp3').getDownloadURL().then( (url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      console.log("url: " + url);
+      // This can be downloaded directly:
+
+      // Or inserted into an <img> element:
+      // var img = document.getElementById('myimg');
+      // img.src = url;
+    }).catch(function(error) {
+      // Handle any errors
+      console.log("error: " + error);
+    });
+  }
+
   play(){
     this.refs.playbtn.blur()
     if (this.state.playing) {
@@ -47,24 +64,24 @@ export default class Row extends Component{
           </div>
           <div className="container mt-5">
             <form action="submit">
-              <div class="form-group">
-                <label className="text-white" for="title">Title</label>
-                <input class="form-control" id="title" type="text" required/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="title">Title</label>
+                <input className="form-control" id="title" type="text" required/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="genre">Genre</label>
-                <input class="form-control" id="genre" type="text"/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="genre">Genre</label>
+                <input className="form-control" id="genre" type="text"/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="file">Song File</label>
-                <input class="form-control" id="file" type="file" accept=".mp3" required/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="file">Song File</label>
+                <input className="form-control" id="file" type="file" accept=".mp3" required/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="file">Cover Photo</label>
-                <input class="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="file">Cover Photo</label>
+                <input className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
               </div>
               <div className="d-flex justify-content-between">
-                <div class="form-group">
+                <div className="form-group">
                   <input type="submit" value="Submit"/>
                 </div>
                 <div className="d-flex flex-column">

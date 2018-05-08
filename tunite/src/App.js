@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
+import {HashRouter as Router, Switch, Redirect, Route} from 'react-router-dom';
 
 import firebase from "firebase/app";
 import 'firebase/storage'
@@ -7,6 +8,7 @@ import 'firebase/storage'
 import Wavesurfer from 'react-wavesurfer';
 import Row from './components/row';
 import MainPage from './components/mainPage';
+import SigninPage from './components/Signin'
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +38,12 @@ class App extends Component {
 
   render() {
     return (
-      <MainPage/>
+      <Router>
+        <Switch>
+          <Route exact path={"/"} component={SigninPage}/>
+          <Route exact path={"/main"} component={MainPage}/>
+        </Switch>
+      </Router>
     );
   }
 }
