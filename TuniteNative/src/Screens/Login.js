@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, TextInput, Text, Button} from 'react-native'
+import {View, StyleSheet, TextInput, Text, Button, Alert} from 'react-native'
 import * as firebase from "firebase";
 
 export default class Login extends Component{
@@ -26,12 +26,15 @@ export default class Login extends Component{
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
               //handle error
             });
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.auth().onAuthStateChanged((user) => {
               if (user) {
                 this.props.navigation.navigate("SignedIn")
               } else {
+
               }
             });
+
+
           }}/>
 
           <View><TextInput onChangeText={(change) => {this.setState({signUpusername:change})}} placeholder="username" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
@@ -41,7 +44,7 @@ export default class Login extends Component{
             firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
               // Handle Errors here.
             });
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.auth().onAuthStateChanged((user) => {
               if (user) {
 
                 var postData = {
