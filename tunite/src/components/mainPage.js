@@ -87,6 +87,43 @@ export default class MainPage extends Component {
     })
   }
 
+  submitOriginal(evt){
+    evt.preventDefault()
+
+
+      // if (this.state.file) {
+    let now = Date.now()
+    let postData = {
+      owner: firebase.auth().currentUser.uid,
+      songName: this.refs.title.value,
+      tags: {
+      },
+      timeStamp: now
+    };
+
+    postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
+
+    let newPostKey = firebase.database().ref().child('uploads').push().key;
+
+    let updates = {};
+    updates['/uploads/' + newPostKey] = postData;
+    firebase.database().ref().update(updates);
+
+    let newRef = this.state.storageRef.child(newPostKey);
+    newRef.put(this.refs.fileinput.files[0]).then(function(snapshot) {});
+
+    let userData = {}
+    userData['/users/uploads/' + newPostKey] = newPostKey
+    firebase.database().ref().update(userData);
+
+    let tagData = {}
+    tagData['/tags/' + this.refs.tag.value +"/songs/"+ newPostKey] ={
+      collectionCount: 0,
+      timeStamp: now
+    }
+    firebase.database().ref().update(tagData);
+  }
+
   render() {
     return (
       <div>
@@ -95,22 +132,22 @@ export default class MainPage extends Component {
             <label className="text-white mt-3 mr-5" onClick={() => this.hide()}><h3>x</h3></label>
           </div>
           <div className="container mt-5">
-            <form action="submit">
+            <form action="submit" onSubmit={(evt)=>this.submitOriginal(evt)}>
               <div className="form-group">
                 <label className="text-white" htmlFor="title">Title</label>
-                <input className="form-control" id="title" type="text" required/>
+                <input ref="title" className="form-control" id="title" type="text"/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="genre">Genre</label>
-                <input className="form-control" id="genre" type="text"/>
+                <input ref="tag" className="form-control" id="genre" type="text"/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="file">Song File</label>
-                <input className="form-control" id="file" type="file" accept=".mp3" required/>
+                <input ref="fileinput" className="form-control" id="file" type="file" accept=".mp3"/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="file">Cover Photo</label>
-                <input className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
+                <input className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)}/>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="form-group">
