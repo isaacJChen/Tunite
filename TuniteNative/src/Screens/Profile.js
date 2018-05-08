@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSheet, ImageBackground, TouchableHighlight, Alert } from 'react-native';
+import * as firebase from "firebase";
 
 class Follow extends Component {
   render() {
@@ -63,8 +64,15 @@ export default class Profile extends Component {
       ],
       contact: { facebook: "facebook.com/JessicaS", twitter: "twitter.com/JessicaSmith", email: "soundcloud.com/JSmith" },
 
-      bio: "Hi my name is Jessica. I am from the US. I like rock music and sharing my work with others."
+      bio: "",
     }
+  }
+
+  componentDidMount(){
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot)=>{
+      let bio = snapshot.val()
+      this.setState({bio:bio})
+    })
   }
 
   static navigationOptions = {

@@ -3,6 +3,7 @@ import '../App.css';
 
 import firebase from "firebase/app";
 import 'firebase/storage'
+import 'firebase/auth'
 
 import Wavesurfer from 'react-wavesurfer';
 import Row from './row';
@@ -47,24 +48,6 @@ export default class MainPage extends Component {
     });
   }
 
-  download() {
-    this.state.storageRef.child('-LA5WiNFP0x4D5WUQDPU').getDownloadURL().then( (url) => {
-      // `url` is the download URL for 'images/stars.jpg'
-      console.log("url: " + url);
-      this.setState({
-        link:  url
-      })
-      // This can be downloaded directly:
-
-      // Or inserted into an <img> element:
-      // var img = document.getElementById('myimg');
-      // img.src = url;
-    }).catch(function(error) {
-      // Handle any errors
-      console.log("error: " + error);
-    });
-  }
-
   // upload() {
   //   if (this.state.file) {
   //     var postData = {
@@ -98,6 +81,49 @@ export default class MainPage extends Component {
 
   componentDidMount() {}
 
+  signout(){
+    firebase.auth().signOut().then(() => {
+      this.props.history.push("/");
+    })
+  }
+
+  submitOriginal(evt){
+    evt.preventDefault()
+
+
+      // if (this.state.file) {
+    let now = Date.now()
+    let postData = {
+      owner: firebase.auth().currentUser.uid,
+      songName: this.refs.title.value,
+      tags: {
+      },
+      timeStamp: now
+    };
+
+    postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
+
+    let newPostKey = firebase.database().ref().child('uploads').push().key;
+
+    let updates = {};
+    updates['/uploads/' + newPostKey] = postData;
+    firebase.database().ref().update(updates);
+
+    let newRef = this.state.storageRef.child(newPostKey);
+    newRef.put(this.refs.fileinput.files[0]).then(function(snapshot) {});
+
+    let userData = {}
+    userData['/users/uploads/' + newPostKey] = newPostKey
+    firebase.database().ref().update(userData);
+
+    let tagData = {}
+    tagData['/tags/' + this.refs.tag.value +"/songs/"+ newPostKey] ={
+      collectionCount: 0,
+      timeStamp: now
+    }
+    firebase.database().ref().update(tagData);
+  }
+
   render() {
     return (
       <div>
@@ -106,25 +132,25 @@ export default class MainPage extends Component {
             <label className="text-white mt-3 mr-5" onClick={() => this.hide()}><h3>x</h3></label>
           </div>
           <div className="container mt-5">
-            <form action="submit">
-              <div class="form-group">
-                <label className="text-white" for="title">Title</label>
-                <input class="form-control" id="title" type="text" required/>
+            <form action="submit" onSubmit={(evt)=>this.submitOriginal(evt)}>
+              <div className="form-group">
+                <label className="text-white" htmlFor="title">Title</label>
+                <input ref="title" className="form-control" id="title" type="text"/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="genre">Genre</label>
-                <input class="form-control" id="genre" type="text"/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="genre">Genre</label>
+                <input ref="tag" className="form-control" id="genre" type="text"/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="file">Song File</label>
-                <input class="form-control" id="file" type="file" accept=".mp3" required/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="file">Song File</label>
+                <input ref="fileinput" className="form-control" id="file" type="file" accept=".mp3"/>
               </div>
-              <div class="form-group">
-                <label className="text-white" for="file">Cover Photo</label>
-                <input class="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
+              <div className="form-group">
+                <label className="text-white" htmlFor="file">Cover Photo</label>
+                <input className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)}/>
               </div>
               <div className="d-flex justify-content-between">
-                <div class="form-group">
+                <div className="form-group">
                   <input type="submit" value="Submit"/>
                 </div>
                 <div className="d-flex flex-column">
@@ -143,7 +169,7 @@ export default class MainPage extends Component {
               Tunite
             </strong>
           </div>
-          <button className="btn btn-secondary h-50">
+          <button className="btn btn-secondary h-50" onClick={() => this.signout()}>
             Sign Out
           </button>
         </div>
