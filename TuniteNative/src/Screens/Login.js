@@ -1,74 +1,73 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, TextInput, Text, Button} from 'react-native'
+import {View, StyleSheet, TextInput, Text, Button, Alert} from 'react-native'
 import * as firebase from "firebase";
 
-// export default class Login extends Component{
-//   render() {
-//     return (
-//       // Try setting `alignItems` to 'flex-start'
-//       // Try setting `justifyContent` to `flex-end`.
-//       // Try setting `flexDirection` to `row`.
-//
-//     );
-//   }
-// }
-export default ({ navigation }) => (
-  <View style = {styles.container}>
-    <View></View>
+export default class Login extends Component{
+  constructor(props) {
+    super(props)
+    this.state= {
+      email:"",
+      password:"",
+      signUpEmail:"",
+      signUpPassword:"",
+      signUpusername:""
+    }
+  }
 
-    <View style={styles.inputForm}>
-      <View><TextInput onChangeText={(change) => {email = change}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-      <View><TextInput onChangeText={(change) => {password = change}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-      <Button title="Login" onPress={() => {
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-          //handle error
-        });
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            navigation.navigate("SignedIn")
-          } else {
-          // User is signed out.
-          // ...
-          }
-        });
-      }}/>
+  render() {
+    return (
+      <View style = {styles.container}>
+        <View></View>
 
-      <View><TextInput onChangeText={(change) => {signUpusername = change}} placeholder="username" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-      <View><TextInput onChangeText={(change) => {signUpEmail = change}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-      <View><TextInput onChangeText={(change) => {signUpPassword = change}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
-      <Button title="SignUp" onPress={() => {
-        firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword).catch(function(error) {
-          // Handle Errors here.
-        });
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
+        <View style={styles.inputForm}>
+          <View><TextInput onChangeText={(change) => {this.setState({email:change})}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+          <View><TextInput onChangeText={(change) => {this.setState({password:change})}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+          <Button title="Login" onPress={() => {
+            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+              //handle error
+            });
+            firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                this.props.navigation.navigate("SignedIn")
+              } else {
 
-            var postData = {
-              userName: signUpusername
-            };
+              }
+            });
 
-            userData = {}
-            userData[user.uid] = {userName : signUpusername}
 
-            firebase.database().ref().child("users").update(userData);
+          }}/>
 
-            navigation.navigate("SignedIn")
-          } else {
-          // User is signed out.
-          // ...
-          }
-        });
-      }}/>
-    </View>
-  </View>
-);
+          <View><TextInput onChangeText={(change) => {this.setState({signUpusername:change})}} placeholder="username" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+          <View><TextInput onChangeText={(change) => {this.setState({signUpEmail:change})}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+          <View><TextInput onChangeText={(change) => {this.setState({signUpPassword: change})}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
+          <Button title="SignUp" onPress={() => {
+            firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
+              // Handle Errors here.
+            });
+            firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
 
-let email = ""
-let password = ""
+                var postData = {
+                  userName: this.state.signUpusername
+                };
 
-let signUpEmail = ""
-let signUpPassword = ""
-let signUpusername = ""
+                userData = {}
+                userData[user.uid] = {userName : this.state.signUpusername}
+
+                firebase.database().ref().child("users").update(userData);
+
+                this.props.navigation.navigate("SignedIn")
+              } else {
+              // User is signed out.
+              // ...
+              }
+            });
+          }}/>
+        </View>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -81,18 +81,18 @@ export default class Card extends Component {
           <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{margin: 5}}/>
         </TouchableOpacity> */}
 
-          <View style={{ backgroundColor: '#fff', paddingLeft: 10, flexDirection: 'row' }}>
-            <View>
-              <Image source={require('../img/headshot.jpg')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
-            </View>
-            <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-              <Text style={{ fontWeight: 'bold' }}>
-                {this.props.songName}
-              </Text>
-              <Text style={{}}>
-                {this.props.creator}
-              </Text>
-            </View>
+        <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
+          <View>
+            <Image source={{uri: "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"}} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
+          </View>
+          <View style={{marginLeft: 10, justifyContent: 'center'}}>
+            <Text style={{fontWeight: 'bold'}}>
+              {this.props.songName}
+            </Text>
+            <Text style={{}}>
+              {this.props.creator}
+            </Text>
+          </View>
 
           </View>
         </View>

@@ -10,7 +10,7 @@ export default class Title extends Component {
             <View style={styles.tag}>
                 <Text style={styles.credit}>{this.props.role}</Text>
                 <Image
-                    source={require('../img/contact_icon.png')}
+                    source={{uri: this.props.image}}
                     style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
                 <Text style={styles.text}>{this.props.tag}</Text>
@@ -45,6 +45,6 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     tag: {
-        flexDirection: "column", margin: 5, padding: 5, width: 100, alignItems: 'center',   
+        flexDirection: "column", margin: 5, padding: 5, width: 100, alignItems: 'center',
     }
 })

@@ -86,6 +86,7 @@ export default class Feed extends Component {
           {/* <Card callback={this.callback} ref="10" id="10" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title10" tags={[" #first", " #second"]} creator="Mat" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAtFNLmy1EJyy3KJdNDBmv-4vvSB59OYtCNbs2RInZJ4Opj5ktRQ'/>
           <Card callback={this.callback} ref="11" id="11" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title11" tags={[" #first", " #second"]} creator="Dan" cover='https://facebook.github.io/react/logo-og.png'/>
           <Card callback={this.callback} ref="12" id="12" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/> */}
+
         </ScrollView>
       </View>
     );

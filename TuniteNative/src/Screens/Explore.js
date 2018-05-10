@@ -41,7 +41,7 @@ export default class Explore extends Component {
       {name: "TSwift"},
       {name: "In Too Deep"},
       {name: "DREAMS"},
-      {name: "Avicci"},
+      {name: "Sing"},
       {name: "Bowie"},
       {name: "WAVE~~~"}
     ]
@@ -82,12 +82,12 @@ export default class Explore extends Component {
             {currentSong: this.state.songs[index].name}
           )
         }}>
-          <Song image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw'/>
-          <Song image='http://i.dailymail.co.uk/i/pix/2017/08/24/21/4383013F00000578-4821102-image-a-77_1503607864789.jpg'/>
+          <Song image='https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Song image='https://images.pexels.com/photos/351265/pexels-photo-351265.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
           <Song image='https://marketplace.canva.com/MAB6qNBAV-0/1/0/thumbnail_large/canva-in-too-deep-diving-music-album-cover-MAB6qNBAV-0.jpg'/>
-          <Song image='http://jaguda.com/wp-content/uploads/2017/09/DJ-Spinall-Dreams.jpg'/>
-          <Song image='https://creative-commission-threelanesltd.netdna-ssl.com/system/files/styles/square__600_x_600_/private/artwork/Stories_cover1_Prmd_master2_master.png?itok=_LCCMOcJ'/>
-          <Song image='http://www.abc.net.au/news/image/7082048-3x2-940x627.jpg'/>
+          <Song image='https://images.pexels.com/photos/96380/pexels-photo-96380.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Song image='https://images.pexels.com/photos/1047936/pexels-photo-1047936.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Song image='https://images.pexels.com/photos/625644/pexels-photo-625644.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
           <Song image='https://i.kinja-img.com/gawker-media/image/upload/s--_s8eRJFa--/c_scale,fl_progressive,q_80,w_800/qyaz3i8usy1hxfzw3msb.jpg'/>
         </Coverflow>
 
@@ -95,9 +95,9 @@ export default class Explore extends Component {
 
 
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <Tag tag={this.state.tags[0].tag}/>
-          <Tag tag={this.state.tags[0].tag}/>
-          <Tag tag={this.state.tags[0].tag}/>
+          <Tag tag={this.state.tags[0].tag} image='https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Tag tag={this.state.tags[0].tag} image='https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Tag tag={this.state.tags[0].tag} image ='https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
         </View>
 
 

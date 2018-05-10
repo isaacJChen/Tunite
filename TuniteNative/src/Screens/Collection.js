@@ -11,27 +11,30 @@ export default class Collection extends Component {
     super();
     this.state = {
       list: [
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" },
-        { "name": "Gateway", "tag": "#john" },
-        { "name": "Monster", "tag": "#jim" },
-        { "name": "Slam", "tag": "#will" }
+        { "name": "Life", "tag": "#John", "img": "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"},
+        { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/620251/pexels-photo-620251.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"},
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" },
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
+        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
+        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
+        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" }
       ]
     }
   }
@@ -61,7 +64,7 @@ export default class Collection extends Component {
         <FlatList
           data={this.state.list}
           renderItem={({ item }) => (
-            <Song iconMaker={iconMaker} songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
+            <Song img={item.img} iconMaker={iconMaker} songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
           )}
           ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={item => item.name}
