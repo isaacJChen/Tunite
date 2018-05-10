@@ -59,12 +59,12 @@ export default class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      follow: [
-        { "following": 23, "followers": 35 },
-      ],
-      contact: { facebook: "facebook.com/JessicaS", twitter: "twitter.com/JessicaSmith", email: "soundcloud.com/JSmith" },
-
+      followers: 0,
+      following: 0,
+      contact: { faceBook: "bad", twitter: "bad", soundCloud: "bad" },
+      image: "",
       bio: "",
+      name:"",
     }
   }
 
@@ -73,6 +73,36 @@ export default class Profile extends Component {
       let bio = snapshot.val()
       this.setState({bio:bio})
     })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot)=>{
+      let data = snapshot.val()
+      this.setState({contact:data})
+    })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot)=>{
+      let name = snapshot.val()
+      this.setState({name:name})
+    })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot)=>{
+      let num = Object.keys(snapshot.val()).length -1
+      this.setState({followers:num})
+    })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot)=>{
+      let num = Object.keys(snapshot.val()).length -1
+      this.setState({following:num})
+    })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot)=>{
+      let img = snapshot.val()
+      if (img==undefined) {
+        img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+        this.setState({image:img})
+      }
+    })
+
+
   }
 
   static navigationOptions = {
@@ -90,18 +120,18 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-          source={{uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'}}
+          source={{uri: this.state.image}}
           style={styles.backCover}
-          blurRadius={5}
+          blurRadius={1}
         />
         <View style={styles.cover}>
           <Image
-            source={{uri: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'}}
+            source={{uri: this.state.image}}
             style={{ width: width, height: width, borderRadius: width / 2 }}
           // blurRadius={2}
           />
-          <Text style={styles.name}>Jessica Smith</Text>
-          <Follow followers={23} following={35} />
+          <Text style={styles.name}>{this.state.name}</Text>
+          <Follow followers={this.state.followers} following={this.state.following} />
           <View style={styles.profileOptions}>
             <TouchableHighlight
               onPress={() => {
@@ -139,7 +169,7 @@ export default class Profile extends Component {
         /> */}
         </View>
 
-        <Info facebook={this.state.contact.facebook} twitter={this.state.contact.twitter} email={this.state.contact.email} bio={this.state.bio} />
+        <Info facebook={this.state.contact.faceBook} twitter={this.state.contact.twitter} email={this.state.contact.soundCloud} bio={this.state.bio} />
       </ScrollView>
     );
   }

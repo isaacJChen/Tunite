@@ -113,7 +113,7 @@ export default class MainPage extends Component {
     newRef.put(this.refs.fileinput.files[0]).then(function(snapshot) {});
 
     let userData = {}
-    userData['/users/uploads/' + newPostKey] = newPostKey
+    userData['/users/'+firebase.auth().currentUser.uid+'/uploads/' + newPostKey] = newPostKey
     firebase.database().ref().update(userData);
 
     let tagData = {}
