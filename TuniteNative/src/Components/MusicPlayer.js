@@ -151,7 +151,8 @@ export default class MusicPlayer extends Component {
     // }
 
     async _playPause() {
-        // this.props.callback();
+        // Alert.alert(this.props.id);
+        this.props.callback(this.props.id);
 
         let state = await TrackPlayer.getState();
 
@@ -217,7 +218,7 @@ export default class MusicPlayer extends Component {
 
         if (state == 0) {
             TrackPlayer.add(this.props.track);
-            Alert.alert("songadd");
+            // Alert.alert("songadd");
         }
         // if (this.state.playing) {
         //     TrackPlayer.pause();

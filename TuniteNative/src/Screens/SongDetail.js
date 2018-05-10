@@ -144,6 +144,10 @@ export default class SongDetail extends Component {
             </View>
         );
     }
+    
+    callback() {
+
+    }
 
     render() {
         const deviceWidth = Dimensions.get('window').width;
@@ -161,7 +165,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
                 <View style={{ height: deviceWidth * 0.75 }}>
-                    <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw' track={track} />
+                    <MusicPlayer callback={this.callback} id="0" image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw' track={track} />
                 </View>
 
                 {/* <Image

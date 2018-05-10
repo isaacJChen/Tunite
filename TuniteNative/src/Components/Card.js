@@ -24,10 +24,6 @@ export default class Card extends Component {
     TrackPlayer.reset();
   }
 
-  callback() {
-    // this.setState({test:"changed"})
-  }
-
   render() {
     let width = Dimensions.get("window").width
     let height = Dimensions.get("window").height
@@ -53,7 +49,7 @@ export default class Card extends Component {
             width: '100%',
             height: '100%',
           }}>
-            <MusicPlayer callback={this.callback} ref="player" image={this.props.cover} track={track}/>
+            <MusicPlayer callback={this.props.callback} id={this.props.id} ref="player" image={this.props.cover} track={track}/>
             {/* <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/> */}
             {/* the other image tag uses an online url which is what we will use in production */}
             {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
