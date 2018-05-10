@@ -53,6 +53,15 @@ export default class Login extends Component{
 
                 userData = {}
                 userData[user.uid] = {userName : this.state.signUpusername}
+                userData[user.uid]["following"] = {seattle: "seattle"}
+                userData[user.uid]["following"][user.uid] = user.uid
+                userData[user.uid]["followers"] = {}
+                userData[user.uid]["followers"][user.uid] = user.uid
+
+                userData[user.uid]["contactInfo"] = {}
+                userData[user.uid]["contactInfo"]["faceBook"] = "fb"
+                userData[user.uid]["contactInfo"]["twitter"]="tw"
+                userData[user.uid]["contactInfo"]["soundCloud"]="sc"
 
                 firebase.database().ref().child("users").update(userData);
 

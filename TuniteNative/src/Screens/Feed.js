@@ -16,8 +16,12 @@ export default class Feed extends Component {
     this.state = {
       user: firebase.auth().currentUser,
       databaseRef: firebase.database().ref(),
-      current: ""
+      current: "",
+      cards:[],
+
     };
+
+    this.cardTags = {}
   }
 
 
@@ -41,9 +45,9 @@ export default class Feed extends Component {
   }
 
   callback(x){
-    if( this.state.current === x) {
-      
-    } else if (this.state.current !== "") {
+    if( this.state.current == x) {
+    } else if (this.state.current != "") {
+      //this.refs[this.cardTags[this.state.current]].refs.player.setState({
       this.refs[this.state.current].refs.player.setState({
         playing: false
       });
@@ -51,9 +55,50 @@ export default class Feed extends Component {
     this.setState({
       current: x
     })
-
-
   }
+
+  componentDidMount(){
+    let followings = []
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot)=>{
+      followings = Object.keys(snapshot.val())
+
+      for (let tag in followings) {
+        firebase.database().ref('tags/' + followings[tag] + '/songs').once('value').then((snapshot)=>{
+          songsFromFB = snapshot.val()
+          songsArray = []
+          let keys = Object.keys(songsFromFB)
+          for (let key in keys){
+            let obj = {}
+            obj["key"] = keys[key]
+            obj["values"] = songsFromFB[keys[key]]
+            songsArray.push(obj)
+          }
+          songsArray.sort(this.compare)
+
+          firebase.database().ref('uploads').once('value').then((snapshot)=>{
+            let uploads = snapshot.val()
+            let cards = []
+            for (let i=0;i<3;i++){
+              let s= uploads[songsArray[i].key].songName
+
+              //this is the one that breaks
+              //cards.push(<Card callback={this.callback.bind(this)} ref={(input)=> {this.cardTags[i.toString()]= input;}} id={i.toString()} mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName={s} tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>)
+            }
+            this.setState({cards: cards})
+          })
+        })
+      }
+    })
+  }
+
+  compare(a,b) {
+    if (a.values.timeStamp < b.values.timeStamp)
+      return 1;
+    if (a.values.timeStamp > b.values.timeStamp)
+      return -1;
+    return 0;
+  }
+
 
   render() {
     return (
@@ -75,6 +120,9 @@ export default class Feed extends Component {
         <ScrollView style={{
           flex: 1
         }}>
+        {/* {
+          this.state.cards
+        } */}
           <Card callback={this.callback.bind(this)} ref="1" id="1" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title1" tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
           <Card callback={this.callback.bind(this)} ref="2" id="2" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title2" tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>
           <Card callback={this.callback.bind(this)} ref="3" id="3" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title3" tags={[" #first", " #second"]} creator="Jenny" cover='https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426'/>
@@ -86,8 +134,7 @@ export default class Feed extends Component {
           <Card callback={this.callback.bind(this)} ref="9" id="9" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title9" tags={[" #first", " #second"]} creator="Sarah123" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
           {/* <Card callback={this.callback} ref="10" id="10" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title10" tags={[" #first", " #second"]} creator="Mat" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAtFNLmy1EJyy3KJdNDBmv-4vvSB59OYtCNbs2RInZJ4Opj5ktRQ'/>
           <Card callback={this.callback} ref="11" id="11" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title11" tags={[" #first", " #second"]} creator="Dan" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card callback={this.callback} ref="12" id="12" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/> */}
-
+          <Card callback={this.callback} ref="12" id="12" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/>/ */}
         </ScrollView>
       </View>
     );
