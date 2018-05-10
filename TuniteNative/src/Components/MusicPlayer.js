@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Button, Alert, TouchableOpacity, Image, StyleSheet, Text, TouchableWithoutFeedback, Slider, Dimensions } from 'react-native';
 import TrackPlayer, { ProgressComponent } from 'react-native-track-player';
-import Sound from 'react-native-sound';
+//import Sound from 'react-native-sound';
 import { formatTime } from '../Logic/util';
 
 // TrackPlayer.registerEventHandler(require('../Logic/player-event'));
@@ -152,10 +152,10 @@ export default class MusicPlayer extends Component {
 
     async _playPause() {
         // this.props.callback();
-        
+
         let state = await TrackPlayer.getState();
 
-        
+
         // Alert.alert(TrackPlayer.getState());
         // if (state == 'STATE_NONE') {
         //     // TrackPlayer.add(this.props.track).play();
@@ -247,7 +247,7 @@ export default class MusicPlayer extends Component {
             this.setState({ playing: true })
         }
 
-        
+
     }
 
 

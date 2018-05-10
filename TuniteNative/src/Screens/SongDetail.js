@@ -3,7 +3,7 @@ import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, Touchab
 // import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
-import Sound from 'react-native-sound';
+//import Sound from 'react-native-sound';
 
 const SECTIONS = [
     {
