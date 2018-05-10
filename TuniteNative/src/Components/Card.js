@@ -17,6 +17,7 @@ export default class Card extends Component {
 
   _press() {
     this.refs.player.setState({playing:false})
+    this.props.callback("");
     this.props.navigation.navigate('SongDetail', {
       Name: this.props.songName,
       iconMaker: this.props.iconMaker,
