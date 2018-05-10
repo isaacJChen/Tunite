@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList } from 'react-native';
+import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList, Alert } from 'react-native';
 // import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
+import Sound from 'react-native-sound';
 
 const SECTIONS = [
     {
@@ -14,7 +15,18 @@ const SECTIONS = [
         content: 'Lorem ipsum...'
     }
 ];
-
+// Sound.setCategory('Playback');
+// var song = new Sound('../s.mp3', Sound.MAIN_BUNDLE)
+// song.play((success) => {
+//     if (success) {
+//         console.log('successfully finished playing');
+//     } else {
+//         console.log('playback failed due to audio decoding errors');
+//         // reset the player to its uninitialized state (android only)
+//         // this is the only option to recover after an error occured and use the player again
+//         song.reset();
+//     }
+// });
 
 // AppRegistry.registerComponent('Tunite', () => SongDetail);
 
@@ -24,27 +36,27 @@ class Options extends Component {
     render() {
         return (
             <View>
-            <TouchableNativeFeedback >
-                <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
-                    <Image
-                        source={require('../img/save-btn.png')}
-                        style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
-                    />
-                    <Text>Save To Collection</Text>
-                </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
-                Name: this.props.songName,
-                iconMaker: this.props.navigation.state.params.iconMaker,
-            })}>
-                <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
-                    <Image
-                        source={require('../img/musicNoteBtn.png')}
-                        style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
-                    />
-                    <Text>Explore All Versions</Text>
-                </View>
-            </TouchableNativeFeedback>
+                <TouchableNativeFeedback >
+                    <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                        <Image
+                            source={require('../img/save-btn.png')}
+                            style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                        />
+                        <Text>Save To Collection</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
+                    Name: this.props.songName,
+                    iconMaker: this.props.navigation.state.params.iconMaker,
+                })}>
+                    <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                        <Image
+                            source={require('../img/musicNoteBtn.png')}
+                            style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                        />
+                        <Text>Explore All Versions</Text>
+                    </View>
+                </TouchableNativeFeedback>
             </View>
         );
     }
@@ -75,6 +87,32 @@ export default class SongDetail extends Component {
                 { "role": "Feature", "tag": "#will", "follow": true }
             ]
         }
+    }
+
+    componentWillMount() {
+        // Sound.setCategory('Playback');
+        // var song = new Sound(require('../mp3/m.mp3'), Sound.MAIN_BUNDLE, (error) => {
+        //     if (error) {
+        //       console.log('failed to load the sound', error);
+        //       Alert.alert(error);
+        //       return;
+        //     }
+        //     // loaded successfully
+        //     Alert.alert('create');
+        //     console.log('duration in seconds: ' + song.getDuration() + 'number of channels: ' + song.getNumberOfChannels());
+        //   });
+        // song.play((success) => {
+        //     if (success) {
+        //         console.log('successfully finished playing');
+        //         Alert.alert('playing');
+        //     } else {
+        //         console.log('playback failed due to audio decoding errors');
+        //         Alert.alert('error1');
+        //         // reset the player to its uninitialized state (android only)
+        //         // this is the only option to recover after an error occured and use the player again
+        //         song.reset();
+        //     }
+        // });
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -109,7 +147,12 @@ export default class SongDetail extends Component {
 
     render() {
         const deviceWidth = Dimensions.get('window').width;
+        let track = {
+            id: '1',
+            url: require('../mp3/m.mp3'), // Load media from the app bundle
 
+            artwork: require('../img/cover_art.png')
+        };
 
         return (
             // Try setting `alignItems` to 'flex-start'
@@ -117,9 +160,9 @@ export default class SongDetail extends Component {
             // Try setting `flexDirection` to `row`.
 
             <ScrollView >
-              <View style={{height: deviceWidth * 0.75}}>
-                <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw'/>
-              </View>
+                <View style={{ height: deviceWidth * 0.75 }}>
+                    <MusicPlayer image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw' track={track} />
+                </View>
 
                 {/* <Image
                     source={require('../img/cover_art.png')}

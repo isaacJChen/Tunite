@@ -3,7 +3,6 @@
 module.exports = async (data) => {
     if(data.type == 'playback-state') {
         // Update the UI with the new state
-        // store.dispatch(playbackState(data.state));
     } else if(data.type == 'remote-play') {
         // The play button was pressed, we can forward this command to the player using
         TrackPlayer.play();
