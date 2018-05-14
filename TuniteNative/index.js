@@ -35,6 +35,8 @@ export default class Index extends React.Component {
 
 
 
+
+
 AppRegistry.registerComponent('TuniteNative', () => Index);
 TrackPlayer.registerEventHandler(() => require('./src/Logic/player-event'));
 AppRegistry.registerHeadlessTask('TrackPlayer', () => require('./src/Logic/player-event'));
