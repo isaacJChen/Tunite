@@ -58,8 +58,7 @@ export default class Card extends Component {
 
           <View style={{ flexDirection: 'row', position: 'absolute', right: 5, bottom: 25, zIndex: 1 }}>
             <TouchableOpacity >
-              {/* <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} /> */}
-              <Text>{this.state.test}</Text>
+              <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
             <TouchableOpacity >
               <Image source={require('../img/musicNoteBtn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />

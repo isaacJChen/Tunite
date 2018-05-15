@@ -19,10 +19,15 @@ export default class Feed extends Component {
       current: "",
       songName:[],
       musics: [],
-      songUrls: []
+      songUrls: [],
+      imageUrls: [],
+      rerenderCildren: true
     };
 
     this.songUrls = []
+    this.imageUrls=[]
+
+    this.songName = []
   }
 
 
@@ -87,20 +92,33 @@ export default class Feed extends Component {
               let s= uploads[songsArray[i].key].songName
               songName.push(s)
               let m = songsArray[i].key
+              let img = uploads[songsArray[i].key].image
 
 
 
-              //from function
+              //get song file
               firebase.storage().ref().child(m).getDownloadURL().then( (url) => {
                 // `url` is the download URL for 'images/stars.jpg'
                 this.songUrls.push(url)
+                this.setState({songUrls: this.songUrls})
+              }).catch(function(error) {
+                // Handle any errors
+                Alert.alert(error.toString())
+              });
+
+              //get image file
+              firebase.storage().ref().child(img).getDownloadURL().then( (url) => {
+                // `url` is the download URL for 'images/stars.jpg'
+                this.imageUrls.push(url)
+                this.setState({imageUrls: this.imageUrls})
               }).catch(function(error) {
                 // Handle any errors
                 Alert.alert(error.toString())
               });
 
             }
-            this.setState({songName: songName, songUrls: this.songUrls})
+            // this.setState({songName: songName, songUrls: this.songUrls, imageUrls: this.imageUrls})
+            this.setState({songName: songName})
           })
         })
       }
@@ -117,6 +135,9 @@ export default class Feed extends Component {
 
 
   render() {
+    if (!this.state.imageUrls[0]) {
+      return <Text>Loading...</Text>
+    }
     return (
       // Try setting `alignItems` to 'flex-start'
       // Try setting `justifyContent` to `flex-end`.
@@ -141,7 +162,7 @@ export default class Feed extends Component {
           //this.test()
 
         }
-          {this.state.songName[0] ? <Card callback={this.callback.bind(this)} ref="0" id="0" mp3={this.songUrls[0]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[0]} tags={[" #first", " #second"]} creator="jo" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[0] ? <Card callback={this.callback.bind(this)} ref="0" id="0" mp3={this.songUrls[0]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[0]} tags={[" #first", " #second"]} creator="jo" cover={this.state.imageUrls[0]}/> : null}
           {this.state.songName[1] ? <Card callback={this.callback.bind(this)} ref="1" id="1" mp3={this.songUrls[1]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[1]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
           {this.state.songName[2] ? <Card callback={this.callback.bind(this)} ref="2" id="2" mp3={this.songUrls[2]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[2]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
           {this.state.songName[3] ? <Card callback={this.callback.bind(this)} ref="3" id="3" mp3={this.songUrls[3]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[3]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
