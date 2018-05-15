@@ -88,13 +88,13 @@ class ProgressBar extends ProgressComponent {
         return (
             <View style={styles.view}>
                 <Text style={styles.info}>{position}</Text>
-                {/* <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback>
                     <View style={styles.bar}>
                         <View style={[{ width: progress + '%' }, styles.played]} />
                         <View style={[{ width: buffered + '%' }, styles.buffered]} />
                     </View>
-                </TouchableWithoutFeedback> */}
-                <Slider
+                </TouchableWithoutFeedback>
+                {/* <Slider
                     minimumValue={0}
                     maximumValue={this.state.duration}
                     thumbTintColor="white"
@@ -115,7 +115,7 @@ class ProgressBar extends ProgressComponent {
                     }}
                     value={this.state.isSeeking ? this.seek : this.state.position}
                     width={Dimensions.get('window').width - 95}
-                />
+                /> */}
                 <Text style={styles.info}>{duration}</Text>
             </View>
         );

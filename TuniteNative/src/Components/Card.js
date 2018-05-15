@@ -31,12 +31,12 @@ export default class Card extends Component {
     let uri = '../img/custom-album-cover.jpg'
     let track = {
       id: this.props.id,
-      url: {uri: "https://firebasestorage.googleapis.com/v0/b/tunite-3a985.appspot.com/o/test.mp3?alt=media&token=01761465-e3ee-45e0-abe1-930603c17e54"}, // Load media from the app bundle
+      url: {uri: this.props.mp3}, // Load media from the app bundle
 
       artwork: require('../img/cover_art.png')
     };
     return (
-      <TouchableNativeFeedback onPress={() => this._press()}>
+      <TouchableNativeFeedback onPress={() => this._press()} style={{display: 'none'}}>
         <View style={{
           height: 310,
           flexDirection: 'column',
@@ -58,8 +58,7 @@ export default class Card extends Component {
 
           <View style={{ flexDirection: 'row', position: 'absolute', right: 5, bottom: 25, zIndex: 1 }}>
             <TouchableOpacity >
-              {/* <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} /> */}
-              <Text>{this.state.test}</Text>
+              <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
             <TouchableOpacity >
               <Image source={require('../img/musicNoteBtn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
