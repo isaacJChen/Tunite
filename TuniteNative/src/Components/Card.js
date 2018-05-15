@@ -31,12 +31,12 @@ export default class Card extends Component {
     let uri = '../img/custom-album-cover.jpg'
     let track = {
       id: this.props.id,
-      url: {uri: "https://firebasestorage.googleapis.com/v0/b/tunite-3a985.appspot.com/o/test.mp3?alt=media&token=01761465-e3ee-45e0-abe1-930603c17e54"}, // Load media from the app bundle
+      url: {uri: this.props.mp3}, // Load media from the app bundle
 
       artwork: require('../img/cover_art.png')
     };
     return (
-      <TouchableNativeFeedback onPress={() => this._press()}>
+      <TouchableNativeFeedback onPress={() => this._press()} style={{display: 'none'}}>
         <View style={{
           height: 310,
           flexDirection: 'column',

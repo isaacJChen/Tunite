@@ -17,11 +17,12 @@ export default class Feed extends Component {
       user: firebase.auth().currentUser,
       databaseRef: firebase.database().ref(),
       current: "",
-      cards:[],
-
+      songName:[],
+      musics: [],
+      songUrls: []
     };
 
-    this.cardTags = {}
+    this.songUrls = []
   }
 
 
@@ -77,14 +78,29 @@ export default class Feed extends Component {
 
           firebase.database().ref('uploads').once('value').then((snapshot)=>{
             let uploads = snapshot.val()
-            let cards = []
-            for (let i=0;i<3;i++){
+            let songName = []
+            let urls = []
+            for (let i=0;i<20;i++){
+              if (i===songsArray.length) {
+                break
+              }
               let s= uploads[songsArray[i].key].songName
+              songName.push(s)
+              let m = songsArray[i].key
 
-              //this is the one that breaks
-              //cards.push(<Card callback={this.callback.bind(this)} ref={(input)=> {this.cardTags[i.toString()]= input;}} id={i.toString()} mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName={s} tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>)
+
+
+              //from function
+              firebase.storage().ref().child(m).getDownloadURL().then( (url) => {
+                // `url` is the download URL for 'images/stars.jpg'
+                this.songUrls.push(url)
+              }).catch(function(error) {
+                // Handle any errors
+                Alert.alert(error.toString())
+              });
+
             }
-            this.setState({cards: cards})
+            this.setState({songName: songName, songUrls: this.songUrls})
           })
         })
       }
@@ -120,21 +136,32 @@ export default class Feed extends Component {
         <ScrollView style={{
           flex: 1
         }}>
-        {/* {
-          this.state.cards
-        } */}
-          <Card callback={this.callback.bind(this)} ref="1" id="1" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title1" tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
-          <Card callback={this.callback.bind(this)} ref="2" id="2" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title2" tags={[" #first", " #second"]} creator="Alex" cover='https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg'/>
-          <Card callback={this.callback.bind(this)} ref="3" id="3" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title3" tags={[" #first", " #second"]} creator="Jenny" cover='https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426'/>
-          <Card callback={this.callback.bind(this)} ref="4" id="4" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title4" tags={[" #first", " #second"]} creator="Peter" cover='https://images.pexels.com/photos/658687/pexels-photo-658687.jpeg?auto=compress&cs=tinysrgb&h=350'/>
-          <Card callback={this.callback.bind(this)} ref="5" id="5" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title5" tags={[" #first", " #second"]} creator="annie" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfUPfdxYQ86K60b7zbZCz6pgjoobkXab0rul1lt4F_UEQIgTCvOA'/>
-          <Card callback={this.callback.bind(this)} ref="6" id="6" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title6" tags={[" #first", " #second"]} creator="Kieth" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/>
-          <Card callback={this.callback.bind(this)} ref="7" id="7" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title7" tags={[" #first", " #second"]} creator="Jake" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card callback={this.callback.bind(this)} ref="8" id="8" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title8" tags={[" #first", " #second"]} creator="Pete" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16GXbnlaGF7Bb2VQzMFE0E4WX1iMWkJ6ajvZtXmR3e9MZFss3KQ'/>
-          <Card callback={this.callback.bind(this)} ref="9" id="9" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title9" tags={[" #first", " #second"]} creator="Sarah123" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/>
-          {/* <Card callback={this.callback} ref="10" id="10" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title10" tags={[" #first", " #second"]} creator="Mat" cover='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAtFNLmy1EJyy3KJdNDBmv-4vvSB59OYtCNbs2RInZJ4Opj5ktRQ'/>
-          <Card callback={this.callback} ref="11" id="11" mp3="../mp3/m.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title11" tags={[" #first", " #second"]} creator="Dan" cover='https://facebook.github.io/react/logo-og.png'/>
-          <Card callback={this.callback} ref="12" id="12" mp3="../mp3/s.mp3" iconMaker={iconMaker} navigation={this.props.navigation} songName="Title12" tags={[" #first", " #second"]} creator="Rex" cover='https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&h=350'/>/ */}
+        {
+          //this.state.cards;
+          //this.test()
+
+        }
+          {this.state.songName[0] ? <Card callback={this.callback.bind(this)} ref="0" id="0" mp3={this.songUrls[0]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[0]} tags={[" #first", " #second"]} creator="jo" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[1] ? <Card callback={this.callback.bind(this)} ref="1" id="1" mp3={this.songUrls[1]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[1]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[2] ? <Card callback={this.callback.bind(this)} ref="2" id="2" mp3={this.songUrls[2]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[2]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[3] ? <Card callback={this.callback.bind(this)} ref="3" id="3" mp3={this.songUrls[3]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[3]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[4] ? <Card callback={this.callback.bind(this)} ref="4" id="4" mp3={this.songUrls[4]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[4]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[5] ? <Card callback={this.callback.bind(this)} ref="5" id="5" mp3={this.songUrls[5]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[5]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[6] ? <Card callback={this.callback.bind(this)} ref="6" id="6" mp3={this.songUrls[6]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[6]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[7] ? <Card callback={this.callback.bind(this)} ref="7" id="7" mp3={this.songUrls[7]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[7]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[8] ? <Card callback={this.callback.bind(this)} ref="8" id="8" mp3={this.songUrls[8]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[8]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[9] ? <Card callback={this.callback.bind(this)} ref="9" id="9" mp3={this.songUrls[9]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[9]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[10] ? <Card callback={this.callback.bind(this)} ref="10" id="10" mp3={this.songUrls[10]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[10]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[11] ? <Card callback={this.callback.bind(this)} ref="11" id="11" mp3={this.songUrls[11]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[11]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[12] ? <Card callback={this.callback.bind(this)} ref="12" id="12" mp3={this.songUrls[12]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[12]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[13] ? <Card callback={this.callback.bind(this)} ref="13" id="13" mp3={this.songUrls[13]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[13]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[14] ? <Card callback={this.callback.bind(this)} ref="14" id="14" mp3={this.songUrls[14]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[14]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[15] ? <Card callback={this.callback.bind(this)} ref="15" id="15" mp3={this.songUrls[15]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[15]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[16] ? <Card callback={this.callback.bind(this)} ref="16" id="16" mp3={this.songUrls[16]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[16]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[17] ? <Card callback={this.callback.bind(this)} ref="17" id="17" mp3={this.songUrls[17]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[17]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[18] ? <Card callback={this.callback.bind(this)} ref="18" id="18" mp3={this.songUrls[18]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[18]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+          {this.state.songName[19] ? <Card callback={this.callback.bind(this)} ref="19" id="19" mp3={this.songUrls[19]} iconMaker={iconMaker} navigation={this.props.navigation} songName={this.state.songName[19]} tags={[" #first", " #second"]} creator="Jhon" cover='https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg'/> : null}
+
         </ScrollView>
       </View>
     );
