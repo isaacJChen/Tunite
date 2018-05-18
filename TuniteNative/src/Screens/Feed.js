@@ -147,10 +147,14 @@ export default class Feed extends Component {
         {/* <TopBar title="Feed" /> */}
         <SearchBar />
         <View style={{flexDirection: 'row', backgroundColor: '#EB5757', padding: 10}}>
-          <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}} onPress={()=> {
+            Alert.alert("Promoted clicked")
+          }}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>Promoted</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{flex:1,  justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={{flex:1,  justifyContent: 'center', alignItems: 'center'}} onPress={()=> {
+            Alert.alert("popular clicked")
+          }}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>Popular</Text>
           </TouchableOpacity>
         </View>

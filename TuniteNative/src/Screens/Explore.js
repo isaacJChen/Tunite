@@ -4,6 +4,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
 import Coverflow from 'react-native-coverflow';
+import * as firebase from "firebase";
 
 
 class Song extends Component {
