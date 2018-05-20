@@ -10,7 +10,7 @@ export default class Title extends Component {
             <View style={styles.tag}>
                 <Text style={styles.credit}>{this.props.role}</Text>
                 <Image
-                    source={{uri: this.props.image}}
+                    source={{ uri: this.props.image }}
                     style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
                 <Text style={styles.text}>{this.props.tag}</Text>
@@ -22,9 +22,17 @@ export default class Title extends Component {
                     <View
                         style={styles.button}
                     >
-                        <Text>follow</Text>
+                        <Text style={{color: "white"}}>follow</Text>
                 </View>
                 </TouchableHighlight>
+                {/* <Button
+                    onPress={() => {
+                        Alert.alert('You tapped the button!');
+                    }}
+                    title="follow"
+                    color="#EB5757"
+
+                /> */}
             </View>
         );
     }
@@ -33,6 +41,7 @@ export default class Title extends Component {
 var styles = StyleSheet.create({
     text: {
         margin: 5,
+
     },
     credit: {
         margin: 5,
@@ -41,8 +50,10 @@ var styles = StyleSheet.create({
     button: {
         height: 20,
         width: 60,
-        borderRadius: 8,
-        alignItems: 'center'
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: '#EB5757',
+
     },
     tag: {
         flexDirection: "column", margin: 5, padding: 5, width: 100, alignItems: 'center',
