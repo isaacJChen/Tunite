@@ -153,11 +153,10 @@ export default class SongDetail extends Component {
         const deviceWidth = Dimensions.get('window').width;
         let track = {
             id: '1',
-            url: require('../mp3/m.mp3'), // Load media from the app bundle
+            url: {uri: this.props.navigation.state.params.songUrl}, // Load media from the app bundle
 
             artwork: require('../img/cover_art.png')
         };
-
         return (
             // Try setting `alignItems` to 'flex-start'
             // Try setting `justifyContent` to `flex-end`.
@@ -165,7 +164,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
                 <View style={{ height: deviceWidth * 0.75 }}>
-                    <MusicPlayer callback={this.callback} id="0" image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipPOQ9zpWb7CP25pfxPCZVERljvQNkeYRxjDOMlpfb5ZXiPtCZw' track={track} />
+                    <MusicPlayer callback={this.callback} id="0" image={this.props.navigation.state.params.songCover} track={track} />
                 </View>
 
                 {/* <Image
