@@ -21,6 +21,8 @@ export default class Card extends Component {
     this.props.navigation.navigate('SongDetail', {
       Name: this.props.songName,
       iconMaker: this.props.iconMaker,
+      songUrl: this.props.mp3,
+      songCover: this.props.cover
     })
     TrackPlayer.reset();
   }
