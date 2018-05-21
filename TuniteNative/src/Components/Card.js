@@ -3,6 +3,7 @@ import { AppRegistry, View, Text, Image, Dimensions, ImageBackground, TouchableN
 import { TabNavigator } from 'react-navigation';
 import MusicPlayer from '../Components/MusicPlayer';
 import TrackPlayer from 'react-native-track-player';
+import * as firebase from "firebase";
 
 export default class Card extends Component {
   constructor() {
@@ -25,6 +26,14 @@ export default class Card extends Component {
       songCover: this.props.cover
     })
     TrackPlayer.reset();
+  }
+
+  _addToCollection() {
+    let uid = firebase.auth().currentUser.uid
+    let updates = {};
+    updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
+    firebase.database().ref().update(updates)
+    Alert.alert("Added to collection!")
   }
 
   render() {
@@ -59,7 +68,7 @@ export default class Card extends Component {
           </View>
 
           <View style={{ flexDirection: 'row', position: 'absolute', right: 5, bottom: 25, zIndex: 1 }}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={() => this._addToCollection()}>
               <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
             <TouchableOpacity >

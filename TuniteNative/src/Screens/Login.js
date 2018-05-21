@@ -23,53 +23,48 @@ export default class Login extends Component{
           <View><TextInput onChangeText={(change) => {this.setState({email:change})}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <View><TextInput onChangeText={(change) => {this.setState({password:change})}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <Button title="Login" onPress={() => {
-            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-              //handle error
+            firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(()=>{
+              this.props.navigation.navigate("SignedIn")
+            }).catch(function(error) {
+              Alert.alert("Login failed")
             });
-            firebase.auth().onAuthStateChanged((user) => {
-              if (user) {
-                this.props.navigation.navigate("SignedIn")
-              } else {
-
-              }
-            });
-
-
           }}/>
 
           <View><TextInput onChangeText={(change) => {this.setState({signUpusername:change})}} placeholder="username" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <View><TextInput onChangeText={(change) => {this.setState({signUpEmail:change})}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <View><TextInput onChangeText={(change) => {this.setState({signUpPassword: change})}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <Button title="SignUp" onPress={() => {
-            firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).catch(function(error) {
-              // Handle Errors here.
-            });
-            firebase.auth().onAuthStateChanged((user) => {
-              if (user) {
+            firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword).then(()=>{
+              let user = firebase.auth().currentUser
+              firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
 
-                var postData = {
-                  userName: this.state.signUpusername
-                };
+                  var postData = {
+                    userName: this.state.signUpusername
+                  };
 
-                userData = {}
-                userData[user.uid] = {userName : this.state.signUpusername}
-                userData[user.uid]["following"] = {seattle: "seattle"}
-                userData[user.uid]["following"][user.uid] = user.uid
-                userData[user.uid]["followers"] = {}
-                userData[user.uid]["followers"][user.uid] = user.uid
+                  userData = {}
+                  userData[user.uid] = {userName : this.state.signUpusername}
+                  userData[user.uid]["following"] = {seattle: "seattle"}
+                  userData[user.uid]["following"][user.uid] = user.uid
+                  userData[user.uid]["followers"] = {}
+                  userData[user.uid]["followers"][user.uid] = user.uid
 
-                userData[user.uid]["contactInfo"] = {}
-                userData[user.uid]["contactInfo"]["faceBook"] = "fb"
-                userData[user.uid]["contactInfo"]["twitter"]="tw"
-                userData[user.uid]["contactInfo"]["soundCloud"]="sc"
+                  userData[user.uid]["contactInfo"] = {}
+                  userData[user.uid]["contactInfo"]["faceBook"] = "fb"
+                  userData[user.uid]["contactInfo"]["twitter"]="tw"
+                  userData[user.uid]["contactInfo"]["soundCloud"]="sc"
 
-                firebase.database().ref().child("users").update(userData);
+                  firebase.database().ref().child("users").update(userData);
 
-                this.props.navigation.navigate("SignedIn")
-              } else {
-              // User is signed out.
-              // ...
-              }
+                  this.props.navigation.navigate("SignedIn")
+                } else {
+                // User is signed out.
+                // ...
+                }
+              });
+            }).catch(function(error) {
+              Alert.alert(error.toString())
             });
           }}/>
         </View>
