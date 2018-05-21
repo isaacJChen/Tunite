@@ -33,6 +33,7 @@ export default class Card extends Component {
     let updates = {};
     updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
     firebase.database().ref().update(updates)
+    Alert.alert("Added to collection!")
   }
 
   render() {

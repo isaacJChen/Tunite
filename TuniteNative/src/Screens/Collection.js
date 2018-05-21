@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, FlatList, Image } from 'react-native';
+import { AppRegistry, View, Text, FlatList, Image, Alert } from 'react-native';
 import Song from '../Components/Song'
+import * as firebase from "firebase";
 
 let iconMaker = function() {
   return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIcon1.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Collection</Text></View>)
@@ -11,30 +12,7 @@ export default class Collection extends Component {
     super();
     this.state = {
       list: [
-        { "name": "Life", "tag": "#John", "img": "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"},
-        { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/620251/pexels-photo-620251.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"},
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" },
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/971613/pexels-photo-971613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
-        // { "name": "Monster", "tag": "#jim", "img": "https://images.pexels.com/photos/991678/pexels-photo-991678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" },
-        // { "name": "Gateway", "tag": "#john", "img": "https://images.pexels.com/photos/1047349/pexels-photo-1047349.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"  },
-        // { "name": "Slam", "tag": "#will", "img": "https://images.pexels.com/photos/413727/pexels-photo-413727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" }
+
       ]
     }
   }
@@ -55,16 +33,52 @@ export default class Collection extends Component {
     )
   }
 
+  componentDidMount() {
+    let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/collection').on('value', (snapshot) =>{
+      let val = snapshot.val()
+      if (!val) {
+        this.setState({list:[]})
+      } else {
+        let collection = Object.keys(snapshot.val())
+
+        let list = []
+        for (idx in collection) {
+          let key = collection[idx]
+          firebase.database().ref('uploads/' +key).once('value').then((snapshot)=>{
+            let songProfile = snapshot.val()
+
+            firebase.storage().ref().child(songProfile.image).getDownloadURL().then( (url) => {
+              // `url` is the download URL for 'images/stars.jpg'
+              let item = {
+                name: songProfile.songName,
+                tag: songProfile.tags['seattle'],
+                img: url,
+                key: key
+              }
+
+              list.push(item)
+              this.setState({list: list})
+
+            }).catch(function(error) {
+              // Handle any errors
+              Alert.alert(error.toString())
+            });
+
+          })
+        }
+      }
+    })
+
+  }
+
   render() {
     return (
       <View >
-        {/* <View Style={{backgroundColor: 'black', position: 'absolute', top: 0, left: 0, width: '100%'}}>
-          <Text Style={{color: 'white'}}>Recently Saved Songs</Text>
-        </View> */}
+
         <FlatList
           data={this.state.list}
           renderItem={({ item }) => (
-            <Song img={item.img} iconMaker={iconMaker} songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
+            <Song itemKey={item.key} img={item.img} iconMaker={iconMaker} songName={item.name} tagName={item.tag} navigation={this.props.navigation} />
           )}
           ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={item => item.name}
