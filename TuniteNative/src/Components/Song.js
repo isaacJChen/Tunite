@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, Image, TouchableNativeFeedback } from 'react-native';
+import { AppRegistry, View, Button, Text, Image, TouchableNativeFeedback, TouchableOpacity, Alert } from 'react-native';
+import * as firebase from "firebase";
 
 export default class Song extends Component {
   render() {
@@ -17,10 +18,10 @@ export default class Song extends Component {
       <View style={{flexDirection:'row', justifyContent: 'space-between', backgroundColor:'white'}}>
         <View>
           <View style={{height: 65, flexDirection: 'row', alignItems:'center', backgroundColor: "white"}}>
-            <Image
+            {/* <Image
                 source={require('../img/play_icon.png')}
                 style={{width: 25, height: 25, borderRadius: 25, marginRight: 7, marginLeft: 7}}
-              />
+              /> */}
             <Image
                 source={{uri: this.props.img}}
                 style={{width: 50, height: 50, borderRadius: 25, marginRight: 7, marginLeft: 7}}
@@ -31,9 +32,13 @@ export default class Song extends Component {
               </View>
             </View>
         </View>
-        <View style={{backgroundColor: 'white', marginRight: 25, alignItems: 'center', justifyContent: 'center'}}>
+
+        <TouchableOpacity style={{backgroundColor: 'white', marginRight: 25, alignItems: 'center', justifyContent: 'center'}} onPress={()=>{
+          firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/collection/' + this.props.itemKey).remove()
+        }}>
           <Image source={require('../img/deleteIcon.png')}/>
-        </View>
+        </TouchableOpacity>
+
       </View>
       </TouchableNativeFeedback>
     );
