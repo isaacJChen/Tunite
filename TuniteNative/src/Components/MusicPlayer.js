@@ -151,7 +151,9 @@ export default class MusicPlayer extends Component {
     constructor() {
         super();
         this.state = {
-            playing: false
+            playing: false,
+            fullTrack: true,
+            startTime: 60
         }
 
         // this.handler = this.handler.bind(this)
@@ -162,10 +164,16 @@ export default class MusicPlayer extends Component {
         TrackPlayer.updateOptions({
             stopWithApp: true
         });
+        if(!this.props.fullSong) {
+            this.setState({
+                fullTrack: false
+            })
+        }
 
     }
 
     componentWillUnmount() {
+        
         TrackPlayer.reset();
     }
 
@@ -236,6 +244,10 @@ export default class MusicPlayer extends Component {
 
         if (state == 0) {
             TrackPlayer.add(this.props.track);
+            if(!this.state.fullTrack){
+                TrackPlayer.seekTo(this.state.startTime);
+            }
+
         }
         let trackId = await TrackPlayer.getCurrentTrack();
 
@@ -245,19 +257,46 @@ export default class MusicPlayer extends Component {
                 stopWithApp: true
             });
             TrackPlayer.add(this.props.track);
+            if(!this.state.fullTrack){
+                TrackPlayer.seekTo(this.state.startTime);
+            }
             TrackPlayer.play();
+
             this.setState({ playing: true })
         } else {
             if (this.state.playing) {
                 TrackPlayer.pause();
                 this.setState({ playing: false })
+                // this.checkPosition(0).then(()=> {
+                //     Alert.alert("test")
+                //     TrackPlayer.stop()
+                // }).catch((err) => {
+                //     Alert.alert(err.toString())            
+                // })
             } else {
                 TrackPlayer.play();
                 this.setState({ playing: true })
+                // this.checkPosition(0).then(()=> {
+                //     Alert.alert("test")
+                //     TrackPlayer.stop()
+                // }).catch((err) => {
+                //     Alert.alert(err.toString())            
+                // })
             }
         }
+    }
 
-
+    checkPosition(startTime) {
+        return new Promise((resolve, reject) => {
+            while (true) {
+                TrackPlayer.getPosition().then((postion) => {
+                    if (position == startTime + 3 || !this.state.playing) {
+                        resolve(true)
+                    }
+                })
+            }
+            reject(error("something went wrong"))
+        })
     }
 
     _forward() {

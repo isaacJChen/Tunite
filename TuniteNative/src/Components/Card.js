@@ -61,7 +61,7 @@ export default class Card extends Component {
             width: '100%',
             height: '100%',
           }}>
-            <MusicPlayer callback={this.props.callback} id={this.props.id} ref="player" image={this.props.cover} track={track}/>
+            <MusicPlayer callback={this.props.callback} id={this.props.id} ref="player" image={this.props.cover} track={track} fullSong={false}/>
             {/* <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/> */}
             {/* the other image tag uses an online url which is what we will use in production */}
             {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}

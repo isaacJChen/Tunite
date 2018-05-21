@@ -164,7 +164,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
                 <View style={{ height: deviceWidth * 0.75 }}>
-                    <MusicPlayer callback={this.callback} id="0" image={this.props.navigation.state.params.songCover} track={track} />
+                    <MusicPlayer callback={this.callback} id="0" image={this.props.navigation.state.params.songCover} track={track} fullSong={true}/>
                 </View>
 
                 {/* <Image

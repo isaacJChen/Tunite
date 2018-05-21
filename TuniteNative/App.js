@@ -9,6 +9,7 @@ import Feed from './src/Screens/Feed';
 import SongDetail from './src/Screens/SongDetail';
 import * as firebase from "firebase";
 import Login from './src/Screens/Login'
+import EditProfile from './src/Screens/EditProfile'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -51,6 +52,15 @@ export const FeedStack = StackNavigator({
   }
 });
 
+export const ProfileStack = StackNavigator({
+  Profile: {
+    screen: Profile
+  },
+  EditProfile: {
+    screen: EditProfile
+  }
+});
+
 export const SignedIn = TabNavigator({
   Feed: {
     screen: FeedStack
@@ -59,7 +69,7 @@ export const SignedIn = TabNavigator({
     screen: CollectionStack
   },
   Profile: {
-    screen: Profile
+    screen: ProfileStack
   }
 }, {
   tabBarOptions: {

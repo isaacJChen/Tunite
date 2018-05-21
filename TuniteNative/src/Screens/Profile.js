@@ -23,7 +23,17 @@ class Info extends Component {
     return (
       <View style={{ padding: 20, marginTop: 15 }}>
         <Text style={styles.Contact}>Contact Info</Text>
-        <View style={{marginLeft: 10}}>
+        <TouchableHighlight
+          onPress={() => {
+            this.onClick()
+          }}
+        >
+          <Image
+            source={require('../img/editIcon.svg')}
+            style={{ width: 50, height: 50, backgroundColor: 'pink' }}
+          />
+        </TouchableHighlight>
+        <View style={{ marginLeft: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
               source={require('../img/facebook.png')}
@@ -47,7 +57,7 @@ class Info extends Component {
           </View>
         </View>
         <Text style={styles.Contact}>Bio</Text>
-          <Text style={styles.ContactComponent}>{this.props.bio}</Text>
+        <Text style={styles.ContactComponent}>{this.props.bio}</Text>
       </View>
     );
   }
@@ -64,50 +74,49 @@ export default class Profile extends Component {
       contact: { faceBook: "bad", twitter: "bad", soundCloud: "bad" },
       image: "",
       bio: "",
-      name:"",
+      name: "",
     }
   }
 
-  componentDidMount(){
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot)=>{
+  componentDidMount() {
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
       let bio = snapshot.val()
-      this.setState({bio:bio})
+      this.setState({ bio: bio })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot)=>{
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot) => {
       let data = snapshot.val()
-      this.setState({contact:data})
+      this.setState({ contact: data })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot)=>{
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot) => {
       let name = snapshot.val()
-      this.setState({name:name})
+      this.setState({ name: name })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot)=>{
-      let num = Object.keys(snapshot.val()).length -1
-      this.setState({followers:num})
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot) => {
+      let num = Object.keys(snapshot.val()).length - 1
+      this.setState({ followers: num })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot)=>{
-      let num = Object.keys(snapshot.val()).length -1
-      this.setState({following:num})
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot) => {
+      let num = Object.keys(snapshot.val()).length - 1
+      this.setState({ following: num })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot)=>{
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
       let img = snapshot.val()
-      if (img==undefined) {
+      if (img == undefined) {
         img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
-        this.setState({image:img})
+        this.setState({ image: img })
       }
     })
-
-
   }
 
   static navigationOptions = {
     title: 'Profile',
     swipeEnabled: false,
+    header: null,
     tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ resizeMode: 'stretch', height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
   };
 
@@ -120,13 +129,13 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-          source={{uri: this.state.image}}
+          source={{ uri: this.state.image }}
           style={styles.backCover}
           blurRadius={1}
         />
         <View style={styles.cover}>
           <Image
-            source={{uri: this.state.image}}
+            source={{ uri: this.state.image }}
             style={{ width: width, height: width, borderRadius: width / 2 }}
           // blurRadius={2}
           />
