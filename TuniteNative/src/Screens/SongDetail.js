@@ -77,14 +77,14 @@ export default class SongDetail extends Component {
         super();
         this.state = {
             tags: [
-                { "image": "Gateway", "tag": "#john", "follow": true , "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'},
-                { "image": "Monster", "tag": "#jim", "follow": false, 'image': 'https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "image": "Slam", "tag": "#will", "follow": true, 'image': 'https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
+                { "image": "Gateway", "tag": "john", "follow": true , "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'},
+                { "image": "Monster", "tag": "jim", "follow": false, 'image': 'https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "image": "Slam", "tag": "will", "follow": true, 'image': 'https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
             ],
             credits: [
-                { "role": "Owner", "tag": "#john", "follow": true, 'image': 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "role": "Feature", "tag": "#jim", "follow": false, 'image': 'https://images.pexels.com/photos/111287/pexels-photo-111287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "role": "Feature", "tag": "#will", "follow": true, 'image': 'https://images.pexels.com/photos/813940/pexels-photo-813940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
+                { "role": "Owner", "tag": "john", "follow": true, 'image': 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "role": "Feature", "tag": "jim", "follow": false, 'image': 'https://images.pexels.com/photos/111287/pexels-photo-111287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
+                { "role": "Feature", "tag": "will", "follow": true, 'image': 'https://images.pexels.com/photos/813940/pexels-photo-813940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
             ]
         }
     }
