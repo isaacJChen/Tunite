@@ -29,6 +29,19 @@ export default class Card extends Component {
     TrackPlayer.reset();
   }
 
+  _toExplore(){
+    this.refs.player.setState({playing:false})
+    this.props.callback("");
+    this.props.navigation.navigate('Explore', {
+      Name: this.props.songName,
+      iconMaker: this.props.iconMaker,
+      songUrl: this.props.mp3,
+      songCover: this.props.cover,
+      songId: this.props.songId
+    })
+    TrackPlayer.reset();
+  }
+
   _addToCollection() {
     let uid = firebase.auth().currentUser.uid
     firebase.database().ref('users/' + uid + '/collection/'+ this.props.songId).once('value').then((snapshot)=>{
@@ -84,7 +97,7 @@ export default class Card extends Component {
             <TouchableOpacity onPress={() => this._addToCollection()}>
               <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=> this._toExplore()}>
               <Image source={require('../img/musicNoteBtn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
           </View>

@@ -48,9 +48,9 @@ export default class Explore extends Component {
     ]
     this.state = {
         tags: [
-            { "image": "Gateway", "tag": "#john", "follow": true },
-            { "image": "Monster", "tag": "#jim", "follow": false },
-            { "image": "Slam", "tag": "#will", "follow": true }
+            { "image": "Gateway", "tag": "john", "follow": true },
+            { "image": "Monster", "tag": "jim", "follow": false },
+            { "image": "Slam", "tag": "will", "follow": true }
         ],
         currentSong: songs[0].name,
         songs: songs
