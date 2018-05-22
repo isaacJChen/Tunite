@@ -4,6 +4,7 @@ import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, Touchab
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
 //import Sound from 'react-native-sound';
+import * as firebase from "firebase";
 
 const SECTIONS = [
     {
@@ -32,11 +33,30 @@ const SECTIONS = [
 
 AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/MusicPlayer'));
 
+
 class Options extends Component {
     render() {
         return (
             <View>
-                <TouchableNativeFeedback >
+                <TouchableNativeFeedback onPress={()=>{
+                  let uid = firebase.auth().currentUser.uid
+                  firebase.database().ref('users/' + uid + '/collection/'+ this.props.songId).once('value').then((snapshot)=>{
+                    let alreadyAdded = snapshot.val()
+                    if (!alreadyAdded) {
+                      firebase.database().ref('uploads/'+this.props.songId+'/collectionCount').once('value').then((snapshot)=>{
+                        let count = snapshot.val()
+                        let updates = {};
+                        updates['uploads/'+this.props.songId+'/collectionCount'] = count+1;
+                        firebase.database().ref().update(updates);
+                      })
+                    }
+                  })
+
+                  let updates = {};
+                  updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
+                  firebase.database().ref().update(updates)
+                  Alert.alert("Added to collection!")
+                }}>
                     <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                         <Image
                             source={require('../img/save-btn.png')}
@@ -144,7 +164,7 @@ export default class SongDetail extends Component {
             </View>
         );
     }
-    
+
     callback() {
 
     }
@@ -171,7 +191,7 @@ export default class SongDetail extends Component {
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
                 /> */}
-                <Options name="Save to Collection" destination='Explore' navigation={this.props.navigation} />
+                <Options songId={this.props.navigation.state.params.songId} name="Save to Collection" destination='Explore' navigation={this.props.navigation} />
                 <Label label="Tags:" />
                 <FlatList
                     data={this.state.tags}

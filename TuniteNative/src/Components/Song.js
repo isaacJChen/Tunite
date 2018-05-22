@@ -35,6 +35,12 @@ export default class Song extends Component {
 
         <TouchableOpacity style={{backgroundColor: 'white', marginRight: 25, alignItems: 'center', justifyContent: 'center'}} onPress={()=>{
           firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/collection/' + this.props.itemKey).remove()
+          firebase.database().ref('uploads/'+this.props.itemKey+'/collectionCount').once('value').then((snapshot)=>{
+            let count = snapshot.val()
+            let updates = {};
+            updates['uploads/'+this.props.itemKey+'/collectionCount'] = count-1;
+            firebase.database().ref().update(updates);
+          })
         }}>
           <Image source={require('../img/deleteIcon.png')}/>
         </TouchableOpacity>
