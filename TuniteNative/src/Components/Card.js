@@ -23,13 +23,26 @@ export default class Card extends Component {
       Name: this.props.songName,
       iconMaker: this.props.iconMaker,
       songUrl: this.props.mp3,
-      songCover: this.props.cover
+      songCover: this.props.cover,
+      songId: this.props.songId
     })
     TrackPlayer.reset();
   }
 
   _addToCollection() {
     let uid = firebase.auth().currentUser.uid
+    firebase.database().ref('users/' + uid + '/collection/'+ this.props.songId).once('value').then((snapshot)=>{
+      let alreadyAdded = snapshot.val()
+      if (!alreadyAdded) {
+        firebase.database().ref('uploads/'+this.props.songId+'/collectionCount').once('value').then((snapshot)=>{
+          let count = snapshot.val()
+          let updates = {};
+          updates['uploads/'+this.props.songId+'/collectionCount'] = count+1;
+          firebase.database().ref().update(updates);
+        })
+      }
+    })
+
     let updates = {};
     updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
     firebase.database().ref().update(updates)
