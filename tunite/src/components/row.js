@@ -18,7 +18,7 @@ export default class Row extends Component{
   }
 
   download() {
-    this.state.storageRef.child('test.mp3').getDownloadURL().then( (url) => {
+    this.state.storageRef.child('-LCzfZ8sNDYVAig6irQD').getDownloadURL().then( (url) => {
       // `url` is the download URL for 'images/stars.jpg'
       console.log("url: " + url);
       // This can be downloaded directly:
@@ -99,7 +99,7 @@ export default class Row extends Component{
           <button ref="playbtn" onClick={(evt)=> this.play()} className="btn mr-4 playbtn">{this.state.playing ? "❚❚" : "►"}</button>
           <audio ref="song">
             <source
-              src="http://madperfect.com/audio/explosion.mp3"
+              src="https://firebasestorage.googleapis.com/v0/b/tunite-3a985.appspot.com/o/-LC__2gqneMA3hWeA4Ui?alt=media&token=f34cf9b5-4bca-4d92-852b-4f01d711981a"
               type="audio/mp3"
             />
             audio element is not supported in your browser
@@ -107,10 +107,10 @@ export default class Row extends Component{
           <img className="circular-image mr-4" width="50" height="50" src="https://images.pexels.com/photos/669005/pexels-photo-669005.jpeg?auto=compress&cs=tinysrgb&h=350" alt="head"/>
           <div className="credit">
             <div>
-              Song Name
+              {this.props.songName}
             </div>
             <div>
-              <font size="2">creator name</font>
+              <font size="2">{this.props.creator}</font>
             </div>
           </div>
         </div>

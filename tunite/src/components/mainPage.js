@@ -21,8 +21,12 @@ export default class MainPage extends Component {
       playing: false,
       pos: 0,
       pos2: 0,
-      link: ""
+      link: "",
+      collection: [],
+      user: {},
     };
+
+    this.rows = []
   }
 
   loadSong(e) {
@@ -79,7 +83,25 @@ export default class MainPage extends Component {
     this.refs.output.style.display = "block"
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user)=> {
+      if (user) {
+        firebase.database().ref('users/'+user.uid+'/collection').once('value').then((snapshot)=>{
+          let collection = snapshot.val()
+          this.rows = []
+          firebase.database().ref('uploads/').once('value').then((snapshot)=>{
+            let songDatas = snapshot.val()
+
+            for (let songKey in collection) {
+              this.rows.push(<Row key={songKey} songName={songDatas[songKey].songName}/>)
+            }
+            this.setState({collection: this.rows, user:user})
+          })
+        })
+      } else {
+      }
+    });
+  }
 
   signout(){
     firebase.auth().signOut().then(() => {
@@ -122,17 +144,31 @@ export default class MainPage extends Component {
       tags: {
       },
       timeStamp: now,
-      image: imageKey
+      image: imageKey,
+      collectionCount: 0,
+      mostPopularCount: 0,
+      mostPopularVersion: newPostKey,
+      promoted: true,
+      root: newPostKey,
     };
 
     postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
 
     let updates = {};
     updates['/uploads/' + newPostKey] = postData;
-    firebase.database().ref().update(updates);
+    firebase.database().ref().update(updates)
+    this.hide()
+    this.refs.title.value = ""
+    this.refs.tag.value = ""
+
   }
 
   render() {
+    if (!this.state.user.uid) {
+      return(
+        <h4>Loading...</h4>
+      )
+    }
     return (
       <div>
         <div ref="overlay" className="overlay">
@@ -193,9 +229,7 @@ export default class MainPage extends Component {
               Upload original ⇧
             </button>
           </div>
-          <Row/>
-          <Row/>
-          <Row/>
+          {this.state.collection}
           <div>{this.state.link}</div>
         </div>
       </div>
