@@ -11,13 +11,48 @@ export default class Card extends Component {
     this.state = {
       uri: '../img/custom-album-cover.jpg',
       playing: false,
-      test: "test"
+      test: "test",
+      promoted: false,
+      original: false,
+      favorite: false,
     }
   }
 
+  componentWillMount() {
+    firebase.database().ref('uploads/' + this.props.songId + '/promoted').once('value').then((snapshot) => {
+      let val = snapshot.val()
+      // let bool = ""+val
+      // Alert.alert(bool)
+      if (val) {
+        this.setState({
+          promoted: true,
+        })
+      }
+    })
+    firebase.database().ref('uploads/' + this.props.songId + '/root').once('value').then((snapshot) => {
+      let val = snapshot.val()
+      if (val == this.props.songId) {
+        this.setState({
+          original: true,
+        })
+      }
+    })
+    firebase.database().ref('uploads/' + this.props.songId + '/root').once('value').then((snapshot) => {
+      let val = snapshot.val()
+      firebase.database().ref('uploads/' + val + '/mostPopularVersion').once('value').then((snapshot) => {
+        let val2 = snapshot.val()
+        if(val2 == this.props.songId) {
+          this.setState({
+            favorite: true,
+          })
+        }
+      })
+      
+    })
+  }
 
   _press() {
-    this.refs.player.setState({playing:false})
+    this.refs.player.setState({ playing: false })
     this.props.callback("");
     this.props.navigation.navigate('SongDetail', {
       Name: this.props.songName,
@@ -28,10 +63,11 @@ export default class Card extends Component {
     TrackPlayer.reset();
   }
 
+
   _addToCollection() {
     let uid = firebase.auth().currentUser.uid
     let updates = {};
-    updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
+    updates['/users/' + uid + '/collection/' + this.props.songId] = this.props.songId;
     firebase.database().ref().update(updates)
     Alert.alert("Added to collection!")
   }
@@ -42,12 +78,12 @@ export default class Card extends Component {
     let uri = '../img/custom-album-cover.jpg'
     let track = {
       id: this.props.id,
-      url: {uri: this.props.mp3}, // Load media from the app bundle
+      url: { uri: this.props.mp3 }, // Load media from the app bundle
 
       artwork: require('../img/cover_art.png')
     };
     return (
-      <TouchableNativeFeedback onPress={() => this._press()} style={{display: 'none'}}>
+      <TouchableNativeFeedback onPress={() => this._press()} style={{ display: 'none' }}>
         <View style={{
           height: 310,
           flexDirection: 'column',
@@ -61,7 +97,7 @@ export default class Card extends Component {
             width: '100%',
             height: '100%',
           }}>
-            <MusicPlayer callback={this.props.callback} id={this.props.id} ref="player" image={this.props.cover} track={track} fullSong={false}/>
+            <MusicPlayer callback={this.props.callback} id={this.props.id} ref="player" image={this.props.cover} track={track} fullSong={false} />
             {/* <Image   source={{uri: 'https://facebook.github.io/react/logo-og.png'}} style={{flex: 1, height:undefined, width:undefined}}/> */}
             {/* the other image tag uses an online url which is what we will use in production */}
             {/* <Image source={{uri: this.props.cover}} style={{flex: 1, height:undefined, width:undefined}}/> */}
@@ -77,6 +113,9 @@ export default class Card extends Component {
           </View>
           <View style={{ backgroundColor: 'rgba(52, 3, 3, 0.7)' }}>
             <Text style={{ color: 'white' }}>
+              <Image source={this.state.promoted ? require('../img/star.png') : null} style={{ height: 50, width: 50, }} />
+              <Image source={this.state.favorite ? require('../img/heart.png') : null} style={{ height: 50, width: 50, }} />
+              <Image source={this.state.original ? require('../img/stack.png') : null} style={{ height: 50, width: 50, }} />
               {this.props.tags}
             </Text>
           </View>
@@ -88,18 +127,18 @@ export default class Card extends Component {
           <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{margin: 5}}/>
         </TouchableOpacity> */}
 
-        <View style={{backgroundColor: '#fff', paddingLeft:10, flexDirection: 'row'}}>
-          <View>
-            <Image source={{uri: "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"}} style={{height:50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5}}/>
-          </View>
-          <View style={{marginLeft: 10, justifyContent: 'center'}}>
-            <Text style={{fontWeight: 'bold'}}>
-              {this.props.songName}
-            </Text>
-            <Text style={{}}>
-              {this.props.creator}
-            </Text>
-          </View>
+          <View style={{ backgroundColor: '#fff', paddingLeft: 10, flexDirection: 'row' }}>
+            <View>
+              <Image source={{ uri: "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" }} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
+            </View>
+            <View style={{ marginLeft: 10, justifyContent: 'center' }}>
+              <Text style={{ fontWeight: 'bold' }}>
+                {this.props.songName}
+              </Text>
+              <Text style={{}}>
+                {this.props.creator}
+              </Text>
+            </View>
 
           </View>
         </View>
