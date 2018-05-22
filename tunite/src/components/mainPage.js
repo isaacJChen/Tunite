@@ -93,7 +93,8 @@ export default class MainPage extends Component {
             let songDatas = snapshot.val()
 
             for (let songKey in collection) {
-              this.rows.push(<Row key={songKey} songName={songDatas[songKey].songName}/>)
+              let tags = songDatas[songKey].tags
+              this.rows.push(<Row key={songKey} songKey={songKey} imageKey={songDatas[songKey].image} songName={songDatas[songKey].songName} tags={tags}/>)
             }
             this.setState({collection: this.rows, user:user})
           })

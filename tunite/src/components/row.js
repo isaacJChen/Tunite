@@ -14,6 +14,8 @@ export default class Row extends Component{
     this.state = {
       playing: false,
       storageRef: firebase.storage().ref(),
+      imageUrl: undefined,
+      songUrl: undefined
     }
   }
 
@@ -29,6 +31,21 @@ export default class Row extends Component{
     }).catch(function(error) {
       // Handle any errors
       console.log("error: " + error);
+    });
+  }
+
+  componentDidMount(){
+    firebase.storage().ref().child(this.props.imageKey).getDownloadURL().then( (imgurl) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      this.setState({imageUrl: imgurl})
+      firebase.storage().ref().child(this.props.songKey).getDownloadURL().then((songUrl)=>{
+        this.setState({songUrl: songUrl})
+      }).catch(function(error) {
+        alert(error.toString())
+      })
+    }).catch(function(error) {
+      // Handle any errors
+      alert(error.toString())
     });
   }
 
@@ -55,7 +72,20 @@ export default class Row extends Component{
     this.refs.output.style.display = "block"
   }
 
+  tagsToString(){
+    let tagsString = ""
+    for (let key in this.props.tags){
+      tagsString += (this.props.tags[key]+" ")
+    }
+    return tagsString
+  }
+
   render(){
+    if (!this.state.songUrl) {
+      return(
+        <div>loading song...</div>
+      )
+    }
     return(
       <div className="d-flex justify-content-between mb-2">
         <div ref="overlay" className="overlay">
@@ -99,19 +129,17 @@ export default class Row extends Component{
           <button ref="playbtn" onClick={(evt)=> this.play()} className="btn mr-4 playbtn">{this.state.playing ? "❚❚" : "►"}</button>
           <audio ref="song">
             <source
-              src="https://firebasestorage.googleapis.com/v0/b/tunite-3a985.appspot.com/o/-LC__2gqneMA3hWeA4Ui?alt=media&token=f34cf9b5-4bca-4d92-852b-4f01d711981a"
+              src={this.state.songUrl}
               type="audio/mp3"
             />
             audio element is not supported in your browser
           </audio>
-          <img className="circular-image mr-4" width="50" height="50" src="https://images.pexels.com/photos/669005/pexels-photo-669005.jpeg?auto=compress&cs=tinysrgb&h=350" alt="head"/>
+          <img className="circular-image mr-4" width="50" height="50" src={this.state.imageUrl} alt="head"/>
           <div className="credit">
             <div>
               {this.props.songName}
             </div>
-            <div>
-              <font size="2">{this.props.creator}</font>
-            </div>
+            <font className="text-left" size="2">{this.tagsToString()}</font>
           </div>
         </div>
         {/* <form action="">
