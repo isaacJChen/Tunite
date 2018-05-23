@@ -41,13 +41,13 @@ export default class Card extends Component {
       let val = snapshot.val()
       firebase.database().ref('uploads/' + val + '/mostPopularVersion').once('value').then((snapshot) => {
         let val2 = snapshot.val()
-        if(val2 == this.props.songId) {
+        if (val2 == this.props.songId) {
           this.setState({
             favorite: true,
           })
         }
       })
-      
+
     })
   }
 
@@ -64,8 +64,8 @@ export default class Card extends Component {
     TrackPlayer.reset();
   }
 
-  _toExplore(){
-    this.refs.player.setState({playing:false})
+  _toExplore() {
+    this.refs.player.setState({ playing: false })
     this.props.callback("");
     this.props.navigation.navigate('Explore', {
       Name: this.props.songName,
@@ -80,13 +80,13 @@ export default class Card extends Component {
 
   _addToCollection() {
     let uid = firebase.auth().currentUser.uid
-    firebase.database().ref('users/' + uid + '/collection/'+ this.props.songId).once('value').then((snapshot)=>{
+    firebase.database().ref('users/' + uid + '/collection/' + this.props.songId).once('value').then((snapshot) => {
       let alreadyAdded = snapshot.val()
       if (!alreadyAdded) {
-        firebase.database().ref('uploads/'+this.props.songId+'/collectionCount').once('value').then((snapshot)=>{
+        firebase.database().ref('uploads/' + this.props.songId + '/collectionCount').once('value').then((snapshot) => {
           let count = snapshot.val()
           let updates = {};
-          updates['uploads/'+this.props.songId+'/collectionCount'] = count+1;
+          updates['uploads/' + this.props.songId + '/collectionCount'] = count + 1;
           firebase.database().ref().update(updates);
         })
       }
@@ -133,16 +133,16 @@ export default class Card extends Component {
             <TouchableOpacity onPress={() => this._addToCollection()}>
               <Image source={require('../img/save-btn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=> this._toExplore()}>
+            <TouchableOpacity onPress={() => this._toExplore()}>
               <Image source={require('../img/musicNoteBtn.png')} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </TouchableOpacity>
           </View>
-          <View style={{ backgroundColor: 'rgba(52, 3, 3, 0.7)' }}>
+          <View style={{ backgroundColor: 'rgba(52, 3, 3, 0.7)', alignItems: 'center', padding: 2, flexDirection: "row" }}>
+            <Image source={this.state.promoted ? require('../img/star.png') : null} style={{ height: 20, width: 20, }} />
+            <Image source={this.state.favorite ? require('../img/heart.png') : null} style={{ height: 20, width: 20, }} />
+            <Image source={this.state.original ? require('../img/stack.png') : null} style={{ height: 20, width: 20, }} />
             <Text style={{ color: 'white' }}>
-              <Image source={this.state.promoted ? require('../img/star.png') : null} style={{ height: 50, width: 50, }} />
-              <Image source={this.state.favorite ? require('../img/heart.png') : null} style={{ height: 50, width: 50, }} />
-              <Image source={this.state.original ? require('../img/stack.png') : null} style={{ height: 50, width: 50, }} />
-              {this.props.tags}
+              #{this.props.tags[0]} #{this.props.tags[1]} #{this.props.tags[2]}
             </Text>
           </View>
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSheet, ImageBackground, TouchableHighlight, Alert } from 'react-native';
+import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSheet, ImageBackground, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import * as firebase from "firebase";
 
 class Follow extends Component {
@@ -19,20 +19,12 @@ class Follow extends Component {
 }
 
 class Info extends Component {
+
   render() {
     return (
       <View style={{ padding: 20, marginTop: 15 }}>
         <Text style={styles.Contact}>Contact Info</Text>
-        <TouchableHighlight
-          onPress={() => {
-            this.onClick()
-          }}
-        >
-          <Image
-            source={require('../img/editIcon.svg')}
-            style={{ width: 50, height: 50, backgroundColor: 'pink' }}
-          />
-        </TouchableHighlight>
+        
         <View style={{ marginLeft: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
@@ -73,21 +65,32 @@ export default class Profile extends Component {
       following: 0,
       contact: { faceBook: "bad", twitter: "bad", soundCloud: "bad" },
       image: "",
-      bio: "",
+      bio: "44  ",
       name: "",
     }
   }
 
   componentDidMount() {
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
+  //   firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
+  //     let bio = snapshot.val()
+  //     this.setState({ bio: bio })
+  //   })
+    
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) =>{
       let bio = snapshot.val()
       this.setState({ bio: bio })
-    })
+      Alert.alert(bio)
+    })    
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot) => {
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
       let data = snapshot.val()
       this.setState({ contact: data })
     })
+
+    // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot) => {
+    //   let data = snapshot.val()
+    //   this.setState({ contact: data })
+    // })
 
     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot) => {
       let name = snapshot.val()
@@ -119,6 +122,15 @@ export default class Profile extends Component {
     header: null,
     tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ resizeMode: 'stretch', height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
   };
+
+  onClick() {
+    this.props.navigation.navigate("EditProfile", {
+      fb: this.state.contact["faceBook"],
+      tw: this.state.contact["twitter"],
+      sc: this.state.contact["soundCloud"],
+      bio: this.state.bio,
+    })
+  }
 
 
   render() {
@@ -178,7 +190,15 @@ export default class Profile extends Component {
         /> */}
         </View>
 
-        <Info facebook={this.state.contact.faceBook} twitter={this.state.contact.twitter} email={this.state.contact.soundCloud} bio={this.state.bio} />
+        <TouchableOpacity
+          onPress={() => {this.onClick()}}
+        >
+          <Image
+            source={require('../img/editIcon.svg')}
+            style={{ width: 50, height: 50, backgroundColor: 'pink' }}
+          />
+        </TouchableOpacity>
+        <Info facebook={this.state.contact.faceBook} twitter={this.state.contact.twitter} email={this.state.contact.soundCloud} bio={this.state.contact.bio} />
       </ScrollView>
     );
   }
@@ -219,7 +239,7 @@ const styles = StyleSheet.create({
   ContactComponent: {
     fontSize: 15,
     padding: 5,
-    marginLeft: 5
+    marginLeft: 5,
   },
   profileOptions: {
     flexDirection: 'row',

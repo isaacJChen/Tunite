@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList, Alert } from 'react-native';
+import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList, Alert, TouchableOpacity } from 'react-native';
 // import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
@@ -38,24 +38,24 @@ class Options extends Component {
     render() {
         return (
             <View>
-                <TouchableNativeFeedback onPress={()=>{
-                  let uid = firebase.auth().currentUser.uid
-                  firebase.database().ref('users/' + uid + '/collection/'+ this.props.songId).once('value').then((snapshot)=>{
-                    let alreadyAdded = snapshot.val()
-                    if (!alreadyAdded) {
-                      firebase.database().ref('uploads/'+this.props.songId+'/collectionCount').once('value').then((snapshot)=>{
-                        let count = snapshot.val()
-                        let updates = {};
-                        updates['uploads/'+this.props.songId+'/collectionCount'] = count+1;
-                        firebase.database().ref().update(updates);
-                      })
-                    }
-                  })
+                <TouchableNativeFeedback onPress={() => {
+                    let uid = firebase.auth().currentUser.uid
+                    firebase.database().ref('users/' + uid + '/collection/' + this.props.songId).once('value').then((snapshot) => {
+                        let alreadyAdded = snapshot.val()
+                        if (!alreadyAdded) {
+                            firebase.database().ref('uploads/' + this.props.songId + '/collectionCount').once('value').then((snapshot) => {
+                                let count = snapshot.val()
+                                let updates = {};
+                                updates['uploads/' + this.props.songId + '/collectionCount'] = count + 1;
+                                firebase.database().ref().update(updates);
+                            })
+                        }
+                    })
 
-                  let updates = {};
-                  updates['/users/' + uid + '/collection/'+ this.props.songId] = this.props.songId;
-                  firebase.database().ref().update(updates)
-                  Alert.alert("Added to collection!")
+                    let updates = {};
+                    updates['/users/' + uid + '/collection/' + this.props.songId] = this.props.songId;
+                    firebase.database().ref().update(updates)
+                    Alert.alert("Added to collection!")
                 }}>
                     <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                         <Image
@@ -97,7 +97,7 @@ export default class SongDetail extends Component {
         super();
         this.state = {
             tags: [
-                { "image": "Gateway", "tag": "john", "follow": true , "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'},
+                { "image": "Gateway", "tag": "john", "follow": true, "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
                 { "image": "Monster", "tag": "jim", "follow": false, 'image': 'https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
                 { "image": "Slam", "tag": "will", "follow": true, 'image': 'https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
             ],
@@ -169,11 +169,51 @@ export default class SongDetail extends Component {
 
     }
 
+    goToPromoted() {
+        firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot) => {
+            let val = snapshot.val()
+            if (this.props.navigation.state.params.songId == val) {
+                Alert.alert("This is root")
+            } else {
+                let songName = ""
+                let songUrl = ""
+                let coverUrl = ""
+                firebase.database().ref('uploads/' + val + "/songName").once('value').then((snapshot) => {
+                    songName = snapshot.val()
+                    firebase.storage().ref().child(val).getDownloadURL().then((url) => {
+                        // `url` is the download URL for 'images/stars.jpg'
+                        songUrl = url
+                        firebase.database().ref('uploads/' + val + '/image').once('value').then((snapshot) => {
+                            let img = snapshot.val()
+                            firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+                                // `url` is the download URL for 'images/stars.jpg'
+                                coverUrl = url
+                                this.props.navigation.navigate("SongDetail", {
+                                    Name: songName,
+                                    iconMaker: this.props.navigation.state.params.iconMaker,
+                                    songUrl: songUrl,
+                                    songCover: coverUrl,
+                                    songId: val
+                                })
+                            }).catch(function (error) {
+                                // Handle any errors
+                                Alert.alert(error.toString())
+                            });
+                        })
+                    }).catch(function (error) {
+                        // Handle any errors
+                        Alert.alert(error.toString())
+                    });
+                })
+            }
+        })
+    }
+
     render() {
         const deviceWidth = Dimensions.get('window').width;
         let track = {
             id: '1',
-            url: {uri: this.props.navigation.state.params.songUrl}, // Load media from the app bundle
+            url: { uri: this.props.navigation.state.params.songUrl }, // Load media from the app bundle
 
             artwork: require('../img/cover_art.png')
         };
@@ -184,7 +224,7 @@ export default class SongDetail extends Component {
 
             <ScrollView >
                 <View style={{ height: deviceWidth * 0.75 }}>
-                    <MusicPlayer callback={this.callback} id="0" image={this.props.navigation.state.params.songCover} track={track} fullSong={true}/>
+                    <MusicPlayer callback={this.callback} id="0" image={this.props.navigation.state.params.songCover} track={track} fullSong={true} />
                 </View>
 
                 {/* <Image
@@ -196,18 +236,20 @@ export default class SongDetail extends Component {
                 <FlatList
                     data={this.state.tags}
                     renderItem={({ item }) => (
-                        <Tag tag={item.tag} navigation={this.props.navigation} image={item.image}/>
+                        <Tag tag={item.tag} navigation={this.props.navigation} image={item.image} />
                     )}
                     keyExtractor={item => item.tag}
                     horizontal
                 />
-                <Label label="Owner Promoted Version" />
+                <TouchableOpacity onPress={() => this.goToPromoted()}>
+                    <Label label="Owner Promoted Version" />
+                </TouchableOpacity>
                 <Label label="Credits:" follow="follow" />
                 <FlatList
                     data={this.state.credits}
                     renderItem={({ item, index }) => (
                         // <Tag tag={item.tag} role={item.role} navigation={this.props.navigation} />
-                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} image={item.image}/>
+                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} image={item.image} />
                     )}
                     keyExtractor={(item, index) => item.tag}
                     horizontal
