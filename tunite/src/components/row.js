@@ -6,39 +6,47 @@ import 'firebase/storage'
 
 import Wavesurfer from 'react-wavesurfer';
 
-
-
-export default class Row extends Component{
-  constructor(props){
+export default class Row extends Component {
+  constructor(props) {
     super(props)
     this.state = {
       playing: false,
       storageRef: firebase.storage().ref(),
       imageUrl: undefined,
-      songUrl: undefined
+      songUrl: undefined,
+      songFile: undefined,
     }
   }
 
-  download() {
-    this.state.storageRef.child('-LCzfZ8sNDYVAig6irQD').getDownloadURL().then( (url) => {
-      // `url` is the download URL for 'images/stars.jpg'
-      console.log("url: " + url);
-      // This can be downloaded directly:
+  download(e) {
+    e.preventDefault()
 
-      // Or inserted into an <img> element:
-      // var img = document.getElementById('myimg');
-      // img.src = url;
+    this.state.storageRef.child(this.props.songKey).getDownloadURL().then((url) => {
+      // This can be downloaded directly:
+      console.log(url);
+
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event)=> {
+        event.preventDefault()
+        var blob = xhr.response;
+        let urlBlob = window.URL.createObjectURL(blob)
+
+      };
+      xhr.open('GET', url);
+      xhr.send();
     }).catch(function(error) {
       // Handle any errors
       console.log("error: " + error);
     });
   }
 
-  componentDidMount(){
-    firebase.storage().ref().child(this.props.imageKey).getDownloadURL().then( (imgurl) => {
+  componentDidMount() {
+
+    firebase.storage().ref().child(this.props.imageKey).getDownloadURL().then((imgurl) => {
       // `url` is the download URL for 'images/stars.jpg'
       this.setState({imageUrl: imgurl})
-      firebase.storage().ref().child(this.props.songKey).getDownloadURL().then((songUrl)=>{
+      firebase.storage().ref().child(this.props.songKey).getDownloadURL().then((songUrl) => {
         this.setState({songUrl: songUrl})
       }).catch(function(error) {
         alert(error.toString())
@@ -49,66 +57,121 @@ export default class Row extends Component{
     });
   }
 
-  play(){
+  play() {
     this.refs.playbtn.blur()
     if (this.state.playing) {
       this.refs.song.pause()
     } else {
       this.refs.song.play()
     }
-    this.setState({playing: !this.state.playing})
+    this.setState({
+      playing: !this.state.playing
+    })
   }
 
-  upload(){
+  upload() {
     this.refs.overlay.style.display = "block"
   }
 
-  hide(){
+  hide() {
     this.refs.overlay.style.display = "none"
   }
 
-  showImage(evt){
+  showImage(evt) {
     this.refs.output.src = URL.createObjectURL(evt.target.files[0])
     this.refs.output.style.display = "block"
   }
 
-  tagsToString(){
+  tagsToString() {
     let tagsString = ""
-    for (let key in this.props.tags){
-      tagsString += (this.props.tags[key]+" ")
+    for (let key in this.props.tags) {
+      tagsString += (this.props.tags[key] + " ")
     }
     return tagsString
   }
 
-  render(){
+
+  submitChild(evt){
+    evt.preventDefault()
+
+
+      // if (this.state.file) {
+    let now = Date.now()
+
+    let newPostKey = firebase.database().ref().child('uploads').push().key;
+
+    let newRef = this.state.storageRef.child(newPostKey);
+    newRef.put(this.refs.fileinput.files[0]).then(function(snapshot) {});
+
+    let userData = {}
+    userData['/users/'+firebase.auth().currentUser.uid+'/uploads/' + newPostKey] = newPostKey
+    firebase.database().ref().update(userData);
+
+    let tagData = {}
+    tagData['/tags/' + this.refs.tag.value +"/songs/"+ newPostKey] ={
+      collectionCount: 0,
+      timeStamp: now
+    }
+    firebase.database().ref().update(tagData);
+
+
+    let imageKey = firebase.database().ref().child('uploads').push().key;
+    firebase.database().ref().child('uploads').child(imageKey).remove()
+    let newImageRef = this.state.storageRef.child(imageKey)
+    newImageRef.put(this.refs.imageinput.files[0]).then(function(snapshot) {})
+
+    let postData = {
+      owner: firebase.auth().currentUser.uid,
+      songName: this.refs.title.value,
+      tags: {
+      },
+      timeStamp: now,
+      image: imageKey,
+      collectionCount: 0,
+      promoted: true,
+      root: this.props.songKey,
+    };
+
+    postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
+
+    let updates = {};
+    updates['/uploads/' + newPostKey] = postData;
+    firebase.database().ref().update(updates)
+    this.hide()
+    this.refs.title.value = ""
+    this.refs.tag.value = ""
+
+  }
+
+  render() {
     if (!this.state.songUrl) {
-      return(
+      return (
         <div>loading song...</div>
       )
     }
-    return(
+    return (
       <div className="d-flex justify-content-between mb-2">
         <div ref="overlay" className="overlay">
           <div className="d-flex justify-content-end">
             <label className="text-white mt-3 mr-5" onClick={() => this.hide()}><h3>x</h3></label>
           </div>
           <div className="container mt-5">
-            <form action="submit">
+            <form action="submit" onSubmit={(evt)=>this.submitChild(evt)}>
               <div className="form-group">
                 <label className="text-white" htmlFor="title">Title</label>
-                <input className="form-control" id="title" type="text" required/>
+                <input ref="title" className="form-control" id="title" type="text" required/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="genre">Genre</label>
-                <input className="form-control" id="genre" type="text"/>
+                <input ref="tag" className="form-control" id="genre" type="text" required/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="file">Song File</label>
-                <input className="form-control" id="file" type="file" accept=".mp3" required/>
+                <input ref="fileinput" className="form-control" id="file" type="file" accept=".mp3" required/>
               </div>
               <div className="form-group">
                 <label className="text-white" htmlFor="file">Cover Photo</label>
-                <input className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
+                <input ref="imageinput"className="form-control" id="file" type="file" accept="image/*" onChange={(evt) => this.showImage(evt)} required/>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="form-group">
@@ -120,18 +183,18 @@ export default class Row extends Component{
                   </div>
                   <img className="selectedImage" height="200px" ref="output" alt="your image"/>
                 </div>
-
               </div>
             </form>
           </div>
         </div>
+
+
         <div className="d-flex">
-          <button ref="playbtn" onClick={(evt)=> this.play()} className="btn mr-4 playbtn">{this.state.playing ? "❚❚" : "►"}</button>
+          <button ref="playbtn" onClick={(evt) => this.play()} className="btn mr-4 playbtn">{this.state.playing
+              ? "❚❚"
+              : "►"}</button>
           <audio ref="song">
-            <source
-              src={this.state.songUrl}
-              type="audio/mp3"
-            />
+            <source src={this.state.songUrl} type="audio/mp3"/>
             audio element is not supported in your browser
           </audio>
           <img className="circular-image mr-4" width="50" height="50" src={this.state.imageUrl} alt="head"/>
@@ -158,7 +221,7 @@ export default class Row extends Component{
             <button className="btn btn-danger" onClick={() => this.upload()}>New Version ⇧</button>
           </div>
           <div className="ml-4">
-            <button className="btn btn-danger" onClick={() => this.download()}>Download ⇩</button>
+            <button className="btn btn-danger" onClick={(e) => this.download(e)}>Download ⇩</button>
           </div>
           <div className="ml-4">
             <button className="btn btn-danger">delete</button>
