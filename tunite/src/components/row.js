@@ -128,7 +128,7 @@ export default class Row extends Component {
       timeStamp: now,
       image: imageKey,
       collectionCount: 0,
-      promoted: true,
+      promoted: false,
       root: this.props.songKey,
     };
 
