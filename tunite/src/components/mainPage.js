@@ -211,7 +211,7 @@ export default class MainPage extends Component {
         <div className="jumbotron bg-danger d-flex justify-content-between">
           <div className="display-4">
             <strong className="text-white">
-              Tunite
+              Tunite - version
             </strong>
           </div>
           <button className="btn btn-secondary h-50" onClick={() => this.signout()}>
