@@ -98,7 +98,7 @@ export default class Feed extends Component {
               songName.push(s)
               let t = uploads[songsArray[i].key].tags
               tags.push(Object.keys(t))
-              // Alert.alert(Object.keys(t).toString())
+              Alert.alert(Object.keys(t).toString())
               let m = songsArray[i].key
               let img = uploads[songsArray[i].key].image
 

@@ -11,7 +11,8 @@ export default class EditProfile extends Component {
             fb: "",
             tw: "",
             sc: "",
-            bio: ""
+            bio: "",
+            avatarSource:""
         }
     }
 
