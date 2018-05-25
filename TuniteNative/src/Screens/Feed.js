@@ -98,7 +98,7 @@ export default class Feed extends Component {
               songName.push(s)
               let t = uploads[songsArray[i].key].tags
               tags.push(Object.keys(t))
-              Alert.alert(Object.keys(t).toString())
+              // Alert.alert(Object.keys(t).toString())
               let m = songsArray[i].key
               let img = uploads[songsArray[i].key].image
 
@@ -164,69 +164,68 @@ export default class Feed extends Component {
   search(searchedTag) {
     firebase.database().ref('tags/' + searchedTag + '/songs').once('value').then((snapshot) => {
       songsFromFB = snapshot.val()
-      songsArray = []
-      let keys = Object.keys(songsFromFB)
-      for (let key in keys) {
-        let obj = {}
-        obj["key"] = keys[key]
-        obj["values"] = songsFromFB[keys[key]]
-        songsArray.push(obj)
-      }
-      songsArray.sort(this.compare)
-
-      firebase.database().ref('uploads').once('value').then((snapshot) => {
-        let uploads = snapshot.val()
-        let songName = []
-        let urls = []
-        let tags = []
-        for (let i = 0; i < 20; i++) {
-          if (i === songsArray.length) {
-            break
-          }
-          let s = uploads[songsArray[i].key].songName
-          songName.push(s)
-          let t = uploads[songsArray[i].key].tags
-          tags.push(Object.keys(t))
-          // Alert.alert(Object.keys(t).toString())
-          let m = songsArray[i].key
-          let img = uploads[songsArray[i].key].image
-
-          this.songIds.push(songsArray[i].key)
-
-          let creatorid = uploads[songsArray[i].key].owner
-          firebase.database().ref('users/' + creatorid).once('value').then((snapshot) => {
-            let profile = snapshot.val()
-            this.creatorNames[i] = profile.userName
-            this.setState({ creatorNames: this.creatorNames })
-          })
-
-
-          //get song file
-          firebase.storage().ref().child(m).getDownloadURL().then((url) => {
-            // `url` is the download URL for 'images/stars.jpg'
-            this.songUrls[i] = url
-            this.setState({ songUrls: this.songUrls })
-          }).catch(function (error) {
-            // Handle any errors
-            Alert.alert(error.toString())
-          });
-
-          //get image file
-          firebase.storage().ref().child(img).getDownloadURL().then((url) => {
-            // `url` is the download URL for 'images/stars.jpg'
-            this.imageUrls[i] = url
-            this.setState({ imageUrls: this.imageUrls })
-          }).catch(function (error) {
-            // Handle any errors
-            Alert.alert(error.toString())
-          });
-
+      if (!songsFromFB) {
+        Alert.alert("No search result found!")
+      } else {
+        songsArray = []
+        let keys = Object.keys(songsFromFB)
+        for (let key in keys) {
+          let obj = {}
+          obj["key"] = keys[key]
+          obj["values"] = songsFromFB[keys[key]]
+          songsArray.push(obj)
         }
-        // this.setState({songName: songName, songUrls: this.songUrls, imageUrls: this.imageUrls})
-        this.setState({ songName: songName })
-        this.setState({ tags: tags })
-        this.setState({ songIds: this.songIds })
-      })
+        songsArray.sort(this.compare)
+
+        firebase.database().ref('uploads').once('value').then((snapshot) => {
+          let uploads = snapshot.val()
+          let songName = []
+          let creatorNames = []
+          let urls = []
+          for (let i = 0; i < 20; i++) {
+            if (i === songsArray.length) {
+              break
+            }
+            let s = uploads[songsArray[i].key].songName
+            songName[i] = s
+            let m = songsArray[i].key
+            let img = uploads[songsArray[i].key].image
+            this.songIds[i] = songsArray[i].key
+
+            let creatorid = uploads[songsArray[i].key].owner
+            firebase.database().ref('users/' + creatorid).once('value').then((snapshot) => {
+              let profile = snapshot.val()
+              this.creatorNames[i] = profile.userName
+              this.setState({ creatorNames: this.creatorNames })
+            })
+
+            //get song file
+            firebase.storage().ref().child(m).getDownloadURL().then((url) => {
+              // `url` is the download URL for 'images/stars.jpg'
+              this.songUrls[i] = url
+              this.setState({ songUrls: this.songUrls })
+            }).catch(function (error) {
+              // Handle any errors
+              Alert.alert(error.toString())
+            });
+
+            //get image file
+            firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+              // `url` is the download URL for 'images/stars.jpg'
+              this.imageUrls[i] = url
+              this.setState({ imageUrls: this.imageUrls })
+            }).catch(function (error) {
+              // Handle any errors
+              Alert.alert(error.toString())
+            });
+
+          }
+          // this.setState({songName: songName, songUrls: this.songUrls, imageUrls: this.imageUrls})
+          this.setState({ songName: songName })
+          this.setState({ songIds: this.songIds })
+        })
+      }
+
     })
 
   }
