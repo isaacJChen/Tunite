@@ -146,7 +146,7 @@ export default class Explore extends Component {
           //Alert.alert(this.songRefs[this.songRefs.length-index-1].refs.player.props.id)
           for (idx in this.songRefs){
             this.songRefs[this.songRefs.length-index-1].refs.player.setState({playing: false})
-            TrackPlayer.stop()
+            TrackPlayer.reset()
           }
           this.setState(
             {currentSong: this.state.songdata[index].name, currentIdx: index}

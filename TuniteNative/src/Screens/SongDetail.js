@@ -144,7 +144,7 @@ export default class SongDetail extends Component {
                                 credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
                                 // if (credits[i]["role"] == owner) {
                                 //     let a = arr.splice(i, 1);   // removes the item
-                                //     credits.unshift(a[0]); 
+                                //     credits.unshift(a[0]);
                                 // }
                                 this.setState({
                                     credits: credits
@@ -163,7 +163,7 @@ export default class SongDetail extends Component {
                         break;
                     }
                 }
-                
+
                 this.setState({
                     credits: updateCredits
                 })
@@ -304,7 +304,7 @@ export default class SongDetail extends Component {
                     horizontal
                 />
                 <TouchableOpacity onPress={() => this.goToPromoted()}>
-                    <Label label="Owner Promoted Version" />
+                    <Label label="Original Version" />
                 </TouchableOpacity>
                 <Label label="Credits:" follow="follow" />
                 <FlatList
