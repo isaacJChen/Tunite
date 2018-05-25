@@ -35,6 +35,12 @@ AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/Mus
 
 
 class Options extends Component {
+  constructor(props){
+    super(props)
+    this.state= {
+      display: { alignItems: 'center', height: 50, flexDirection: 'row', display: "none"}
+    }
+  }
     _toExplore() {
       firebase.database().ref("uploads").once('value').then((snapshot)=>{
         let uploads = snapshot.val()
@@ -46,6 +52,43 @@ class Options extends Component {
             rootId: rootId,
             uploads: uploads
           })
+        })
+      })
+    }
+
+    componentDidMount(){
+      firebase.database().ref("uploads/"+this.props.songId+"/owner").once("value").then((snapshot)=>{
+        let owner = snapshot.val()
+        let display = { alignItems: 'center', height: 50, flexDirection: 'row'}
+        if (firebase.auth().currentUser.uid == owner) {
+          this.setState({display: display})
+        } else {
+          display.display = "none"
+          this.setState({display: display})
+        }
+      })
+    }
+
+    setPromoted(){
+      firebase.database().ref('uploads/'+this.props.songId+"/root").once('value').then((snapshot)=>{
+        let root = snapshot.val()
+
+        firebase.database().ref("uploads/"+root+"/promotedVersion").once('value').then((snapshot)=>{
+          let promotedVersion = snapshot.val()
+
+          let promotedData = {}
+          promotedData['uploads/'+promotedVersion+"/promoted"] = false
+          firebase.database().ref().update(promotedData)
+
+
+          let rootData = {}
+          rootData['uploads/' + root +"/promotedVersion"] = this.props.songId
+          firebase.database().ref().update(rootData);
+
+          let currentData = {}
+          currentData['uploads/'+this.props.songId+"/promoted"] = true
+          firebase.database().ref().update(currentData)
+          Alert.alert("updated!")
         })
       })
     }
@@ -89,6 +132,16 @@ class Options extends Component {
                         />
                         <Text>Explore All Versions</Text>
                     </View>
+                </TouchableNativeFeedback>
+
+                <TouchableNativeFeedback onPress={()=>this.setPromoted()}>
+                  <View style={this.state.display}>
+                      <Image
+                          source={require('../img/star.png')}
+                          style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                      />
+                      <Text>Set Promoted</Text>
+                  </View>
                 </TouchableNativeFeedback>
 
             </View>
@@ -144,7 +197,7 @@ export default class SongDetail extends Component {
                                 credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
                                 // if (credits[i]["role"] == owner) {
                                 //     let a = arr.splice(i, 1);   // removes the item
-                                //     credits.unshift(a[0]); 
+                                //     credits.unshift(a[0]);
                                 // }
                                 this.setState({
                                     credits: credits
@@ -163,7 +216,7 @@ export default class SongDetail extends Component {
                         break;
                     }
                 }
-                
+
                 this.setState({
                     credits: updateCredits
                 })
@@ -231,7 +284,52 @@ export default class SongDetail extends Component {
 
     }
 
-    goToPromoted() {
+    goToPromoted(){
+      firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot)=>{
+        let r = snapshot.val()
+
+        firebase.database().ref('uploads/'+r+"/promotedVersion").once('value').then((snapshot)=> {
+          let val = snapshot.val()
+
+          if (val == this.props.navigation.state.params.songId){
+            Alert.alert("This is the promoted Version")
+          } else {
+            let songName = ""
+            let songUrl = ""
+            let coverUrl = ""
+            firebase.database().ref('uploads/' + val + "/songName").once('value').then((snapshot) => {
+                songName = snapshot.val()
+                firebase.storage().ref().child(val).getDownloadURL().then((url) => {
+                    // `url` is the download URL for 'images/stars.jpg'
+                    songUrl = url
+                    firebase.database().ref('uploads/' + val + '/image').once('value').then((snapshot) => {
+                        let img = snapshot.val()
+                        firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+                            // `url` is the download URL for 'images/stars.jpg'
+                            coverUrl = url
+                            this.props.navigation.navigate("SongDetail", {
+                                Name: songName,
+                                iconMaker: this.props.navigation.state.params.iconMaker,
+                                songUrl: songUrl,
+                                songCover: coverUrl,
+                                songId: val
+                            })
+                        }).catch(function (error) {
+                            // Handle any errors
+                            Alert.alert(error.toString())
+                        });
+                    })
+                }).catch(function (error) {
+                    // Handle any errors
+                    Alert.alert(error.toString())
+                });
+            })
+          }
+        })
+      })
+    }
+
+    goToOriginal() {
         firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot) => {
             let val = snapshot.val()
             if (this.props.navigation.state.params.songId == val) {
@@ -303,8 +401,11 @@ export default class SongDetail extends Component {
                     keyExtractor={item => item.tag}
                     horizontal
                 />
+                <TouchableOpacity onPress={() => this.goToOriginal()}>
+                    <Label label="Original Version" />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.goToPromoted()}>
-                    <Label label="Owner Promoted Version" />
+                    <Label label="Promoted Version" />
                 </TouchableOpacity>
                 <Label label="Credits:" follow="follow" />
                 <FlatList

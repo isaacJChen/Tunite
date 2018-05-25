@@ -26,7 +26,6 @@ export default class Tag extends Component {
     }
 
     onClick() {
-        Alert.alert('You tapped the button!');
         if (this.state.following) {
             firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/'+ this.props.tag).remove();
             this.setState({
