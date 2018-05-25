@@ -3,7 +3,7 @@ import { AppRegistry, View, Text, FlatList, Image, Alert } from 'react-native';
 import Song from '../Components/Song'
 import * as firebase from "firebase";
 
-let iconMaker = function() {
+let iconMaker = function () {
   return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIcon1.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Collection</Text></View>)
 }
 
@@ -34,20 +34,20 @@ export default class Collection extends Component {
   }
 
   componentDidMount() {
-    let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/collection').on('value', (snapshot) =>{
+    let ref = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/collection').on('value', (snapshot) => {
       let val = snapshot.val()
       if (!val) {
-        this.setState({list:[]})
+        this.setState({ list: [] })
       } else {
         let collection = Object.keys(snapshot.val())
 
         let list = []
         for (idx in collection) {
           let key = collection[idx]
-          firebase.database().ref('uploads/' +key).once('value').then((snapshot)=>{
+          firebase.database().ref('uploads/' + key).once('value').then((snapshot) => {
             let songProfile = snapshot.val()
 
-            firebase.storage().ref().child(songProfile.image).getDownloadURL().then( (url) => {
+            firebase.storage().ref().child(songProfile.image).getDownloadURL().then((url) => {
               // `url` is the download URL for 'images/stars.jpg'
               let item = {
                 name: songProfile.songName,
@@ -57,9 +57,9 @@ export default class Collection extends Component {
               }
 
               list.push(item)
-              this.setState({list: list})
+              this.setState({ list: list })
 
-            }).catch(function(error) {
+            }).catch(function (error) {
               // Handle any errors
               Alert.alert(error.toString())
             });
