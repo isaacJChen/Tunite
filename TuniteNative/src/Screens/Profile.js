@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSheet, ImageBackground, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import * as firebase from "firebase";
 
+let iconMaker = function () {
+  return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
+}
+
 class Follow extends Component {
   render() {
     return (
@@ -23,8 +27,17 @@ class Info extends Component {
   render() {
     return (
       <View style={{ padding: 20, marginTop: 15 }}>
+      <View style={{flexDirection: "row"}}>
         <Text style={styles.Contact}>Contact Info</Text>
-        
+        <TouchableOpacity
+          onPress={() => { this.props.onClick() }}
+        >
+          <Image
+            source={require('../img/edit.png')}
+            style={{ width: 25, height: 25 }}
+          />
+        </TouchableOpacity>
+        </View>
         <View style={{ marginLeft: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
@@ -71,15 +84,15 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-  //   firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
-  //     let bio = snapshot.val()
-  //     this.setState({ bio: bio })
-  //   })
-    
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) =>{
+    //   firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
+    //     let bio = snapshot.val()
+    //     this.setState({ bio: bio })
+    //   })
+
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) => {
       let bio = snapshot.val()
       this.setState({ bio: bio })
-    })    
+    })
 
     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
       let data = snapshot.val()
@@ -106,12 +119,23 @@ export default class Profile extends Component {
       this.setState({ following: num })
     })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
-      let img = snapshot.val()
-      if (img == undefined) {
-        img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+    // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
+    //   let img = snapshot.val()
+    //   if (img == undefined) {
+    //     img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+    //     this.setState({ image: img })
+    //   }
+    // })
+    firebase.storage().ref().child(firebase.auth().currentUser.uid).getDownloadURL().then((url) => {
+      if (!url) {
+        let img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+        this.setState({ image: img })
+      } else {
+        let img = url
         this.setState({ image: img })
       }
+    }).catch((error) => {
+      Alert.alert(error.toString())
     })
   }
 
@@ -119,7 +143,7 @@ export default class Profile extends Component {
     title: 'Profile',
     swipeEnabled: false,
     header: null,
-    tabBarIcon: () => (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ resizeMode: 'stretch', height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
+    tabBarIcon: iconMaker
   };
 
   onClick() {
@@ -128,6 +152,7 @@ export default class Profile extends Component {
       tw: this.state.contact["twitter"],
       sc: this.state.contact["soundCloud"],
       bio: this.state.bio,
+      iconMaker: iconMaker
     })
   }
 
@@ -144,6 +169,8 @@ export default class Profile extends Component {
           style={styles.backCover}
           blurRadius={1}
         />
+        
+
         <View style={styles.cover}>
           <Image
             source={{ uri: this.state.image }}
@@ -189,15 +216,8 @@ export default class Profile extends Component {
         /> */}
         </View>
 
-        <TouchableOpacity
-          onPress={() => {this.onClick()}}
-        >
-          <Image
-            source={require('../img/editIcon.svg')}
-            style={{ width: 50, height: 50, backgroundColor: 'pink' }}
-          />
-        </TouchableOpacity>
-        <Info facebook={this.state.contact.faceBook} twitter={this.state.contact.twitter} email={this.state.contact.soundCloud} bio={this.state.contact.bio} />
+
+        <Info facebook={this.state.contact.faceBook} twitter={this.state.contact.twitter} email={this.state.contact.soundCloud} bio={this.state.contact.bio} onClick={this.onClick.bind(this)} />
       </ScrollView>
     );
   }

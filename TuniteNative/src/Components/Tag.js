@@ -52,7 +52,8 @@ export default class Tag extends Component {
             <View style={styles.tag}>
                 <Text style={styles.credit}>{this.props.role}</Text>
                 <Image
-                    source={{ uri: this.props.image }}
+                    // source={{ uri: this.props.image }}
+                    source={{ uri: "http://identicon-1132.appspot.com/" + this.props.tag }}
                     style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
                 <Text style={styles.text}>#{this.props.tag}</Text>

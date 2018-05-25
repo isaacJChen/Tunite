@@ -106,7 +106,7 @@ export default class Explore extends Component {
     for (idx in this.state.songdata[this.state.currentIdx].tags) {
       let tag = this.state.songdata[this.state.currentIdx].tags[idx]
       tags.push(
-        <Tag tag={tag} image='https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+        <Tag tag={tag} image={'http://identicon-1132.appspot.com/' + tag}/>
       )
     }
     return tags
