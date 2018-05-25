@@ -231,7 +231,52 @@ export default class SongDetail extends Component {
 
     }
 
-    goToPromoted() {
+    goToPromoted(){
+      firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot)=>{
+        let r = snapshot.val()
+
+        firebase.database().ref('uploads/'+r+"/promotedVersion").once('value').then((snapshot)=> {
+          let val = snapshot.val()
+      
+          if (val == this.props.navigation.state.params.songId){
+            Alert.alert("This is the promoted Version")
+          } else {
+            let songName = ""
+            let songUrl = ""
+            let coverUrl = ""
+            firebase.database().ref('uploads/' + val + "/songName").once('value').then((snapshot) => {
+                songName = snapshot.val()
+                firebase.storage().ref().child(val).getDownloadURL().then((url) => {
+                    // `url` is the download URL for 'images/stars.jpg'
+                    songUrl = url
+                    firebase.database().ref('uploads/' + val + '/image').once('value').then((snapshot) => {
+                        let img = snapshot.val()
+                        firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+                            // `url` is the download URL for 'images/stars.jpg'
+                            coverUrl = url
+                            this.props.navigation.navigate("SongDetail", {
+                                Name: songName,
+                                iconMaker: this.props.navigation.state.params.iconMaker,
+                                songUrl: songUrl,
+                                songCover: coverUrl,
+                                songId: val
+                            })
+                        }).catch(function (error) {
+                            // Handle any errors
+                            Alert.alert(error.toString())
+                        });
+                    })
+                }).catch(function (error) {
+                    // Handle any errors
+                    Alert.alert(error.toString())
+                });
+            })
+          }
+        })
+      })
+    }
+
+    goToOriginal() {
         firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot) => {
             let val = snapshot.val()
             if (this.props.navigation.state.params.songId == val) {
@@ -303,8 +348,11 @@ export default class SongDetail extends Component {
                     keyExtractor={item => item.tag}
                     horizontal
                 />
-                <TouchableOpacity onPress={() => this.goToPromoted()}>
+                <TouchableOpacity onPress={() => this.goToOriginal()}>
                     <Label label="Original Version" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.goToPromoted()}>
+                    <Label label="Promoted Version" />
                 </TouchableOpacity>
                 <Label label="Credits:" follow="follow" />
                 <FlatList
