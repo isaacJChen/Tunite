@@ -35,6 +35,12 @@ AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/Mus
 
 
 class Options extends Component {
+  constructor(props){
+    super(props)
+    this.state= {
+      display: { alignItems: 'center', height: 50, flexDirection: 'row', display: "none"}
+    }
+  }
     _toExplore() {
       firebase.database().ref("uploads").once('value').then((snapshot)=>{
         let uploads = snapshot.val()
@@ -46,6 +52,43 @@ class Options extends Component {
             rootId: rootId,
             uploads: uploads
           })
+        })
+      })
+    }
+
+    componentDidMount(){
+      firebase.database().ref("uploads/"+this.props.songId+"/owner").once("value").then((snapshot)=>{
+        let owner = snapshot.val()
+        let display = { alignItems: 'center', height: 50, flexDirection: 'row'}
+        if (firebase.auth().currentUser.uid == owner) {
+          this.setState({display: display})
+        } else {
+          display.display = "none"
+          this.setState({display: display})
+        }
+      })
+    }
+
+    setPromoted(){
+      firebase.database().ref('uploads/'+this.props.songId+"/root").once('value').then((snapshot)=>{
+        let root = snapshot.val()
+
+        firebase.database().ref("uploads/"+root+"/promotedVersion").once('value').then((snapshot)=>{
+          let promotedVersion = snapshot.val()
+
+          let promotedData = {}
+          promotedData['uploads/'+promotedVersion+"/promoted"] = false
+          firebase.database().ref().update(promotedData)
+
+
+          let rootData = {}
+          rootData['uploads/' + root +"/promotedVersion"] = this.props.songId
+          firebase.database().ref().update(rootData);
+
+          let currentData = {}
+          currentData['uploads/'+this.props.songId+"/promoted"] = true
+          firebase.database().ref().update(currentData)
+          Alert.alert("updated!")
         })
       })
     }
@@ -89,6 +132,16 @@ class Options extends Component {
                         />
                         <Text>Explore All Versions</Text>
                     </View>
+                </TouchableNativeFeedback>
+
+                <TouchableNativeFeedback onPress={()=>this.setPromoted()}>
+                  <View style={this.state.display}>
+                      <Image
+                          source={require('../img/star.png')}
+                          style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                      />
+                      <Text>Set Promoted</Text>
+                  </View>
                 </TouchableNativeFeedback>
 
             </View>
@@ -237,7 +290,7 @@ export default class SongDetail extends Component {
 
         firebase.database().ref('uploads/'+r+"/promotedVersion").once('value').then((snapshot)=> {
           let val = snapshot.val()
-      
+
           if (val == this.props.navigation.state.params.songId){
             Alert.alert("This is the promoted Version")
           } else {
