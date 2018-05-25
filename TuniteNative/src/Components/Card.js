@@ -105,6 +105,16 @@ export default class Card extends Component {
     Alert.alert("Added to collection!")
   }
 
+  renderTags(){
+    let s = ""
+    for (idx in this.props.tags){
+      for (inneridx in this.props.tags[idx]) {
+        s+= "#"+this.props.tags[idx][inneridx]+" "
+      }
+    }
+    return s
+  }
+
   render() {
     let width = Dimensions.get("window").width
     let height = Dimensions.get("window").height
@@ -149,7 +159,8 @@ export default class Card extends Component {
             <Image source={this.state.favorite ? require('../img/heart.png') : null} style={{ height: 20, width: 20, }} />
             <Image source={this.state.original ? require('../img/stack.png') : null} style={{ height: 20, width: 20, }} />
             <Text style={{ color: 'white' }}>
-              #{this.props.tags[0]} #{this.props.tags[1]} #{this.props.tags[2]}
+              {this.renderTags()}
+              {/* #{this.props.tags[0]} #{this.props.tags[1]} #{this.props.tags[2]} */}
             </Text>
           </View>
 
