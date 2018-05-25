@@ -67,14 +67,21 @@ export default class Card extends Component {
   _toExplore() {
     this.refs.player.setState({ playing: false })
     this.props.callback("");
-    this.props.navigation.navigate('Explore', {
-      Name: this.props.songName,
-      iconMaker: this.props.iconMaker,
-      songUrl: this.props.mp3,
-      songCover: this.props.cover,
-      songId: this.props.songId
+
+    firebase.database().ref("uploads").once('value').then((snapshot)=>{
+      let uploads = snapshot.val()
+      firebase.database().ref("uploads/"+this.props.songId+"/root").once("value").then((innersnapshot)=>{
+        let rootId = innersnapshot.val()
+        this.props.navigation.navigate('Explore', {
+          Name: this.props.songName,
+          iconMaker: this.props.iconMaker,
+          rootId: rootId,
+          uploads: uploads
+        })
+
+        TrackPlayer.reset();
+      })
     })
-    TrackPlayer.reset();
   }
 
 
