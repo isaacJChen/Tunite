@@ -96,20 +96,67 @@ export default class SongDetail extends Component {
     constructor() {
         super();
         this.state = {
-            tags: [
-                { "image": "Gateway", "tag": "john", "follow": true, "image": 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "image": "Monster", "tag": "jim", "follow": false, 'image': 'https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "image": "Slam", "tag": "will", "follow": true, 'image': 'https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
-            ],
-            credits: [
-                { "role": "Owner", "tag": "john", "follow": true, 'image': 'https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "role": "Feature", "tag": "jim", "follow": false, 'image': 'https://images.pexels.com/photos/111287/pexels-photo-111287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' },
-                { "role": "Feature", "tag": "will", "follow": true, 'image': 'https://images.pexels.com/photos/813940/pexels-photo-813940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350' }
-            ]
+            tags: [],
+            credits: []
         }
     }
 
     componentWillMount() {
+        let tags = [];
+        let credits = [];
+        firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/tags').once('value').then((snapshot) => {
+            let val = snapshot.val()
+            let keys = Object.keys(val)
+            for (let i = 0; i < keys.length; i++) {
+                firebase.database().ref('tags/' + keys[i] + '/image').once('value').then((snapshot) => {
+                    let image = snapshot.val();
+                    tags.push({ "tag": keys[i], "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
+                    this.setState({
+                        tags: tags
+                    })
+                })
+            }
+
+            firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/collaborators').once('value').then((snapshot) => {
+                let val = snapshot.val()
+                let collKeys = Object.keys(val)
+                for (let i = 0; i < collKeys.length; i++) {
+                    firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/collaborators/' + collKeys[i]).once('value').then((snapshot) => {
+                        let user = snapshot.val();
+                        firebase.database().ref('users/' + user + '/image').once('value').then((snapshot) => {
+                            let image = snapshot.val();
+                            firebase.database().ref('users/' + user + '/userName').once('value').then((snapshot) => {
+                                let name = snapshot.val()
+                                credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
+                                // if (credits[i]["role"] == owner) {
+                                //     let a = arr.splice(i, 1);   // removes the item
+                                //     credits.unshift(a[0]); 
+                                // }
+                                this.setState({
+                                    credits: credits
+                                })
+                            })
+
+                        })
+                    })
+                }
+                let updateCredits = credits
+                Alert.alert(updateCredits[0]["role"])
+                for (let i = 0; i < updateCredits.length; i++) {
+                    if (updateCredits[i]["role"] == owner) {
+                        let a = arr.splice(i, 1);   // removes the item
+                        updateCredits.unshift(a[0]);         // adds it back to the beginning
+                        break;
+                    }
+                }
+                
+                this.setState({
+                    credits: updateCredits
+                })
+            })
+
+
+        })
         // Sound.setCategory('Playback');
         // var song = new Sound(require('../mp3/m.mp3'), Sound.MAIN_BUNDLE, (error) => {
         //     if (error) {
@@ -133,6 +180,7 @@ export default class SongDetail extends Component {
         //         song.reset();
         //     }
         // });
+
     }
 
     static navigationOptions = ({ navigation }) => {

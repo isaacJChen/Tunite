@@ -79,7 +79,6 @@ export default class Profile extends Component {
     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) =>{
       let bio = snapshot.val()
       this.setState({ bio: bio })
-      Alert.alert(bio)
     })    
 
     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
