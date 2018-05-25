@@ -1,19 +1,47 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList, TouchableOpacity } from 'react-native';
+import { AppRegistry, View, Button, Text, Image, ScrollView, Dimensions, TouchableNativeFeedback, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Tag from '../Components/Tag';
 import MusicPlayer from '../Components/MusicPlayer';
 import Coverflow from 'react-native-coverflow';
 import * as firebase from "firebase";
+import TrackPlayer, { ProgressComponent } from 'react-native-track-player';
 
 
 class Song extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      playing: false
+      playing: false,
+      track: {
+          id: this.props.playerID,
+          url: { uri: this.props.songUrl }, // Load media from the app bundle
+      }
     }
+
   }
+
+  componentDidMount(){
+    firebase.storage().ref().child(this.props.playerID).getDownloadURL().then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      let track = {
+        id: this.props.playerID,
+        url: {uri: url}
+      }
+      this.setState({ track: track })
+    }).catch(function (error) {
+      // Handle any errors
+      Alert.alert(error.toString())
+    });
+
+    firebase.storage().ref().child(this.props.upload.image).getDownloadURL().then((url)=>{
+      this.setState({imageUrl: url})
+    }).catch(function (error) {
+      // Handle any errors
+      Alert.alert(error.toString())
+    });
+  }
+
   render() {
     return(
       <View style={{height:'100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -24,11 +52,8 @@ class Song extends Component {
           width: '100%',
           height: '100%',
         }}>
-          <Image style={{height: '100%', width: '100%', backgroundColor: 'black'}} source={{uri: this.props.image}}/>
+          <MusicPlayer ref="player" callback={()=>{}} style={{height: '100%', width: '100%', backgroundColor: 'black'}} id={this.props.playerID} image={this.state.imageUrl} track={this.state.track} fullSong={true} />
         </View>
-        <TouchableOpacity onPress={() => this.setState({playing: !this.state.playing})} style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Image source={this.state.playing ? require('../img/pause.png') : require('../img/roundPlayButton.png')} style={{marginTop: 5, marginBottom: 5}}/>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -37,23 +62,29 @@ class Song extends Component {
 export default class Explore extends Component {
   constructor(props){
     super(props);
-    var songs = [
-      {name: "Bon Jovi"},
-      {name: "TSwift"},
-      {name: "In Too Deep"},
-      {name: "DREAMS"},
-      {name: "Sing"},
-      {name: "Bowie"},
-      {name: "WAVE~~~"}
+    let songs = [
     ]
+    this.songRefs = []
+    let songdata = []
+    for (idx in this.props.navigation.state.params.uploads) {
+      if (this.props.navigation.state.params.uploads[idx].root ==this.props.navigation.state.params.rootId) {
+        songs.push(
+          <Song ref={(node)=>{this.songRefs.push(node)}} key={idx} playerID={idx} upload={this.props.navigation.state.params.uploads[idx]} />
+        )
+        songdata.push({
+            id: idx,
+            name: this.props.navigation.state.params.uploads[idx].songName,
+            tags: Object.keys(this.props.navigation.state.params.uploads[idx].tags)
+        })
+      }
+    }
+
+
     this.state = {
-        tags: [
-            { "image": "Gateway", "tag": "john", "follow": true },
-            { "image": "Monster", "tag": "jim", "follow": false },
-            { "image": "Slam", "tag": "will", "follow": true }
-        ],
-        currentSong: songs[0].name,
-        songs: songs
+        currentSong: songdata[0].name,
+        songs: songs,
+        songdata: songdata,
+        currentIdx: 0
     }
   }
 
@@ -70,7 +101,40 @@ export default class Explore extends Component {
       }
   };
 
+  getTags(){
+    let tags = []
+    for (idx in this.state.songdata[this.state.currentIdx].tags) {
+      let tag = this.state.songdata[this.state.currentIdx].tags[idx]
+      tags.push(
+        <Tag tag={tag} image='https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+      )
+    }
+    return tags
+  }
+
+
+  _addToCollection(songId) {
+    let uid = firebase.auth().currentUser.uid
+    firebase.database().ref('users/' + uid + '/collection/' + songId).once('value').then((snapshot) => {
+      let alreadyAdded = snapshot.val()
+      if (!alreadyAdded) {
+        firebase.database().ref('uploads/' + songId + '/collectionCount').once('value').then((snapshot) => {
+          let count = snapshot.val()
+          let updates = {};
+          updates['uploads/' + songId + '/collectionCount'] = count + 1;
+          firebase.database().ref().update(updates);
+        })
+      }
+    })
+
+    let updates = {};
+    updates['/users/' + uid + '/collection/' + songId] = songId;
+    firebase.database().ref().update(updates)
+    Alert.alert("Added to collection!")
+  }
+
   render() {
+
     return(
       <View style={{flex:1, flexDirection: 'column', justifyContent: 'space-evenly'}}>
 
@@ -79,31 +143,32 @@ export default class Explore extends Component {
         </View>
 
         <Coverflow style={{height: '45%', width:'100%'}} onChange={(index) => {
+          //Alert.alert(this.songRefs[this.songRefs.length-index-1].refs.player.props.id)
+          for (idx in this.songRefs){
+            this.songRefs[this.songRefs.length-index-1].refs.player.setState({playing: false})
+            TrackPlayer.stop()
+          }
           this.setState(
-            {currentSong: this.state.songs[index].name}
+            {currentSong: this.state.songdata[index].name, currentIdx: index}
           )
+
         }}>
-          <Song image='https://images.pexels.com/photos/33597/guitar-classical-guitar-acoustic-guitar-electric-guitar.jpg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Song image='https://images.pexels.com/photos/351265/pexels-photo-351265.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Song image='https://marketplace.canva.com/MAB6qNBAV-0/1/0/thumbnail_large/canva-in-too-deep-diving-music-album-cover-MAB6qNBAV-0.jpg'/>
-          <Song image='https://images.pexels.com/photos/96380/pexels-photo-96380.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Song image='https://images.pexels.com/photos/1047936/pexels-photo-1047936.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Song image='https://images.pexels.com/photos/625644/pexels-photo-625644.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Song image='https://i.kinja-img.com/gawker-media/image/upload/s--_s8eRJFa--/c_scale,fl_progressive,q_80,w_800/qyaz3i8usy1hxfzw3msb.jpg'/>
+          {this.state.songs}
         </Coverflow>
 
 
-
-
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <Tag tag={this.state.tags[0].tag} image='https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          {
+            this.getTags()
+          }
+          {/* <Tag tag={this.state.tags[0].tag} image='https://images.pexels.com/photos/761963/pexels-photo-761963.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
           <Tag tag={this.state.tags[0].tag} image='https://images.pexels.com/photos/374703/pexels-photo-374703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
-          <Tag tag={this.state.tags[0].tag} image ='https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/>
+          <Tag tag={this.state.tags[0].tag} image ='https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'/> */}
         </View>
 
 
         <View style={{marginLeft: 30, marginRight:30, justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}}  onPress={()=> this._addToCollection(this.state.songdata[this.state.currentIdx].id)}>
             <Image source={require('../img/save-btn.png')} style={{marginTop: 5, marginBottom: 5}}/>
           </TouchableOpacity>
           {/* <TouchableOpacity style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>

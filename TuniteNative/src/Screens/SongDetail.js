@@ -35,6 +35,21 @@ AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/Mus
 
 
 class Options extends Component {
+    _toExplore() {
+      firebase.database().ref("uploads").once('value').then((snapshot)=>{
+        let uploads = snapshot.val()
+        firebase.database().ref("uploads/"+this.props.songId+"/root").once("value").then((innersnapshot)=>{
+          let rootId = innersnapshot.val()
+          this.props.navigation.navigate('Explore', {
+            Name: "name",
+            iconMaker: this.props.iconMaker,
+            rootId: rootId,
+            uploads: uploads
+          })
+        })
+      })
+    }
+
     render() {
         return (
             <View>
@@ -65,10 +80,8 @@ class Options extends Component {
                         <Text>Save To Collection</Text>
                     </View>
                 </TouchableNativeFeedback>
-                <TouchableNativeFeedback onPress={() => this.props.navigation.navigate(this.props.destination, {
-                    Name: this.props.songName,
-                    iconMaker: this.props.navigation.state.params.iconMaker,
-                })}>
+
+                <TouchableNativeFeedback onPress={() =>this._toExplore()}>
                     <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                         <Image
                             source={require('../img/musicNoteBtn.png')}
@@ -77,6 +90,7 @@ class Options extends Component {
                         <Text>Explore All Versions</Text>
                     </View>
                 </TouchableNativeFeedback>
+
             </View>
         );
     }
