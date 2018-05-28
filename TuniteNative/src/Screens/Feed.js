@@ -181,17 +181,21 @@ export default class Feed extends Component {
         firebase.database().ref('uploads').once('value').then((snapshot) => {
           let uploads = snapshot.val()
           let songName = []
-          let creatorNames = []
           let urls = []
+          let tags = []
           for (let i = 0; i < 20; i++) {
             if (i === songsArray.length) {
               break
             }
             let s = uploads[songsArray[i].key].songName
-            songName[i] = s
+            songName.push(s)
+            let t = uploads[songsArray[i].key].tags
+            tags.push(Object.keys(t))
+            // Alert.alert(Object.keys(t).toString())
             let m = songsArray[i].key
             let img = uploads[songsArray[i].key].image
-            this.songIds[i] = songsArray[i].key
+
+            this.songIds.push(songsArray[i].key)
 
             let creatorid = uploads[songsArray[i].key].owner
             firebase.database().ref('users/' + creatorid).once('value').then((snapshot) => {
@@ -199,6 +203,7 @@ export default class Feed extends Component {
               this.creatorNames[i] = profile.userName
               this.setState({ creatorNames: this.creatorNames })
             })
+
 
             //get song file
             firebase.storage().ref().child(m).getDownloadURL().then((url) => {
@@ -223,6 +228,7 @@ export default class Feed extends Component {
           }
           // this.setState({songName: songName, songUrls: this.songUrls, imageUrls: this.imageUrls})
           this.setState({ songName: songName })
+          this.setState({ tags: tags })
           this.setState({ songIds: this.songIds })
         })
       }
