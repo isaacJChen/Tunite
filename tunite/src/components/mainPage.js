@@ -92,11 +92,13 @@ export default class MainPage extends Component {
           firebase.database().ref('uploads/').once('value').then((snapshot)=>{
             let songDatas = snapshot.val()
 
-            for (let songKey in collection) {
-              let tags = songDatas[songKey].tags
-              this.rows.push(<Row key={songKey} songKey={songKey} imageKey={songDatas[songKey].image} songName={songDatas[songKey].songName} tags={tags}/>)
-            }
-            this.setState({collection: this.rows, user:user})
+            firebase.database().ref('users/'+user.uid+"/userName").once('value').then((ss)=>{
+              for (let songKey in collection) {
+                let tags = songDatas[songKey].tags
+                this.rows.push(<Row userName={ss.val()} key={songKey} songKey={songKey} imageKey={songDatas[songKey].image} songName={songDatas[songKey].songName} tags={tags}/>)
+              }
+              this.setState({collection: this.rows, user:user, userName:ss.val()})
+            })
           })
         })
       } else {
@@ -150,10 +152,14 @@ export default class MainPage extends Component {
       mostPopularCount: 0,
       mostPopularVersion: newPostKey,
       promoted: true,
+      promotedVersion: newPostKey,
       root: newPostKey,
+      collaborators: {owner: firebase.auth().currentUser.uid}
     };
 
     postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
+    postData.tags["seattle"] = "#seattle"
+    postData.tags[this.state.userName] = "#"+this.state.userName
 
     let updates = {};
     updates['/uploads/' + newPostKey] = postData;
@@ -211,7 +217,7 @@ export default class MainPage extends Component {
         <div className="jumbotron bg-danger d-flex justify-content-between">
           <div className="display-4">
             <strong className="text-white">
-              Tunite - version
+              Tunite - Web version
             </strong>
           </div>
           <button className="btn btn-secondary h-50" onClick={() => this.signout()}>

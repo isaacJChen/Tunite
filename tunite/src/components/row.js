@@ -18,20 +18,26 @@ export default class Row extends Component {
     }
   }
 
-  download(e) {
-    e.preventDefault()
+  // download(e) {
+  //   e.preventDefault()
+  // }
+
+  componentDidMount() {
 
     this.state.storageRef.child(this.props.songKey).getDownloadURL().then((url) => {
       // This can be downloaded directly:
       console.log(url);
 
-      var xhr = new XMLHttpRequest();
+      let xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event)=> {
         event.preventDefault()
-        var blob = xhr.response;
+        let blob = xhr.response;
+        blob.lastModifiedDate = new Date()
+        blob.name = this.props.songKey
+        //console.log(blob);
         let urlBlob = window.URL.createObjectURL(blob)
-
+        this.setState({dlUrl: urlBlob})
       };
       xhr.open('GET', url);
       xhr.send();
@@ -39,9 +45,12 @@ export default class Row extends Component {
       // Handle any errors
       console.log("error: " + error);
     });
-  }
 
-  componentDidMount() {
+    firebase.database().ref('uploads/'+ this.props.songKey+'/collaborators').once('value').then((snapshot)=>{
+      let collaborators = snapshot.val()
+      let names = Object.values(collaborators)
+      this.setState({collaborators: names})
+    })
 
     firebase.storage().ref().child(this.props.imageKey).getDownloadURL().then((imgurl) => {
       // `url` is the download URL for 'images/stars.jpg'
@@ -120,6 +129,11 @@ export default class Row extends Component {
     let newImageRef = this.state.storageRef.child(imageKey)
     newImageRef.put(this.refs.imageinput.files[0]).then(function(snapshot) {})
 
+    let collaborators = {owner:firebase.auth().currentUser.uid}
+    for (let idx in this.state.collaborators) {
+      collaborators[this.state.collaborators[idx]] = this.state.collaborators[idx]
+    }
+
     let postData = {
       owner: firebase.auth().currentUser.uid,
       songName: this.refs.title.value,
@@ -130,9 +144,14 @@ export default class Row extends Component {
       collectionCount: 0,
       promoted: false,
       root: this.props.songKey,
+      collaborators:collaborators
     };
 
+    delete postData.collaborators[postData.collaborators.owner]
+
     postData.tags[this.refs.tag.value] = "#" + this.refs.tag.value
+    postData.tags["seattle"] = "#seattle"
+    postData.tags[this.props.userName] = "#"+this.props.userName
 
     let updates = {};
     updates['/uploads/' + newPostKey] = postData;
@@ -220,11 +239,9 @@ export default class Row extends Component {
           <div className="ml-4">
             <button className="btn btn-danger" onClick={() => this.upload()}>New Version ⇧</button>
           </div>
+
           <div className="ml-4">
-            <button className="btn btn-danger" onClick={(e) => this.download(e)}>Download ⇩</button>
-          </div>
-          <div className="ml-4">
-            <button className="btn btn-danger">delete</button>
+            <a className="btn btn-danger" href={this.state.dlUrl} download>Download ⇩</a>
           </div>
         </div>
       </div>
