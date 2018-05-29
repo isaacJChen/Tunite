@@ -85,34 +85,34 @@ export default class Profile extends Component {
     }
     // iconMaker = this.props.navigation.state.params.iconMaker ? this.props.navigation.state.params.iconMaker : iconMaker
   }
-  
+
 
   componentDidMount() {
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) => {
         let bio = snapshot.val()
         this.setState({ bio: bio })
       })
-  
+
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
         let data = snapshot.val()
         this.setState({ contact: data })
       })
-  
+
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot) => {
         let name = snapshot.val()
         this.setState({ name: name })
       })
-  
+
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot) => {
         let num = Object.keys(snapshot.val()).length - 1
         this.setState({ followers: num })
       })
-  
+
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot) => {
         let num = Object.keys(snapshot.val()).length - 1
         this.setState({ following: num })
       })
-  
+
       // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
       //   let img = snapshot.val()
       //   if (img == undefined) {
@@ -129,14 +129,14 @@ export default class Profile extends Component {
           this.setState({ image: img })
         }
       }).catch((error) => {
-        Alert.alert(error.toString())
+        //Alert.alert(error.toString())
       })
 
   }
 
   // getProfileData(userID) {
-    
-  // } 
+
+  // }
 
   // static navigationOptions = this.props.navigation.state.params.Own ? {
   //   title: 'Profile',
@@ -155,7 +155,7 @@ export default class Profile extends Component {
     header: null,
     tabBarIcon: iconMaker
   }
-  
+
 
   onClick() {
     this.props.navigation.navigate("EditProfile", {
