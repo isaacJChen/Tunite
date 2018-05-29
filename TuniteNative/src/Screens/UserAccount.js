@@ -190,6 +190,13 @@ export default class UserAccount extends Component {
         })
     }
 
+    goToUploads() {
+        this.props.navigation.navigate("Uploads", {
+            id: this.props.navigation.state.params.id,
+            iconMaker: this.props.navigation.state.params.iconMaker,
+          })
+    }
+
 
     render() {
         const width = Dimensions.get('window').width / 3;
@@ -228,7 +235,7 @@ export default class UserAccount extends Component {
                         </TouchableHighlight>
                         <TouchableHighlight
                             onPress={() => {
-                                Alert.alert('You tapped the button!');
+                                this.goToUploads();
                             }}
                             style={{ justifyContent: 'center', alignItems: 'center' }}
                         >
