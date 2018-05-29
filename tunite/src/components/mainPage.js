@@ -227,11 +227,6 @@ export default class MainPage extends Component {
 
         <div className="container">
           <div className="d-flex mb-5">
-            <div className="mt-2">
-              <strong>
-                3 tracks in your collection
-              </strong>
-            </div>
             <button className="btn btn-secondary ml-5" onClick={()=> this.upload()}>
               Upload original ⇧
             </button>
