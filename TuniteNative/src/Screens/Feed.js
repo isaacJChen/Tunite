@@ -73,7 +73,7 @@ export default class Feed extends Component {
       followings = Object.keys(snapshot.val())
 
       for (let tag in followings) {
-        Alert.alert(followings[tag])
+        // Alert.alert(followings[tag])
         firebase.database().ref('tags/' + followings[tag] + '/songs').once('value').then((snapshot) => {
           songsFromFB = snapshot.val()
           songsArray = []

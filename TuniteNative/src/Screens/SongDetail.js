@@ -35,62 +35,62 @@ AppRegistry.registerHeadlessTask('TrackPlayer', () => require('../Components/Mus
 
 
 class Options extends Component {
-  constructor(props){
-    super(props)
-    this.state= {
-      display: { alignItems: 'center', height: 50, flexDirection: 'row', display: "none"}
-    }
-  }
-    _toExplore() {
-      firebase.database().ref("uploads").once('value').then((snapshot)=>{
-        let uploads = snapshot.val()
-        firebase.database().ref("uploads/"+this.props.songId+"/root").once("value").then((innersnapshot)=>{
-          let rootId = innersnapshot.val()
-          this.props.navigation.navigate('Explore', {
-            Name: "name",
-            iconMaker: this.props.iconMaker,
-            rootId: rootId,
-            uploads: uploads
-          })
-        })
-      })
-    }
-
-    componentDidMount(){
-      firebase.database().ref("uploads/"+this.props.songId+"/owner").once("value").then((snapshot)=>{
-        let owner = snapshot.val()
-        let display = { alignItems: 'center', height: 50, flexDirection: 'row'}
-        if (firebase.auth().currentUser.uid == owner) {
-          this.setState({display: display})
-        } else {
-          display.display = "none"
-          this.setState({display: display})
+    constructor(props) {
+        super(props)
+        this.state = {
+            display: { alignItems: 'center', height: 50, flexDirection: 'row', display: "none" }
         }
-      })
+    }
+    _toExplore() {
+        firebase.database().ref("uploads").once('value').then((snapshot) => {
+            let uploads = snapshot.val()
+            firebase.database().ref("uploads/" + this.props.songId + "/root").once("value").then((innersnapshot) => {
+                let rootId = innersnapshot.val()
+                this.props.navigation.navigate('Explore', {
+                    Name: "name",
+                    iconMaker: this.props.iconMaker,
+                    rootId: rootId,
+                    uploads: uploads
+                })
+            })
+        })
     }
 
-    setPromoted(){
-      firebase.database().ref('uploads/'+this.props.songId+"/root").once('value').then((snapshot)=>{
-        let root = snapshot.val()
-
-        firebase.database().ref("uploads/"+root+"/promotedVersion").once('value').then((snapshot)=>{
-          let promotedVersion = snapshot.val()
-
-          let promotedData = {}
-          promotedData['uploads/'+promotedVersion+"/promoted"] = false
-          firebase.database().ref().update(promotedData)
-
-
-          let rootData = {}
-          rootData['uploads/' + root +"/promotedVersion"] = this.props.songId
-          firebase.database().ref().update(rootData);
-
-          let currentData = {}
-          currentData['uploads/'+this.props.songId+"/promoted"] = true
-          firebase.database().ref().update(currentData)
-          Alert.alert("updated!")
+    componentDidMount() {
+        firebase.database().ref("uploads/" + this.props.songId + "/owner").once("value").then((snapshot) => {
+            let owner = snapshot.val()
+            let display = { alignItems: 'center', height: 50, flexDirection: 'row' }
+            if (firebase.auth().currentUser.uid == owner) {
+                this.setState({ display: display })
+            } else {
+                display.display = "none"
+                this.setState({ display: display })
+            }
         })
-      })
+    }
+
+    setPromoted() {
+        firebase.database().ref('uploads/' + this.props.songId + "/root").once('value').then((snapshot) => {
+            let root = snapshot.val()
+
+            firebase.database().ref("uploads/" + root + "/promotedVersion").once('value').then((snapshot) => {
+                let promotedVersion = snapshot.val()
+
+                let promotedData = {}
+                promotedData['uploads/' + promotedVersion + "/promoted"] = false
+                firebase.database().ref().update(promotedData)
+
+
+                let rootData = {}
+                rootData['uploads/' + root + "/promotedVersion"] = this.props.songId
+                firebase.database().ref().update(rootData);
+
+                let currentData = {}
+                currentData['uploads/' + this.props.songId + "/promoted"] = true
+                firebase.database().ref().update(currentData)
+                Alert.alert("updated!")
+            })
+        })
     }
 
     render() {
@@ -124,7 +124,7 @@ class Options extends Component {
                     </View>
                 </TouchableNativeFeedback>
 
-                <TouchableNativeFeedback onPress={() =>this._toExplore()}>
+                <TouchableNativeFeedback onPress={() => this._toExplore()}>
                     <View style={{ alignItems: 'center', height: 50, flexDirection: 'row' }}>
                         <Image
                             source={require('../img/musicNoteBtn.png')}
@@ -134,14 +134,14 @@ class Options extends Component {
                     </View>
                 </TouchableNativeFeedback>
 
-                <TouchableNativeFeedback onPress={()=>this.setPromoted()}>
-                  <View style={this.state.display}>
-                      <Image
-                          source={require('../img/star.png')}
-                          style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
-                      />
-                      <Text>Set Promoted</Text>
-                  </View>
+                <TouchableNativeFeedback onPress={() => this.setPromoted()}>
+                    <View style={this.state.display}>
+                        <Image
+                            source={require('../img/star.png')}
+                            style={{ width: 30, height: 30, borderRadius: 15, marginLeft: 7, marginRight: 15 }}
+                        />
+                        <Text>Set Promoted</Text>
+                    </View>
                 </TouchableNativeFeedback>
 
             </View>
@@ -177,7 +177,7 @@ export default class SongDetail extends Component {
             for (let i = 0; i < keys.length; i++) {
                 firebase.database().ref('tags/' + keys[i] + '/image').once('value').then((snapshot) => {
                     let image = snapshot.val();
-                    tags.push({ "tag": keys[i], "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
+                    tags.push({ "tag": keys[i], "image": image ? image : "http://identicon-1132.appspot.com/" + keys[i].replace(/\s/g, '')})
                     this.setState({
                         tags: tags
                     })
@@ -190,32 +190,42 @@ export default class SongDetail extends Component {
                 for (let i = 0; i < collKeys.length; i++) {
                     firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/collaborators/' + collKeys[i]).once('value').then((snapshot) => {
                         let user = snapshot.val();
-                        firebase.database().ref('users/' + user + '/image').once('value').then((snapshot) => {
-                            let image = snapshot.val();
                             firebase.database().ref('users/' + user + '/userName').once('value').then((snapshot) => {
                                 let name = snapshot.val()
-                                credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": image ? image : "https://d30y9cdsu7xlg0.cloudfront.net/png/219377-200.png" })
-                                // if (credits[i]["role"] == owner) {
-                                //     let a = arr.splice(i, 1);   // removes the item
-                                //     credits.unshift(a[0]);
-                                // }
-                                this.setState({
-                                    credits: credits
+                                firebase.storage().ref().child(user).getDownloadURL().then((url) => {
+                                    let imageUrl = url
+                                    credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": imageUrl, "id": user })
+                                    // if (credits[i]["role"] == owner) {
+                                    //     let a = arr.splice(i, 1);   // removes the item
+                                    //     credits.unshift(a[0]);
+                                    // }
+                                    this.setState({
+                                        credits: credits
+                                    })
+                                }).catch((err)=>{
+                                    credits.push({ "role": collKeys[i] == "owner" ? "Owner" : "Feature", "tag": name, "image": "http://identicon-1132.appspot.com/" + name.replace(/\s/g, ''), "id": user })
+                                    // if (credits[i]["role"] == owner) {
+                                    //     let a = arr.splice(i, 1);   // removes the item
+                                    //     credits.unshift(a[0]);
+                                    // }
+                                    this.setState({
+                                        credits: credits
+                                    })
                                 })
-                            })
+
 
                         })
                     })
                 }
-                let updateCredits = credits
-                Alert.alert(updateCredits[0]["role"])
-                for (let i = 0; i < updateCredits.length; i++) {
-                    if (updateCredits[i]["role"] == owner) {
-                        let a = arr.splice(i, 1);   // removes the item
-                        updateCredits.unshift(a[0]);         // adds it back to the beginning
-                        break;
-                    }
-                }
+                // let updateCredits = credits
+                // // Alert.alert(updateCredits[0]["role"])
+                // for (let i = 0; i < updateCredits.length; i++) {
+                //     if (updateCredits[i]["role"] == owner) {
+                //         let a = arr.splice(i, 1);   // removes the item
+                //         updateCredits.unshift(a[0]);         // adds it back to the beginning
+                //         break;
+                //     }
+                // }
 
                 this.setState({
                     credits: updateCredits
@@ -284,49 +294,49 @@ export default class SongDetail extends Component {
 
     }
 
-    goToPromoted(){
-      firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot)=>{
-        let r = snapshot.val()
+    goToPromoted() {
+        firebase.database().ref('uploads/' + this.props.navigation.state.params.songId + '/root').once('value').then((snapshot) => {
+            let r = snapshot.val()
 
-        firebase.database().ref('uploads/'+r+"/promotedVersion").once('value').then((snapshot)=> {
-          let val = snapshot.val()
+            firebase.database().ref('uploads/' + r + "/promotedVersion").once('value').then((snapshot) => {
+                let val = snapshot.val()
 
-          if (val == this.props.navigation.state.params.songId){
-            Alert.alert("This is the promoted Version")
-          } else {
-            let songName = ""
-            let songUrl = ""
-            let coverUrl = ""
-            firebase.database().ref('uploads/' + val + "/songName").once('value').then((snapshot) => {
-                songName = snapshot.val()
-                firebase.storage().ref().child(val).getDownloadURL().then((url) => {
-                    // `url` is the download URL for 'images/stars.jpg'
-                    songUrl = url
-                    firebase.database().ref('uploads/' + val + '/image').once('value').then((snapshot) => {
-                        let img = snapshot.val()
-                        firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+                if (val == this.props.navigation.state.params.songId) {
+                    Alert.alert("This is the promoted Version")
+                } else {
+                    let songName = ""
+                    let songUrl = ""
+                    let coverUrl = ""
+                    firebase.database().ref('uploads/' + val + "/songName").once('value').then((snapshot) => {
+                        songName = snapshot.val()
+                        firebase.storage().ref().child(val).getDownloadURL().then((url) => {
                             // `url` is the download URL for 'images/stars.jpg'
-                            coverUrl = url
-                            this.props.navigation.navigate("SongDetail", {
-                                Name: songName,
-                                iconMaker: this.props.navigation.state.params.iconMaker,
-                                songUrl: songUrl,
-                                songCover: coverUrl,
-                                songId: val
+                            songUrl = url
+                            firebase.database().ref('uploads/' + val + '/image').once('value').then((snapshot) => {
+                                let img = snapshot.val()
+                                firebase.storage().ref().child(img).getDownloadURL().then((url) => {
+                                    // `url` is the download URL for 'images/stars.jpg'
+                                    coverUrl = url
+                                    this.props.navigation.navigate("SongDetail", {
+                                        Name: songName,
+                                        iconMaker: this.props.navigation.state.params.iconMaker,
+                                        songUrl: songUrl,
+                                        songCover: coverUrl,
+                                        songId: val
+                                    })
+                                }).catch(function (error) {
+                                    // Handle any errors
+                                    Alert.alert(error.toString())
+                                });
                             })
                         }).catch(function (error) {
                             // Handle any errors
                             Alert.alert(error.toString())
                         });
                     })
-                }).catch(function (error) {
-                    // Handle any errors
-                    Alert.alert(error.toString())
-                });
+                }
             })
-          }
         })
-      })
     }
 
     goToOriginal() {
@@ -412,7 +422,7 @@ export default class SongDetail extends Component {
                     data={this.state.credits}
                     renderItem={({ item, index }) => (
                         // <Tag tag={item.tag} role={item.role} navigation={this.props.navigation} />
-                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} image={item.image} />
+                        <Tag tag={item.tag} role={item.role} index={index} navigation={this.props.navigation} image={item.image} id={item.id} iconMaker={this.props.navigation.state.params.iconMaker}/>
                     )}
                     keyExtractor={(item, index) => item.tag}
                     horizontal
