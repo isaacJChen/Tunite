@@ -133,6 +133,15 @@ export default class MainPage extends Component {
       collectionCount: 0,
       timeStamp: now
     }
+    tagData['/tags/seattle/songs/newPostKey'] = {
+      collectionCount: 0,
+      timeStamp: now
+    }
+    tagData['/tags/'+this.state.userName+'/songs/'+newPostKey] = {
+      collectionCount: 0,
+      timeStamp: now
+    }
+
     firebase.database().ref().update(tagData);
 
 
@@ -217,7 +226,7 @@ export default class MainPage extends Component {
         <div className="jumbotron bg-danger d-flex justify-content-between">
           <div className="display-4">
             <strong className="text-white">
-              Tunite - Web version
+              Tunite - Web Version
             </strong>
           </div>
           <button className="btn btn-secondary h-50" onClick={() => this.signout()}>
