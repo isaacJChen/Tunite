@@ -11,14 +11,23 @@ export default class Card extends Component {
     this.state = {
       uri: '../img/custom-album-cover.jpg',
       playing: false,
-      test: "test",
       promoted: false,
       original: false,
       favorite: false,
+      profilePic: undefined
     }
   }
 
   componentWillMount() {
+    firebase.database().ref('uploads/'+this.props.songId+"/owner").once('value').then((snapshot)=>{
+      let uid = snapshot.val()
+      firebase.storage().ref().child(uid).getDownloadURL().then((url)=>{
+        this.setState({profilePic: url})
+      }).catch((err)=>{
+        this.setState({profilePic:  "http://identicon-1132.appspot.com/" + uid})
+      })
+    })
+
     firebase.database().ref('uploads/' + this.props.songId + '/promoted').once('value').then((snapshot) => {
       let val = snapshot.val()
       // let bool = ""+val
@@ -173,7 +182,7 @@ export default class Card extends Component {
 
           <View style={{ backgroundColor: '#fff', paddingLeft: 10, flexDirection: 'row' }}>
             <View>
-              <Image source={{ uri: "https://images.pexels.com/photos/196652/pexels-photo-196652.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350" }} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
+              <Image source={{ uri: this.state.profilePic }} style={{ height: 50, width: 50, borderRadius: 25, marginTop: 5, marginBottom: 5 }} />
             </View>
             <View style={{ marginLeft: 10, justifyContent: 'center' }}>
               <Text style={{ fontWeight: 'bold' }}>
