@@ -26,6 +26,9 @@ export default class Tag extends Component {
     }
 
     onClick() {
+      if (this.props.tag == "Beats") {
+        Alert.alert("Unfollowing Beats is disabled for the demo :)")
+      } else {
         if (this.state.following) {
             firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/' + this.props.tag).remove();
             this.setState({
@@ -42,6 +45,7 @@ export default class Tag extends Component {
         this.setState({
             following: !this.state.following
         })
+      }
     }
 
     goToProfile() {
@@ -52,7 +56,7 @@ export default class Tag extends Component {
                 iconMaker: this.props.iconMaker,
                 tag: this.props.tag
             })
-        } 
+        }
     }
 
     render() {
