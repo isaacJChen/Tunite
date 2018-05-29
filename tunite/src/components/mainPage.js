@@ -133,7 +133,7 @@ export default class MainPage extends Component {
       collectionCount: 0,
       timeStamp: now
     }
-    tagData['/tags/seattle/songs/newPostKey'] = {
+    tagData['/tags/seattle/songs/' + newPostKey] = {
       collectionCount: 0,
       timeStamp: now
     }
