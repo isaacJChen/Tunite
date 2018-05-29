@@ -401,7 +401,7 @@ export default class SongDetail extends Component {
                     source={require('../img/cover_art.png')}
                     style={{ width: deviceWidth, height: deviceWidth * .75 }}
                 /> */}
-                <Options songId={this.props.navigation.state.params.songId} name="Save to Collection" destination='Explore' navigation={this.props.navigation} />
+                <Options songId={this.props.navigation.state.params.songId} name="Explore" destination='Explore' iconMaker={this.props.navigation.state.params.iconMaker} navigation={this.props.navigation} />
                 <Label label="Tags:" />
                 <FlatList
                     data={this.state.tags}
