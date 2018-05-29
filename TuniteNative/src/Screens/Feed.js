@@ -109,14 +109,14 @@ export default class Feed extends Component {
             break
           }
           let s = songsFromFB[songsArray[i].key].songName
-          songName.push(s)
+          songName[i] = s
           let t = songsFromFB[songsArray[i].key].tags
-          tags.push(Object.keys(t))
+          tags[i] = (Object.keys(t))
 
           let m = songsArray[i].key
           let img = songsFromFB[songsArray[i].key].image
 
-          this.songIds.push(songsArray[i].key)
+          this.songIds[i] = songsArray[i].key
           //
 
           let creatorid = songsFromFB[songsArray[i].key].owner
@@ -201,14 +201,14 @@ export default class Feed extends Component {
             break
           }
           let s = songsFromFB[songsArray[i].key].songName
-          songName.push(s)
+          songName[i] = s
           let t = songsFromFB[songsArray[i].key].tags
-          tags.push(Object.keys(t))
+          tags[i] = Object.keys(t)
 
           let m = songsArray[i].key
           let img = songsFromFB[songsArray[i].key].image
 
-          this.songIds.push(songsArray[i].key)
+          this.songIds[i] = songsArray[i].key
           //
 
           let creatorid = songsFromFB[songsArray[i].key].owner
@@ -301,14 +301,14 @@ export default class Feed extends Component {
               break
             }
             let s = uploads[songsArray[i].key].songName
-            songName.push(s)
+            songName[i] = s
             let t = uploads[songsArray[i].key].tags
-            tags.push(Object.keys(t))
+            tags[i] = Object.keys(t)
             // Alert.alert(Object.keys(t).toString())
             let m = songsArray[i].key
             let img = uploads[songsArray[i].key].image
 
-            this.songIds.push(songsArray[i].key)
+            this.songIds[i] = songsArray[i].key
 
             let creatorid = uploads[songsArray[i].key].owner
             firebase.database().ref('users/' + creatorid).once('value').then((snapshot) => {

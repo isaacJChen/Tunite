@@ -23,7 +23,9 @@ export default class Login extends Component{
           <View><TextInput onChangeText={(change) => {this.setState({email:change})}} placeholder="email" placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <View><TextInput onChangeText={(change) => {this.setState({password:change})}} placeholder="password" secureTextEntry placeholderTextColor="rgba(255,255,255,0.7)" style={styles.input}/></View>
           <Button title="Login" onPress={() => {
+
             firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(()=>{
+
               this.props.navigation.navigate("SignedIn")
             }).catch(function(error) {
               Alert.alert("Login failed")
