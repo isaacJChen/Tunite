@@ -133,14 +133,14 @@ export default class MainPage extends Component {
       collectionCount: 0,
       timeStamp: now
     }
-    tagData['/tags/seattle/songs/' + newPostKey] = {
-      collectionCount: 0,
-      timeStamp: now
-    }
-    tagData['/tags/'+this.state.userName+'/songs/'+newPostKey] = {
-      collectionCount: 0,
-      timeStamp: now
-    }
+    // tagData['/tags/seattle/songs/' + newPostKey] = {
+    //   collectionCount: 0,
+    //   timeStamp: now
+    // }
+    // tagData['/tags/'+this.state.userName+'/songs/'+newPostKey] = {
+    //   collectionCount: 0,
+    //   timeStamp: now
+    // }
 
     firebase.database().ref().update(tagData);
 
