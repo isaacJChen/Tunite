@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Text, Image, StyleSheet, Button, Alert, TouchableHighlight } from 'react-native';
+import { AppRegistry, View, Text, Image, StyleSheet, Button, Alert, TouchableHighlight, TouchableOpacity } from 'react-native';
 import * as firebase from "firebase";
 
 export default class Tag extends Component {
@@ -14,7 +14,7 @@ export default class Tag extends Component {
     }
 
     componentDidMount() {
-        firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/' + this.props.tag).once('value').then((snapshot)=>{
+        firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/' + this.props.tag).once('value').then((snapshot) => {
             let val = snapshot.val()
             if (val) {
                 this.setState({
@@ -27,12 +27,12 @@ export default class Tag extends Component {
 
     onClick() {
         if (this.state.following) {
-            firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/'+ this.props.tag).remove();
+            firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following/' + this.props.tag).remove();
             this.setState({
                 text: "follow",
             })
         } else {
-            let update ={};
+            let update = {};
             update['users/' + firebase.auth().currentUser.uid + '/following/' + this.props.tag] = this.props.tag;
             firebase.database().ref().update(update);
             this.setState({
@@ -44,6 +44,17 @@ export default class Tag extends Component {
         })
     }
 
+    goToProfile() {
+        if(this.props.id !== firebase.auth().currentUser.uid){
+            this.props.navigation.navigate("UserAccount", {
+                id: this.props.id,
+                Own: false,
+                iconMaker: this.props.iconMaker,
+                tag: this.props.tag
+            })
+        } 
+    }
+
     render() {
         return (
             // Try setting `alignItems` to 'flex-start'
@@ -51,11 +62,14 @@ export default class Tag extends Component {
             // Try setting `flexDirection` to `row`.
             <View style={styles.tag}>
                 <Text style={styles.credit}>{this.props.role}</Text>
-                <Image
-                    // source={{ uri: this.props.image }}
-                    source={{ uri: "http://identicon-1132.appspot.com/" + this.props.tag }}
-                    style={{ width: 50, height: 50, borderRadius: 25 }}
-                />
+                <TouchableOpacity onPress={() => !this.props.role ? null : this.goToProfile()}>
+                    <Image
+                        // source={{ uri: this.props.image }}
+                        source={{ uri: this.props.image }}
+                        style={{ width: 50, height: 50, borderRadius: 25 }}
+                    />
+                </TouchableOpacity>
+
                 <Text style={styles.text}>#{this.props.tag}</Text>
                 <TouchableHighlight
                     onPress={() => {

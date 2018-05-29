@@ -10,6 +10,7 @@ import SongDetail from './src/Screens/SongDetail';
 import * as firebase from "firebase";
 import Login from './src/Screens/Login'
 import EditProfile from './src/Screens/EditProfile'
+import UserAccount from './src/Screens/UserAccount'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -37,6 +38,9 @@ export const CollectionStack = StackNavigator({
   },
   Explore: {
     screen: Explore
+  },
+  UserAccount: {
+    screen: UserAccount
   }
 });
 
@@ -49,6 +53,9 @@ export const FeedStack = StackNavigator({
   },
   Explore: {
     screen: Explore
+  },
+  UserAccount: {
+    screen: UserAccount
   }
 });
 

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { AppRegistry, View, Button, Text, Dimensions, Image, ScrollView, StyleSheet, ImageBackground, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import * as firebase from "firebase";
 
-let iconMaker = function () {
-  return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
-}
+
 
 class Follow extends Component {
   render() {
@@ -27,16 +25,16 @@ class Info extends Component {
   render() {
     return (
       <View style={{ padding: 20, marginTop: 15 }}>
-      <View style={{flexDirection: "row"}}>
-        <Text style={styles.Contact}>Contact Info</Text>
-        <TouchableOpacity
-          onPress={() => { this.props.onClick() }}
-        >
-          <Image
-            source={require('../img/edit.png')}
-            style={{ width: 25, height: 25 }}
-          />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.Contact}>Contact Info</Text>
+          <TouchableOpacity
+            onPress={() => { this.props.onClick() }}
+          >
+            <Image
+              source={require('../img/edit.png')}
+              style={{ width: 25, height: 25 }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={{ marginLeft: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -68,6 +66,10 @@ class Info extends Component {
   }
 }
 
+let iconMaker = function () {
+  return (<View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}><Image style={{ height: '70%', width: '70%' }} source={require('../img/tabBarIconUser.png')} /><Text style={{ color: 'white', fontWeight: 'bold' }}>Profile</Text></View>)
+}
+
 
 export default class Profile extends Component {
 
@@ -81,70 +83,79 @@ export default class Profile extends Component {
       bio: "44  ",
       name: "",
     }
+    // iconMaker = this.props.navigation.state.params.iconMaker ? this.props.navigation.state.params.iconMaker : iconMaker
   }
+  
 
   componentDidMount() {
-    //   firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/bio').once('value').then((snapshot) => {
-    //     let bio = snapshot.val()
-    //     this.setState({ bio: bio })
-    //   })
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) => {
+        let bio = snapshot.val()
+        this.setState({ bio: bio })
+      })
+  
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
+        let data = snapshot.val()
+        this.setState({ contact: data })
+      })
+  
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot) => {
+        let name = snapshot.val()
+        this.setState({ name: name })
+      })
+  
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot) => {
+        let num = Object.keys(snapshot.val()).length - 1
+        this.setState({ followers: num })
+      })
+  
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot) => {
+        let num = Object.keys(snapshot.val()).length - 1
+        this.setState({ following: num })
+      })
+  
+      // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
+      //   let img = snapshot.val()
+      //   if (img == undefined) {
+      //     img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+      //     this.setState({ image: img })
+      //   }
+      // })
+      firebase.storage().ref().child(firebase.auth().currentUser.uid).getDownloadURL().then((url) => {
+        if (!url) {
+          let img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
+          this.setState({ image: img })
+        } else {
+          let img = url
+          this.setState({ image: img })
+        }
+      }).catch((error) => {
+        Alert.alert(error.toString())
+      })
 
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo/bio').on('value', (snapshot) => {
-      let bio = snapshot.val()
-      this.setState({ bio: bio })
-    })
-
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').on('value', (snapshot) => {
-      let data = snapshot.val()
-      this.setState({ contact: data })
-    })
-
-    // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/contactInfo').once('value').then((snapshot) => {
-    //   let data = snapshot.val()
-    //   this.setState({ contact: data })
-    // })
-
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/userName').once('value').then((snapshot) => {
-      let name = snapshot.val()
-      this.setState({ name: name })
-    })
-
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/followers').once('value').then((snapshot) => {
-      let num = Object.keys(snapshot.val()).length - 1
-      this.setState({ followers: num })
-    })
-
-    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/following').once('value').then((snapshot) => {
-      let num = Object.keys(snapshot.val()).length - 1
-      this.setState({ following: num })
-    })
-
-    // firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/image').once('value').then((snapshot) => {
-    //   let img = snapshot.val()
-    //   if (img == undefined) {
-    //     img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
-    //     this.setState({ image: img })
-    //   }
-    // })
-    firebase.storage().ref().child(firebase.auth().currentUser.uid).getDownloadURL().then((url) => {
-      if (!url) {
-        let img = "http://identicon-1132.appspot.com/" + firebase.auth().currentUser.uid
-        this.setState({ image: img })
-      } else {
-        let img = url
-        this.setState({ image: img })
-      }
-    }).catch((error) => {
-      Alert.alert(error.toString())
-    })
   }
+
+  // getProfileData(userID) {
+    
+  // } 
+
+  // static navigationOptions = this.props.navigation.state.params.Own ? {
+  //   title: 'Profile',
+  //   swipeEnabled: false,
+  //   tabBarIcon: iconMaker
+  // } : {
+  //   title: 'Profile',
+  //   swipeEnabled: false,
+  //   header: null,
+  //   tabBarIcon: iconMaker
+  // };
 
   static navigationOptions = {
     title: 'Profile',
     swipeEnabled: false,
     header: null,
     tabBarIcon: iconMaker
-  };
+  }
+  
 
   onClick() {
     this.props.navigation.navigate("EditProfile", {
@@ -165,15 +176,15 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-          source={{ uri: this.state.image }}
+          source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name}}
           style={styles.backCover}
           blurRadius={1}
         />
-        
+
 
         <View style={styles.cover}>
           <Image
-            source={{ uri: this.state.image }}
+            source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name}}
             style={{ width: width, height: width, borderRadius: width / 2 }}
           // blurRadius={2}
           />
@@ -184,14 +195,16 @@ export default class Profile extends Component {
               onPress={() => {
                 Alert.alert('You tapped the button!');
               }}
+
+
               style={{ justifyContent: 'center', alignItems: 'center' }}
             >
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Image
-                  source={require('../img/adduser.png')}
-                  style={{}}
+                  source={require('../img/logout.png')}
+                  style={{height: 35, width: 35}}
                 />
-                <Text style={{ fontSize: 15, color: 'white' }}>Follow</Text>
+                <Text style={{ fontSize: 15, color: 'white' }}>Logout</Text>
               </View>
             </TouchableHighlight>
             <TouchableHighlight

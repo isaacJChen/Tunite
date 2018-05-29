@@ -89,6 +89,7 @@ export default class Feed extends Component {
 
             if (songsFromFB[keys[key]]['tags'][followings[tag]]) {
 
+
               songsArray.push(obj)
               break;
             }
