@@ -183,7 +183,7 @@ export default class Profile extends Component {
       // Try setting `flexDirection` to `row`.
       <ScrollView >
         <Image
-          source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name}}
+          source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name.replace(/\s/g, '')}}
           style={styles.backCover}
           blurRadius={1}
         />
@@ -191,7 +191,7 @@ export default class Profile extends Component {
 
         <View style={styles.cover}>
           <Image
-            source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name}}
+            source={{ uri: this.state.image ? this.state.image : "http://identicon-1132.appspot.com/" + this.state.name.replace(/\s/g, '')}}
             style={{ width: width, height: width, borderRadius: width / 2 }}
           // blurRadius={2}
           />
@@ -200,7 +200,7 @@ export default class Profile extends Component {
           <View style={styles.profileOptions}>
             <TouchableHighlight
               onPress={() => {
-                Alert.alert('You tapped the button!');
+                Alert.alert('Logout disabled during demo :)');
               }}
 
 

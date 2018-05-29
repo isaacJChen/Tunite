@@ -24,7 +24,7 @@ export default class Card extends Component {
       firebase.storage().ref().child(uid).getDownloadURL().then((url)=>{
         this.setState({profilePic: url})
       }).catch((err)=>{
-        this.setState({profilePic:  "http://identicon-1132.appspot.com/" + uid})
+        this.setState({profilePic:  "http://identicon-1132.appspot.com/" + uid.replace(/\s/g, '')})
       })
     })
 
