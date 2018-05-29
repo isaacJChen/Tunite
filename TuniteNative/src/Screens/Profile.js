@@ -167,6 +167,13 @@ export default class Profile extends Component {
     })
   }
 
+  viewUploads() {
+    this.props.navigation.navigate("Uploads", {
+      id: firebase.auth().currentUser.uid,
+      iconMaker: iconMaker
+    })
+  }
+
 
   render() {
     const width = Dimensions.get('window').width / 3;
@@ -209,7 +216,7 @@ export default class Profile extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               onPress={() => {
-                Alert.alert('You tapped the button!');
+                this.viewUploads()
               }}
               style={{ justifyContent: 'center', alignItems: 'center' }}
             >
