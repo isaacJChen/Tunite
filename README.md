@@ -22,12 +22,12 @@ Tunite is a collaboration platform that unites indie artists for social music cr
 
 # CONTENTS
 
-- home feed
-- song profiles
-- explore
-- user profiles
-- collection
-- web view
+- home feed: view songs from your community
+- song profiles: view contents of a song, including tags and credits
+- explore: scan many versions of a single song
+- user profiles: view user social media and songs posted
+- collection: view saved songs in your collection for future collaboration
+- web view: post original songs or collaborate on songs saved to your collection
 
 # TECH STACK
 
@@ -36,11 +36,11 @@ Tunite is a collaboration platform that unites indie artists for social music cr
 - mobile
   - ReactNative, Android
 - database
-  - firebaseDB, direbaseStorage
+  - firebaseDB, firebaseStorage
  
  # TECH STACK DECISIONS
  
 We decided to use react native for mobile because of its ability to create quick prototypes and fast development time. Using reactn ative, we were also able to create a web version using similar technique. Overall, we chose our technology based on what provides the shortest development time.
  
- # ADDIITONAL NOTES
+ # ADDITONAL NOTES
  Our mobile version of the project is on Master branch. The Web version is on gh-pages branch.
