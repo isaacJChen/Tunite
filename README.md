@@ -41,3 +41,6 @@ TECH STACK
  TECH STACK DECISIONS
  
  We decided to use react native for mobile because of its ability to create quick prototypes and fast development time. Using reactn ative, we were also able to create a web version using similar technique. Overall, we chose our technology based on what provides the shortest development time.
+ 
+ ADDIITONAL NOTES
+ Our mobile version of the project is on Master branch. The Web version is on gh-pages branch.
