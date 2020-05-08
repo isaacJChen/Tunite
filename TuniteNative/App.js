@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import { TabNavigator, StackNavigator, SwitchNavigator, Dimensions } from 'react-navigation';
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View} from 'react-native';
+import {TabNavigator, StackNavigator, SwitchNavigator, Dimensions} from 'react-navigation';
 import Title from './src/Components/Title';
 import Explore from './src/Screens/Explore';
 import Collection from './src/Screens/Collection';
@@ -11,7 +11,6 @@ import * as firebase from "firebase";
 import Login from './src/Screens/Login'
 import EditProfile from './src/Screens/EditProfile'
 import UserAccount from './src/Screens/UserAccount'
-import Uploads from './src/Screens/Uploads'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -42,10 +41,7 @@ export const CollectionStack = StackNavigator({
   },
   UserAccount: {
     screen: UserAccount
-  },
-  Uploads: {
-    screen: Uploads
-  }, 
+  }
 });
 
 export const FeedStack = StackNavigator({
@@ -60,10 +56,7 @@ export const FeedStack = StackNavigator({
   },
   UserAccount: {
     screen: UserAccount
-  },
-  Uploads: {
-    screen: Uploads
-  }, 
+  }
 });
 
 export const ProfileStack = StackNavigator({
@@ -72,13 +65,7 @@ export const ProfileStack = StackNavigator({
   },
   EditProfile: {
     screen: EditProfile
-  },
-  Uploads: {
-    screen: Uploads
-  }, 
-  SongDetail: {
-    screen: SongDetail
-  },
+  }
 });
 
 export const SignedIn = TabNavigator({
@@ -92,44 +79,44 @@ export const SignedIn = TabNavigator({
     screen: ProfileStack
   }
 }, {
-    tabBarOptions: {
-      activeTintColor: 'black',
-      inactiveTintColor: 'white',
-      swipeEnabled: false,
-      style: {
-        backgroundColor: '#BF4949',
-        height: 60
-      },
-      tabStyle: {
-        height: 60
-      },
-      iconStyle: {
-        height: 60,
-        width: 65
-      },
-      showIcon: true,
-      showLabel: false,
+  tabBarOptions: {
+    activeTintColor: 'black',
+    inactiveTintColor: 'white',
+    swipeEnabled: false,
+    style: {
+      backgroundColor: '#BF4949',
+      height: 60
     },
-    tabBarPosition: 'bottom',
-    navigationOptions: ({ navigation }) => ({
-      // tabBarIcon: ({ focused, tintColor }) => {
-      //   const { routeName } = navigation.state;
-      //   let iconName;
-      //   if (routeName === 'Home') {
-      //     iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-      //   } else if (routeName === 'Settings') {
-      //     iconName = `ios-options${focused ? '' : '-outline'}`;
-      //   }
+    tabStyle: {
+      height: 60
+    },
+    iconStyle:{
+      height: 60,
+      width: 65
+    },
+    showIcon: true,
+    showLabel: false,
+  },
+  tabBarPosition: 'bottom',
+  navigationOptions: ({ navigation }) => ({
+    // tabBarIcon: ({ focused, tintColor }) => {
+    //   const { routeName } = navigation.state;
+    //   let iconName;
+    //   if (routeName === 'Home') {
+    //     iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+    //   } else if (routeName === 'Settings') {
+    //     iconName = `ios-options${focused ? '' : '-outline'}`;
+    //   }
 
-      //   // You can return any component that you like here! We usually use an
-      //   // icon component from react-native-vector-icons
-      //   // return <Ionicons name={iconName} size={25} color={tintColor} />;
-      //   return <Text>ffff</Text>;
-      // },
-      header: {
-      }
-    }),
-  });
+    //   // You can return any component that you like here! We usually use an
+    //   // icon component from react-native-vector-icons
+    //   // return <Ionicons name={iconName} size={25} color={tintColor} />;
+    //   return <Text>ffff</Text>;
+    // },
+    header: {
+    }
+  }),
+});
 
 export const createRootNavigator = (signedIn = false) => {
   return SwitchNavigator({
@@ -140,10 +127,10 @@ export const createRootNavigator = (signedIn = false) => {
       screen: Login
     }
   }, {
-      initialRouteName: signedIn
-        ? "SignedIn"
-        : "SignedOut"
-    });
+    initialRouteName: signedIn
+      ? "SignedIn"
+      : "SignedOut"
+  });
 };
 
 // const styles = StyleSheet.create({
